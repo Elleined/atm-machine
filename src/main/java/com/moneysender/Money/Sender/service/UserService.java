@@ -1,5 +1,6 @@
 package com.moneysender.Money.Sender.service;
 
+import com.moneysender.Money.Sender.exception.ResourceNotFoundException;
 import com.moneysender.Money.Sender.model.User;
 import com.moneysender.Money.Sender.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -40,6 +41,7 @@ public class UserService {
         return user.getId();
     }
 
-    public void sendMoney(int senderId, BigDecimal amount, int recipientId) {
+    public User getById(int userId) throws ResourceNotFoundException {
+        return userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User with id of " + userId + " does not exists"));
     }
 }
