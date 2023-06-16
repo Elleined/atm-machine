@@ -26,11 +26,11 @@ public class MoneySenderService {
             ResourceNotFoundException {
 
         User sender = userService.getById(senderId);
-        if (senderId == recipientId) {
+        if (isSenderSendingToHimself(senderId, recipientId)) {
             log.trace("User trying to send in recipient id of {} but turns out it is the same id of himself which is not allowed!", recipientId);
             throw new IllegalArgumentException("You cannot send to yourself");
         }
-        if (amount.compareTo(BigDecimal.ZERO) <= 0) {
+        if (isAmountLessThanZero(amount)) {
             log.trace("Amount trying to send is {} which is less than 0 or a negative number", amount);
             throw new IllegalArgumentException("Amount should be positive and cannot be zero!");
         }
@@ -65,5 +65,13 @@ public class MoneySenderService {
 
     public boolean isBalanceEnoughToSend(@NonNull User sender, @NonNull BigDecimal amountToBeSent) {
         return sender.getBalance().compareTo(amountToBeSent) < 0;
+    }
+
+    public boolean isAmountLessThanZero(BigDecimal amount) {
+        return amount.compareTo(BigDecimal.ZERO) <= 0;
+    }
+
+    public boolean isSenderSendingToHimself(int senderId, int recipientId) {
+        return senderId == recipientId;
     }
 }
