@@ -1,9 +1,8 @@
 package com.moneysender.Money.Sender.service;
 
 import com.moneysender.Money.Sender.exception.InsufficientFundException;
-import com.moneysender.Money.Sender.model.Transaction;
 import com.moneysender.Money.Sender.model.User;
-import com.moneysender.Money.Sender.repository.UserRepository;
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -20,12 +19,17 @@ public class MoneySenderService {
     private final TransactionService transactionService;
 
     @Transactional
-    public void sendMoney(int senderId, BigDecimal amount, int recipientId) {
+    public void sendMoney(int senderId, @NonNull BigDecimal amount, int recipientId) {
         User sender = userService.getById(senderId);
+        if (amount.compareTo(BigDecimal.ZERO) <= 0) {
+            log.trace("Amount trying to send is {} which is less than 0 or a negative number", amount);
+            throw new IllegalArgumentException("Amount should be positive and cannot be zero!");
+        }
         if (isBalanceEnoughToSend(sender, amount)) {
             log.trace("Sender balance is {} and trying to send {} which is not enough!", sender.getBalance(), amount);
             throw new InsufficientFundException("Insufficient Funds!");
         }
+
         User recipient = userService.getById(recipientId);
         updateSenderBalance(sender, amount);
         updateRecipientBalance(recipient, amount);
@@ -37,20 +41,20 @@ public class MoneySenderService {
     }
 
     @Transactional
-    public void updateSenderBalance(User sender, BigDecimal amountToBeDeducted) {
+    private void updateSenderBalance(@NonNull User sender, @NonNull BigDecimal amountToBeDeducted) {
         BigDecimal newBalance = sender.getBalance().subtract(amountToBeDeducted);
         sender.setBalance(newBalance);
         userService.save(sender);
     }
 
     @Transactional
-    public void updateRecipientBalance(User recipient, BigDecimal amountToBeAdded) {
+    private void updateRecipientBalance(@NonNull User recipient, @NonNull BigDecimal amountToBeAdded) {
         BigDecimal newBalance = recipient.getBalance().add(amountToBeAdded);
         recipient.setBalance(newBalance);
         userService.save(recipient);
     }
 
-    public boolean isBalanceEnoughToSend(User sender, BigDecimal amountToBeSent) {
+    public boolean isBalanceEnoughToSend(@NonNull User sender, @NonNull BigDecimal amountToBeSent) {
         return sender.getBalance().compareTo(amountToBeSent) < 0;
     }
 }

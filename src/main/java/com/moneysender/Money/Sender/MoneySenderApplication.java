@@ -11,6 +11,7 @@ import java.math.BigDecimal;
 @SpringBootApplication
 @RequiredArgsConstructor
 public class MoneySenderApplication implements CommandLineRunner {
+
 	private final MoneySenderService moneySenderService;
 	public static void main(String[] args) {
 		SpringApplication.run(MoneySenderApplication.class, args);
@@ -18,6 +19,6 @@ public class MoneySenderApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
-		moneySenderService.sendMoney(1, new BigDecimal(100), 2);
+		moneySenderService.sendMoney(2, new BigDecimal(0), 1);
 	}
 }
