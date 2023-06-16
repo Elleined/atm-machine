@@ -11,7 +11,5 @@ import org.springframework.stereotype.Component;
 public class MoneySender {
     private final UserService userService;
 
-    public void doSomethnig() {
-        log.debug("HI");
-    }
+
 }

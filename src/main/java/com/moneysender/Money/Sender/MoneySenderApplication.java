@@ -7,16 +7,13 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
 @RequiredArgsConstructor
-public class MoneySenderApplication implements CommandLineRunner {
+public class MoneySenderApplication {
 
 	private final MoneySender moneySender;
 
 	public static void main(String[] args) {
 		SpringApplication.run(MoneySenderApplication.class, args);
-	}
 
-	@Override
-	public void run(String... args) {
-		moneySender.doSomethnig();
+
 	}
 }

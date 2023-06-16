@@ -28,5 +28,8 @@ public class User {
 
     // User id reference is in transaction table
     @OneToMany(mappedBy = "sender")
-    List<Transaction> transactions;
+    List<Transaction> sentTransactions;
+
+    @OneToMany(mappedBy = "recipient")
+    List<Transaction> receiveTransactions;
 }

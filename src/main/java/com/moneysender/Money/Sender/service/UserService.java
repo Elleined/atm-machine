@@ -40,7 +40,6 @@ public class UserService {
         return user.getId();
     }
 
-    public void sendMoney(int userId, BigDecimal amount) {
-
+    public void sendMoney(int senderId, BigDecimal amount, int recipientId) {
     }
 }

@@ -28,9 +28,6 @@ public class Transaction {
             nullable = false)
     private LocalDateTime transactionData;
 
-    @Column(name = "recipient_id",
-            nullable = false)
-    private int recipientId;
 
     @Column(name = "trn", nullable = false, unique = true)
     private String transactionNumberReference;
@@ -42,4 +39,12 @@ public class Transaction {
             referencedColumnName = "user_id"
     )
     private User sender;
+
+    @ManyToOne
+    @JoinColumn(
+            nullable = false,
+            name = "recipient_id",
+            referencedColumnName = "user_id"
+    )
+    private User recipient;
 }
