@@ -1,6 +1,7 @@
 package com.moneysender.Money.Sender.service;
 
 import com.moneysender.Money.Sender.exception.InsufficientFundException;
+import com.moneysender.Money.Sender.exception.ResourceNotFoundException;
 import com.moneysender.Money.Sender.model.User;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -19,8 +20,16 @@ public class MoneySenderService {
     private final TransactionService transactionService;
 
     @Transactional
-    public void sendMoney(int senderId, @NonNull BigDecimal amount, int recipientId) {
+    public void sendMoney(int senderId, @NonNull BigDecimal amount, int recipientId)
+            throws IllegalArgumentException,
+            InsufficientFundException,
+            ResourceNotFoundException {
+
         User sender = userService.getById(senderId);
+        if (senderId == recipientId) {
+            log.trace("User trying to send in recipient id of {} but turns out it is the same id of himself which is not allowed!", recipientId);
+            throw new IllegalArgumentException("You cannot send to yourself");
+        }
         if (amount.compareTo(BigDecimal.ZERO) <= 0) {
             log.trace("Amount trying to send is {} which is less than 0 or a negative number", amount);
             throw new IllegalArgumentException("Amount should be positive and cannot be zero!");

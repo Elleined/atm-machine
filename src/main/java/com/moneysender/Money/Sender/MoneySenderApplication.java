@@ -19,6 +19,6 @@ public class MoneySenderApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
-		moneySenderService.sendMoney(2, new BigDecimal(0), 1);
+		moneySenderService.sendMoney(1, new BigDecimal(100), 2);
 	}
 }
