@@ -20,7 +20,7 @@ public class User {
     private int id;
 
     @Column(name = "name")
-    private int name;
+    private String name;
 
     @Column(name = "balance")
     private BigDecimal balance;
