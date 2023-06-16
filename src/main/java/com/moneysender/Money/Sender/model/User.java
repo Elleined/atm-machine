@@ -26,10 +26,11 @@ public class User {
     @Column(name = "balance")
     private BigDecimal balance;
 
-    // User id reference is in transaction table
+    // sender id reference is in transaction table
     @OneToMany(mappedBy = "sender")
     List<Transaction> sentTransactions;
 
+    // recipient id reference is in transaction table
     @OneToMany(mappedBy = "recipient")
     List<Transaction> receiveTransactions;
 }

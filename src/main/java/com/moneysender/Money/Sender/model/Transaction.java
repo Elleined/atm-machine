@@ -28,7 +28,7 @@ public class Transaction {
     @Column(name = "transaction_date",
             updatable = false,
             nullable = false)
-    private LocalDateTime transactionData;
+    private LocalDateTime transactionDate;
 
 
     @Column(name = "trn",

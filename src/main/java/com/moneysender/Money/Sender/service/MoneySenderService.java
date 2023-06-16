@@ -1,6 +1,7 @@
 package com.moneysender.Money.Sender.service;
 
 import com.moneysender.Money.Sender.exception.InsufficientFundException;
+import com.moneysender.Money.Sender.model.Transaction;
 import com.moneysender.Money.Sender.model.User;
 import com.moneysender.Money.Sender.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -16,6 +17,7 @@ import java.math.BigDecimal;
 public class MoneySenderService {
 
     private final UserService userService;
+    private final TransactionService transactionService;
 
     @Transactional
     public void sendMoney(int senderId, BigDecimal amount, int recipientId) {
@@ -28,8 +30,10 @@ public class MoneySenderService {
         updateSenderBalance(sender, amount);
         updateRecipientBalance(recipient, amount);
 
+        int transactionId = transactionService.save(amount, sender, recipient);
+        String trn = transactionService.getById(transactionId).getTransactionNumberReference();
 
-        log.info("Money send successfully to the recipient {} amounting {} your new balance is {}.", recipient.getName(), amount, sender.getBalance());
+        log.info("Money send successfully to the recipient {} amounting {} your new balance is {}. Your transaction TRN number is {}.", recipient.getName(), amount, sender.getBalance(), trn);
     }
 
     @Transactional
