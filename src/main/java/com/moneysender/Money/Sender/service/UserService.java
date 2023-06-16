@@ -23,7 +23,10 @@ public class UserService {
                 .name(name)
                 .balance(new BigDecimal(0))
                 .build();
-        return userRepository.save(user).getId();
+        userRepository.save(user);
+
+        log.debug("User saved successfully with id of {}", user.getId());
+        return user.getId();
     }
 
     public int save(String name) {
@@ -31,6 +34,13 @@ public class UserService {
                 .name(name)
                 .balance(new BigDecimal(0))
                 .build();
-        return userRepository.save(user).getId();
+        userRepository.save(user);
+
+        log.debug("User saved successfully with id of {}", user.getId());
+        return user.getId();
+    }
+
+    public void sendMoney(int userId, BigDecimal amount) {
+
     }
 }
