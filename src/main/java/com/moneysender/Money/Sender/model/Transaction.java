@@ -21,19 +21,25 @@ public class Transaction {
     private int id;
 
     @Column(name = "amount",
+            updatable = false,
             nullable = false)
     private BigDecimal amount;
 
     @Column(name = "transaction_date",
+            updatable = false,
             nullable = false)
     private LocalDateTime transactionData;
 
 
-    @Column(name = "trn", nullable = false, unique = true)
+    @Column(name = "trn",
+            nullable = false,
+            unique = true,
+            updatable = false)
     private String transactionNumberReference;
 
     @ManyToOne
     @JoinColumn(
+            updatable = false,
             nullable = false,
             name = "sender_id",
             referencedColumnName = "user_id"
@@ -42,6 +48,7 @@ public class Transaction {
 
     @ManyToOne
     @JoinColumn(
+            updatable = false,
             nullable = false,
             name = "recipient_id",
             referencedColumnName = "user_id"
