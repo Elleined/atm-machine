@@ -1,6 +1,10 @@
-# money-sender
-A peer to peer money sending application using Spring Boot with MySQL
+# atm-machine
+A ATM like machine created using Spring Boot and MySQL
 
 # Features
  - Send money peer to peer 
- - Record every transaction
+ - Deposit 
+ - Withdraw
+ - Record deposit transaction
+ - Record withdraw transaction
+ - Record sent money transaction
