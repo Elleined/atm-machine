@@ -3,9 +3,9 @@ package com.moneysender.Money.Sender.service;
 import com.moneysender.Money.Sender.exception.InsufficientFundException;
 import com.moneysender.Money.Sender.exception.ResourceNotFoundException;
 import com.moneysender.Money.Sender.model.User;
-import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
