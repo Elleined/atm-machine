@@ -3,7 +3,6 @@ package com.moneysender.Money.Sender.service;
 
 import com.moneysender.Money.Sender.exception.InsufficientFundException;
 import com.moneysender.Money.Sender.exception.ResourceNotFoundException;
-import com.moneysender.Money.Sender.model.DepositTransaction;
 import com.moneysender.Money.Sender.model.User;
 import com.moneysender.Money.Sender.model.WithdrawTransaction;
 import com.moneysender.Money.Sender.repository.WithdrawTransactionRepository;
@@ -61,6 +60,7 @@ public class WithdrawService {
                 .amount(withdrawalAmount)
                 .withdrawalDate(LocalDateTime.now())
                 .trn(trn)
+                .accountBalance(user.getBalance())
                 .build();
 
         withdrawTransactionRepository.save(withdrawTransaction);

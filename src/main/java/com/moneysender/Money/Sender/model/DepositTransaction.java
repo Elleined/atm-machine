@@ -35,6 +35,11 @@ public class DepositTransaction {
             nullable = false)
     private BigDecimal amount;
 
+    @Column(name = "account_balance",
+            updatable = false,
+            nullable = false)
+    private BigDecimal accountBalance;
+
     @ManyToOne
     @JoinColumn(
             nullable = false,

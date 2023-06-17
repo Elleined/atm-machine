@@ -51,6 +51,7 @@ public class DepositService {
                 .amount(depositedAmount)
                 .depositDate(LocalDateTime.now())
                 .trn(trn)
+                .accountBalance(user.getBalance())
                 .build();
 
         depositTransactionRepository.save(depositTransaction);
