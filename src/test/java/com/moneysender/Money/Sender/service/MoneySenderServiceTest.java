@@ -15,11 +15,13 @@ import static org.junit.jupiter.api.Assertions.*;
 class MoneySenderServiceTest {
     private final MoneySenderService moneySenderService;
     private final UserService userService;
+    private final ATMValidator atmValidator;
 
     @Autowired
-    public MoneySenderServiceTest(MoneySenderService moneySenderService, UserService userService) {
+    public MoneySenderServiceTest(MoneySenderService moneySenderService, UserService userService, ATMValidator atmValidator) {
         this.moneySenderService = moneySenderService;
         this.userService = userService;
+        this.atmValidator = atmValidator;
     }
 
     @Test
@@ -32,13 +34,13 @@ class MoneySenderServiceTest {
     @Test
     void amountShouldNotEqualToZeroAndShouldNotBeNegative() {
         BigDecimal amount = new BigDecimal(1);
-        assertFalse(moneySenderService.isAmountLessThanZero(amount), "Amount should not be zero");
+        assertFalse(atmValidator.isValidAmount(amount), "Amount should not be zero");
     }
 
     @Test
     void isSenderHaveFunds() {
         User sender = userService.getById(2);
         BigDecimal amount = new BigDecimal(100);
-        assertFalse(moneySenderService.isBalanceEnoughToSend(sender, amount), "Insufficient Funds");
+        assertFalse(atmValidator.isBalanceEnough(sender, amount), "Insufficient Funds");
     }
 }

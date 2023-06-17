@@ -19,18 +19,32 @@ public class AtmServiceImpl implements AtmService {
 
     @Override
     public void deposit(int userId, @NonNull BigDecimal amount) {
-        depositService.deposit(userId, amount);
+        try {
+            BigDecimal newBalance = depositService.deposit(userId, amount);
+            System.out.println("You successfully deposited amounting " + amount);
+            System.out.println("=== Your new Account balance is " + newBalance + " ===");
+        } catch (ResourceNotFoundException | IllegalArgumentException e) {
+            log.error("Error Occurred! {}", e.getMessage());
+        }
     }
 
     @Override
     public void withdraw(int userId, @NonNull BigDecimal amount) {
-        withdrawService.withdraw(userId, amount);
+        try {
+            BigDecimal newBalance = withdrawService.withdraw(userId, amount);
+            System.out.println("You successfully withdrawn amounting " + amount);
+            System.out.println("=== Your new Account balance is " + newBalance + " ===");
+        } catch (IllegalArgumentException | ResourceNotFoundException | InsufficientFundException e) {
+            log.error("Error Occurred! {}", e.getMessage());
+        }
     }
 
     @Override
     public void sendMoney(int senderId, @NonNull BigDecimal amount, int recipientId) {
 		try {
-			moneySenderService.sendMoney(1, new BigDecimal(100), 1);
+			BigDecimal newBalance = moneySenderService.sendMoney(senderId, amount, recipientId);
+            System.out.println("You successfully send money to the recipient with id of " + recipientId + " amounting " + amount);
+            System.out.println("=== Your new Account balance is " + newBalance + " ===");
 		} catch (IllegalArgumentException | ResourceNotFoundException | InsufficientFundException e) {
 			log.error("Error Occurred! {}", e.getMessage());
 		}

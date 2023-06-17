@@ -1,5 +1,6 @@
 package com.moneysender.Money.Sender.service;
 
+import com.moneysender.Money.Sender.exception.ResourceNotFoundException;
 import com.moneysender.Money.Sender.model.User;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -14,10 +15,14 @@ import java.math.BigDecimal;
 @Slf4j
 public class DepositService {
     private final UserService userService;
+    private final ATMValidator atmValidator;
 
     @Transactional
-    public void deposit(int userId, @NonNull BigDecimal amount) throws IllegalArgumentException {
-        if (isAmountLessThanZero(amount)) {
+    public BigDecimal deposit(int userId, @NonNull BigDecimal amount)
+            throws IllegalArgumentException,
+            ResourceNotFoundException {
+
+        if (atmValidator.isValidAmount(amount)) {
             log.trace("Amount trying to deposit is {} which is less than 0 or a negative number", amount);
             throw new IllegalArgumentException("Amount should be positive and cannot be zero!");
         }
@@ -27,10 +32,6 @@ public class DepositService {
         user.setBalance(newBalance);
         userService.save(user);
         log.debug("User with id of {} deposited amounting {}.\nOld balance: {}\nNew Balance: {}", userId, amount, oldBalance, newBalance);
-
-    }
-
-    public boolean isAmountLessThanZero(BigDecimal amount) {
-        return amount.compareTo(BigDecimal.ZERO) <= 0;
+        return user.getBalance();
     }
 }
