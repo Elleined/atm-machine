@@ -33,4 +33,12 @@ public class User {
     // recipient id reference is in transaction table
     @OneToMany(mappedBy = "recipient")
     List<Transaction> receiveTransactions;
+
+    // user id reference is in withdraw transaction table
+    @OneToMany(mappedBy = "user")
+    List<WithdrawTransaction> withdrawTransactions;
+
+    // user id reference is in withdraw transaction table
+    @OneToMany(mappedBy = "user")
+    List<DepositTransaction> depositTransactions;
 }
