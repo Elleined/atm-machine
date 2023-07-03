@@ -17,6 +17,7 @@ import java.util.UUID;
 @Service
 @RequiredArgsConstructor
 @Slf4j
+@Transactional
 public class DepositService {
     private final UserService userService;
     private final ATMValidator atmValidator;

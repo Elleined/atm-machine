@@ -8,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import java.math.BigDecimal;
 import java.util.Scanner;
@@ -15,6 +16,7 @@ import java.util.Scanner;
 @SpringBootApplication
 @RequiredArgsConstructor
 @Slf4j
+@EnableTransactionManagement
 public class MoneySenderApplication implements CommandLineRunner {
 
 	private final AtmService atmService;

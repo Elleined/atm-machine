@@ -14,6 +14,7 @@ import java.math.BigDecimal;
 @Service
 @Slf4j
 @RequiredArgsConstructor
+@Transactional
 public class MoneySenderService {
 
     private final UserService userService;

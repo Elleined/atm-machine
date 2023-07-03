@@ -15,6 +15,7 @@ import java.time.LocalDateTime;
 @Service
 @Slf4j
 @RequiredArgsConstructor
+@Transactional
 public class TransactionService {
     private final TransactionRepository transactionRepository;
 
