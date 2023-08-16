@@ -8,10 +8,9 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @SpringBootApplication
 @EnableTransactionManagement
 @EnableDiscoveryClient
-public class MoneySenderApplication {
+public class ATMMachineApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(MoneySenderApplication.class, args);
+		SpringApplication.run(ATMMachineApplication.class, args);
 	}
-
 }

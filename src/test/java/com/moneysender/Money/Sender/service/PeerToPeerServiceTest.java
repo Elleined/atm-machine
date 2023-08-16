@@ -2,7 +2,7 @@ package com.moneysender.Money.Sender.service;
 
 import com.elleined.atmmachineapi.model.User;
 import com.elleined.atmmachineapi.service.ATMValidator;
-import com.elleined.atmmachineapi.service.MoneySenderService;
+import com.elleined.atmmachineapi.service.PeerToPeerService;
 import com.elleined.atmmachineapi.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
@@ -15,23 +15,16 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Slf4j
-class MoneySenderServiceTest {
-    private final MoneySenderService moneySenderService;
+class PeerToPeerServiceTest {
+    private final PeerToPeerService peerToPeerService;
     private final UserService userService;
     private final ATMValidator atmValidator;
 
     @Autowired
-    public MoneySenderServiceTest(MoneySenderService moneySenderService, UserService userService, ATMValidator atmValidator) {
-        this.moneySenderService = moneySenderService;
+    public PeerToPeerServiceTest(PeerToPeerService peerToPeerService, UserService userService, ATMValidator atmValidator) {
+        this.peerToPeerService = peerToPeerService;
         this.userService = userService;
         this.atmValidator = atmValidator;
-    }
-
-    @Test
-    void senderIdShouldNotBeAlsoTheRecipientsId() {
-        int senderId = 1;
-        int recipientId = 2;
-        assertFalse(moneySenderService.isSenderSendingToHimself(senderId, recipientId), "sender id and recipient id should not be the same!");
     }
 
     @Test

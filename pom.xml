@@ -11,7 +11,7 @@
 	<groupId>com.elleined</groupId>
 	<artifactId>atm-machine-api</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>atm-machine</name>
+	<name>atm-machine-api</name>
 	<description>REST API that has functionality of atm machine</description>
 	<properties>
 		<java.version>17</java.version>
@@ -32,16 +32,23 @@
 			<scope>runtime</scope>
 		</dependency>
 		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
 			<optional>true</optional>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-validation</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-
 	</dependencies>
 
 	<dependencyManagement>

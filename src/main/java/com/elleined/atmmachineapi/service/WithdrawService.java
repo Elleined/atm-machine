@@ -4,8 +4,9 @@ package com.elleined.atmmachineapi.service;
 import com.elleined.atmmachineapi.exception.InsufficientFundException;
 import com.elleined.atmmachineapi.exception.ResourceNotFoundException;
 import com.elleined.atmmachineapi.model.User;
-import com.elleined.atmmachineapi.model.WithdrawTransaction;
-import com.elleined.atmmachineapi.repository.WithdrawTransactionRepository;
+import com.elleined.atmmachineapi.model.transaction.ATMTransaction;
+import com.elleined.atmmachineapi.model.transaction.WithdrawATMTransaction;
+import com.elleined.atmmachineapi.service.transaction.TransactionService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.lang.NonNull;
@@ -21,50 +22,47 @@ import java.util.UUID;
 @Slf4j
 @Transactional
 public class WithdrawService {
-
     private final UserService userService;
     private final ATMValidator atmValidator;
-    private final WithdrawTransactionRepository withdrawTransactionRepository;
+    private final TransactionService transactionService;
 
-    @Transactional
-    public BigDecimal withdraw(int userId, @NonNull BigDecimal amount)
+    public BigDecimal withdraw(int currentUserId, @NonNull BigDecimal withdrawalAmount)
             throws IllegalArgumentException,
             InsufficientFundException,
             ResourceNotFoundException {
 
-        if (atmValidator.isValidAmount(amount)) {
-            log.trace("Amount trying to send is {} which is less than 0 or a negative number", amount);
+        if (atmValidator.isValidAmount(withdrawalAmount)) {
+            log.trace("Amount trying to send is {} which is less than 0 or a negative number", withdrawalAmount);
             throw new IllegalArgumentException("Amount should be positive and cannot be zero!");
         }
-        User user = userService.getById(userId);
-        if (atmValidator.isBalanceEnough(user, amount)) {
-            log.trace("User balance is {} and trying to withdraw {} which is not enough!", user.getBalance(), amount);
+        User currentUser = userService.getById(currentUserId);
+        if (atmValidator.isBalanceEnough(currentUser, withdrawalAmount)) {
+            log.trace("User balance is {} and trying to withdraw {} which is not enough!", currentUser.getBalance(), withdrawalAmount);
             throw new InsufficientFundException("Insufficient Funds!");
         }
 
-        BigDecimal oldBalance = user.getBalance();
-        BigDecimal newBalance = user.getBalance().subtract(amount);
-        user.setBalance(newBalance);
-        userService.save(user);
+        BigDecimal oldBalance = currentUser.getBalance();
+        BigDecimal newBalance = currentUser.getBalance().subtract(withdrawalAmount);
+        currentUser.setBalance(newBalance);
+        userService.save(currentUser);
 
-        saveWithdrawTransaction(user, amount);
-
-        log.debug("User with id of {} withdraw amounting {}.\nOld balance: {}\nNew Balance: {}", userId, amount, oldBalance, newBalance);
-        return user.getBalance();
+        saveWithdrawTransaction(currentUser, withdrawalAmount);
+        log.debug("User with id of {} withdraw amounting {}.\nOld balance: {}\nNew Balance: {}", currentUser.getId(), withdrawalAmount, oldBalance, newBalance);
+        return currentUser.getBalance();
     }
 
-    @Transactional
-    private void saveWithdrawTransaction(User user, @NonNull BigDecimal withdrawalAmount) {
+    private void saveWithdrawTransaction(@NonNull User user, @NonNull BigDecimal withdrawalAmount) {
         String trn = UUID.randomUUID().toString();
-        WithdrawTransaction withdrawTransaction = WithdrawTransaction.builder()
-                .user(user)
-                .amount(withdrawalAmount)
-                .withdrawalDate(LocalDateTime.now())
+
+        ATMTransaction withdrawTransaction = WithdrawATMTransaction.builder()
                 .trn(trn)
+                .amount(withdrawalAmount)
+                .transactionDate(LocalDateTime.now())
+                .user(user)
                 .accountBalance(user.getBalance())
                 .build();
 
-        withdrawTransactionRepository.save(withdrawTransaction);
+        transactionService.save(withdrawTransaction);
         log.debug("Deposit transaction saved with trn of {}", trn);
     }
 }

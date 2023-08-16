@@ -1,9 +1,10 @@
 package com.elleined.atmmachineapi.service;
 
 import com.elleined.atmmachineapi.exception.ResourceNotFoundException;
-import com.elleined.atmmachineapi.model.DepositTransaction;
 import com.elleined.atmmachineapi.model.User;
-import com.elleined.atmmachineapi.repository.DepositTransactionRepository;
+import com.elleined.atmmachineapi.model.transaction.ATMTransaction;
+import com.elleined.atmmachineapi.model.transaction.DepositATMTransaction;
+import com.elleined.atmmachineapi.service.transaction.TransactionService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.lang.NonNull;
@@ -21,41 +22,40 @@ import java.util.UUID;
 public class DepositService {
     private final UserService userService;
     private final ATMValidator atmValidator;
-    private final DepositTransactionRepository depositTransactionRepository;
+    private final TransactionService transactionService;
 
-    @Transactional
-    public BigDecimal deposit(int userId, @NonNull BigDecimal amount)
-            throws IllegalArgumentException,
-            ResourceNotFoundException {
+    public BigDecimal deposit(int currentUserId, @NonNull BigDecimal depositAmount)
+            throws ResourceNotFoundException, IllegalArgumentException {
 
-        if (atmValidator.isValidAmount(amount)) {
-            log.trace("Amount trying to deposit is {} which is less than 0 or a negative number", amount);
+        if (atmValidator.isValidAmount(depositAmount)) {
+            log.trace("Amount trying to deposit is {} which is less than 0 or a negative number", depositAmount);
             throw new IllegalArgumentException("Amount should be positive and cannot be zero!");
         }
-        User user = userService.getById(userId);
-        BigDecimal oldBalance = user.getBalance();
-        BigDecimal newBalance = user.getBalance().add(amount);
-        user.setBalance(newBalance);
-        userService.save(user);
 
-        saveDepositTransaction(user, amount);
+        User currentUser = userService.getById(currentUserId);
+        BigDecimal oldBalance = currentUser.getBalance();
+        BigDecimal newBalance = currentUser.getBalance().add(depositAmount);
+        currentUser.setBalance(newBalance);
 
-        log.debug("User with id of {} deposited amounting {}.\nOld balance: {}\nNew Balance: {}", userId, amount, oldBalance, newBalance);
-        return user.getBalance();
+        userService.save(currentUser);
+        saveDepositTransaction(currentUser, depositAmount);
+
+        log.debug("User with id of {} deposited amounting {}.\nOld balance: {}\nNew Balance: {}", currentUserId, depositAmount, oldBalance, newBalance);
+        return currentUser.getBalance();
     }
 
-    @Transactional
     private void saveDepositTransaction(User user, @NonNull BigDecimal depositedAmount) {
         String trn = UUID.randomUUID().toString();
-        DepositTransaction depositTransaction = DepositTransaction.builder()
-                .user(user)
-                .amount(depositedAmount)
-                .depositDate(LocalDateTime.now())
+
+        ATMTransaction depositTransaction = DepositATMTransaction.builder()
                 .trn(trn)
+                .amount(depositedAmount)
+                .transactionDate(LocalDateTime.now())
+                .user(user)
                 .accountBalance(user.getBalance())
                 .build();
 
-        depositTransactionRepository.save(depositTransaction);
+        transactionService.save(depositTransaction);
         log.debug("Deposit transaction saved with trn of {}", trn);
     }
 }

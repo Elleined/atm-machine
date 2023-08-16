@@ -1,11 +1,11 @@
-package com.elleined.atmmachineapi.service;
+package com.elleined.atmmachineapi.service.atm;
 
 import org.springframework.lang.NonNull;
 
 import java.math.BigDecimal;
 
-public interface AtmService {
+public interface ATMService {
     void deposit(int userId, @NonNull BigDecimal amount);
     void withdraw(int userId, @NonNull BigDecimal amount);
-    void sendMoney(int senderId, @NonNull BigDecimal amount, int recipientId);
+    void peerToPeer(int senderId, @NonNull BigDecimal amount, int recipientId);
 }

@@ -18,21 +18,19 @@ public class UserService {
 
     private final UserRepository userRepository;
 
-    @Transactional
-    public int save(String name) {
+    public void save(String name, String uuid) {
         User user = User.builder()
                 .name(name)
                 .balance(new BigDecimal(0))
+                .uuid(uuid)
                 .build();
-        userRepository.save(user);
 
+        userRepository.save(user);
         log.debug("User saved successfully with id of {}", user.getId());
-        return user.getId();
     }
 
-    @Transactional
-    public int save(User user) {
-        return userRepository.save(user).getId();
+    public void save(User user) {
+        userRepository.save(user);
     }
 
     public User getById(int userId) throws ResourceNotFoundException {

@@ -6,6 +6,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
+import java.util.UUID;
+
 @Component
 @Slf4j
 @RequiredArgsConstructor
@@ -19,7 +21,7 @@ public class AfterStartUp {
             log.info("Initial user instantiation cancelled! Because initial users are already saved!");
             return;
         }
-        userService.save("User 1");
-        userService.save("User 2");
+        userService.save("User 1", UUID.randomUUID().toString());
+        userService.save("User 2", UUID.randomUUID().toString());
     }
 }
