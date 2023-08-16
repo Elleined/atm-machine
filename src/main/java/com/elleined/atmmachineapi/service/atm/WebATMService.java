@@ -1,5 +1,10 @@
 package com.elleined.atmmachineapi.service.atm;
 
+import com.elleined.atmmachineapi.exception.InsufficientFundException;
+import com.elleined.atmmachineapi.exception.ResourceNotFoundException;
+import com.elleined.atmmachineapi.service.DepositService;
+import com.elleined.atmmachineapi.service.PeerToPeerService;
+import com.elleined.atmmachineapi.service.WithdrawService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Primary;
@@ -15,18 +20,33 @@ import java.math.BigDecimal;
 @Transactional
 @Primary
 public class WebATMService implements ATMService {
-    @Override
-    public void deposit(int userId, @NonNull BigDecimal amount) {
 
+    private final DepositService depositService;
+    private final WithdrawService withdrawService;
+    private final PeerToPeerService peerToPeerService;
+
+    @Override
+    public void deposit(int userId, @NonNull BigDecimal amount)
+            throws ResourceNotFoundException, IllegalArgumentException {
+
+        depositService.deposit(userId, amount);
     }
 
     @Override
-    public void withdraw(int userId, @NonNull BigDecimal amount) {
+    public void withdraw(int userId, @NonNull BigDecimal amount)
+            throws IllegalArgumentException,
+            InsufficientFundException,
+            ResourceNotFoundException {
 
+        withdrawService.withdraw(userId, amount);
     }
 
     @Override
-    public void peerToPeer(int senderId, @NonNull BigDecimal amount, int recipientId) {
+    public void peerToPeer(int senderId, @NonNull BigDecimal amount, int recipientId)
+            throws IllegalArgumentException,
+            InsufficientFundException,
+            ResourceNotFoundException {
 
+        peerToPeerService.peerToPeer(senderId, amount, recipientId);
     }
 }
