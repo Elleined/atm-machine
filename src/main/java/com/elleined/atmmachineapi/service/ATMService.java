@@ -1,4 +1,4 @@
-package com.elleined.atmmachineapi.service.atm;
+package com.elleined.atmmachineapi.service;
 
 import org.springframework.lang.NonNull;
 

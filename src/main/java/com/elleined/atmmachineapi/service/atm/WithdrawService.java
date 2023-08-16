@@ -1,4 +1,4 @@
-package com.elleined.atmmachineapi.service;
+package com.elleined.atmmachineapi.service.atm;
 
 
 import com.elleined.atmmachineapi.exception.InsufficientFundException;
@@ -6,7 +6,8 @@ import com.elleined.atmmachineapi.exception.ResourceNotFoundException;
 import com.elleined.atmmachineapi.model.User;
 import com.elleined.atmmachineapi.model.transaction.ATMTransaction;
 import com.elleined.atmmachineapi.model.transaction.WithdrawATMTransaction;
-import com.elleined.atmmachineapi.service.transaction.TransactionService;
+import com.elleined.atmmachineapi.service.UserService;
+import com.elleined.atmmachineapi.service.atm.transaction.TransactionService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.lang.NonNull;

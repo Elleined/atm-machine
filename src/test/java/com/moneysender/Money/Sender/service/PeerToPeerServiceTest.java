@@ -1,8 +1,8 @@
 package com.moneysender.Money.Sender.service;
 
 import com.elleined.atmmachineapi.model.User;
-import com.elleined.atmmachineapi.service.ATMValidator;
-import com.elleined.atmmachineapi.service.PeerToPeerService;
+import com.elleined.atmmachineapi.service.atm.ATMValidator;
+import com.elleined.atmmachineapi.service.atm.PeerToPeerService;
 import com.elleined.atmmachineapi.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;

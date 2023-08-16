@@ -1,4 +1,4 @@
-package com.elleined.atmmachineapi.service;
+package com.elleined.atmmachineapi.service.atm;
 
 import com.elleined.atmmachineapi.model.User;
 import org.springframework.stereotype.Component;

@@ -1,6 +1,6 @@
 package com.elleined.atmmachineapi.controller;
 
-import com.elleined.atmmachineapi.service.atm.ATMService;
+import com.elleined.atmmachineapi.service.ATMService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
