@@ -1,6 +1,7 @@
 package com.elleined.atmmachineapi;
 
-import com.elleined.atmmachineapi.service.user.UserServiceImpl;
+import com.elleined.atmmachineapi.dto.UserDTO;
+import com.elleined.atmmachineapi.service.user.UserService;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -13,15 +14,25 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class AfterStartUp {
 
-    private final UserServiceImpl userServiceImpl;
+    private final UserService userService;
 
     @PostConstruct
     public void saveInitialUser() {
-        if (userServiceImpl.isUserExists(1)) {
+        if (userService.isUserExists(1)) {
             log.info("Initial user instantiation cancelled! Because initial users are already saved!");
             return;
         }
-        userServiceImpl.save("User 1", UUID.randomUUID().toString());
-        userServiceImpl.save("User 2", UUID.randomUUID().toString());
+        UserDTO user1 = UserDTO.builder()
+                .name("User 1")
+                .uuid(UUID.randomUUID().toString())
+                .build();
+
+        UserDTO user2 = UserDTO.builder()
+                .name("User 2")
+                .uuid(UUID.randomUUID().toString())
+                .build();
+
+        userService.save(user1);
+        userService.save(user2);
     }
 }
