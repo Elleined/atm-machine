@@ -1,13 +1,17 @@
 package com.elleined.atmmachineapi.service.atm;
 
+import com.elleined.atmmachineapi.exception.InsufficientFundException;
+import com.elleined.atmmachineapi.exception.ResourceNotFoundException;
 import com.elleined.atmmachineapi.model.User;
-import com.elleined.atmmachineapi.service.*;
+import com.elleined.atmmachineapi.service.DepositService;
+import com.elleined.atmmachineapi.service.PeerToPeerService;
+import com.elleined.atmmachineapi.service.UserService;
+import com.elleined.atmmachineapi.service.WithdrawService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.Scanner;
@@ -15,7 +19,6 @@ import java.util.Scanner;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-@Transactional
 @Qualifier("commandLineAtm")
 public class CommandLineATMService implements ATMService, Runnable {
 
@@ -26,29 +29,41 @@ public class CommandLineATMService implements ATMService, Runnable {
 
     @Override
     public void deposit(int userId, @NonNull BigDecimal amount) {
-        BigDecimal newBalance = depositService.deposit(userId, amount);
-        System.out.println("You successfully deposited amounting " + amount);
-        System.out.println("=== Your new Account balance is " + newBalance + " ===");
+        try {
+            BigDecimal newBalance = depositService.deposit(userId, amount);
+            System.out.println("You successfully deposited amounting " + amount);
+            System.out.println("=== Your new Account balance is " + newBalance + " ===");
+        } catch (ResourceNotFoundException | IllegalArgumentException e) {
+            log.error("Error Occurred! {}", e.getMessage());
+        }
     }
 
     @Override
     public void withdraw(int userId, @NonNull BigDecimal amount) {
-        BigDecimal newBalance = withdrawService.withdraw(userId, amount);
-        System.out.println("You successfully withdrawn amounting " + amount);
-        System.out.println("=== Your new Account balance is " + newBalance + " ===");
+        try {
+            BigDecimal newBalance = withdrawService.withdraw(userId, amount);
+            System.out.println("You successfully withdrawn amounting " + amount);
+            System.out.println("=== Your new Account balance is " + newBalance + " ===");
+        } catch (IllegalArgumentException | ResourceNotFoundException | InsufficientFundException e) {
+            log.error("Error Occurred! {}", e.getMessage());
+        }
     }
 
     @Override
     public void peerToPeer(int senderId, @NonNull BigDecimal amount, int receiverId) {
-        BigDecimal senderNewBalance = peerToPeerService.peerToPeer(senderId, amount, receiverId);
-        System.out.println("You successfully send money to the recipient with id of " + receiverId + " amounting " + amount);
-        System.out.println("=== Your new Account balance is " + senderNewBalance + " ===");
+        try {
+            BigDecimal newBalance = peerToPeerService.peerToPeer(senderId, amount, receiverId);
+            System.out.println("You successfully send money to the recipient with id of " + receiverId + " amounting " + amount);
+            System.out.println("=== Your new Account balance is " + newBalance + " ===");
+        } catch (IllegalArgumentException | ResourceNotFoundException | InsufficientFundException e) {
+            log.error("Error Occurred! {}", e.getMessage());
+        }
     }
 
     @Override
     public void run() {
         final Scanner in = new Scanner(System.in);
-        System.out.print("Enter you user id: ");
+        System.out.print("Enter your user id: ");
         int userId = in.nextInt();
         if (!userService.isUserExists(userId)) {
             log.error("User with id of {} does not exists!", userId);

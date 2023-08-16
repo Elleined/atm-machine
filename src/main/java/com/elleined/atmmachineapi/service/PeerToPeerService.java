@@ -30,20 +30,12 @@ public class PeerToPeerService {
             ResourceNotFoundException {
 
         User sender = userService.getById(senderId);
-        if (atmValidator.isSenderSendingToHimself(senderId, receiverId)) {
-            log.trace("User trying to send in recipient id of {} but turns out it is the same id of himself which is not allowed!", receiverId);
-            throw new IllegalArgumentException("You cannot send to yourself");
-        }
-        if (atmValidator.isValidAmount(amount)) {
-            log.trace("Amount trying to send is {} which is less than 0 or a negative number", amount);
-            throw new IllegalArgumentException("Amount should be positive and cannot be zero!");
-        }
-        if (atmValidator.isBalanceEnough(sender, amount)) {
-            log.trace("Sender balance is {} and trying to send {} which is not enough!", sender.getBalance(), amount);
-            throw new InsufficientFundException("Insufficient Funds!");
-        }
-
         User receiver = userService.getById(receiverId);
+
+        if (atmValidator.isSenderSendingToHimself(senderId, receiverId)) throw new IllegalArgumentException("You cannot send to yourself");
+        if (atmValidator.isValidAmount(amount)) throw new IllegalArgumentException("Amount should be positive and cannot be zero!");
+        if (atmValidator.isBalanceEnough(sender, amount)) throw new InsufficientFundException("Insufficient Funds!");
+
         updateSenderBalance(sender, amount);
         updateRecipientBalance(receiver, amount);
         savePeerToPeerTransaction(sender, amount, receiver);

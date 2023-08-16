@@ -31,15 +31,9 @@ public class WithdrawService {
             InsufficientFundException,
             ResourceNotFoundException {
 
-        if (atmValidator.isValidAmount(withdrawalAmount)) {
-            log.trace("Amount trying to send is {} which is less than 0 or a negative number", withdrawalAmount);
-            throw new IllegalArgumentException("Amount should be positive and cannot be zero!");
-        }
         User currentUser = userService.getById(currentUserId);
-        if (atmValidator.isBalanceEnough(currentUser, withdrawalAmount)) {
-            log.trace("User balance is {} and trying to withdraw {} which is not enough!", currentUser.getBalance(), withdrawalAmount);
-            throw new InsufficientFundException("Insufficient Funds!");
-        }
+        if (atmValidator.isValidAmount(withdrawalAmount)) throw new IllegalArgumentException("Amount should be positive and cannot be zero!");
+        if (atmValidator.isBalanceEnough(currentUser, withdrawalAmount)) throw new InsufficientFundException("Insufficient Funds!");
 
         BigDecimal oldBalance = currentUser.getBalance();
         BigDecimal newBalance = currentUser.getBalance().subtract(withdrawalAmount);

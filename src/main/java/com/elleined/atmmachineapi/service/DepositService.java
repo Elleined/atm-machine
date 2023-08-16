@@ -27,16 +27,13 @@ public class DepositService {
     public BigDecimal deposit(int currentUserId, @NonNull BigDecimal depositAmount)
             throws ResourceNotFoundException, IllegalArgumentException {
 
-        if (atmValidator.isValidAmount(depositAmount)) {
-            log.trace("Amount trying to deposit is {} which is less than 0 or a negative number", depositAmount);
-            throw new IllegalArgumentException("Amount should be positive and cannot be zero!");
-        }
+        if (atmValidator.isValidAmount(depositAmount)) throw new IllegalArgumentException("Amount should be positive and cannot be zero!");
 
         User currentUser = userService.getById(currentUserId);
         BigDecimal oldBalance = currentUser.getBalance();
         BigDecimal newBalance = currentUser.getBalance().add(depositAmount);
-        currentUser.setBalance(newBalance);
 
+        currentUser.setBalance(newBalance);
         userService.save(currentUser);
         saveDepositTransaction(currentUser, depositAmount);
 
