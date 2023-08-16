@@ -1,6 +1,6 @@
-package com.moneysender.Money.Sender.service;
+package com.elleined.atmmachineapi.service;
 
-import com.moneysender.Money.Sender.model.User;
+import com.elleined.atmmachineapi.model.User;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
 

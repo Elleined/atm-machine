@@ -1,7 +1,7 @@
-package com.moneysender.Money.Sender.service;
+package com.elleined.atmmachineapi.service;
 
-import com.moneysender.Money.Sender.exception.InsufficientFundException;
-import com.moneysender.Money.Sender.exception.ResourceNotFoundException;
+import com.elleined.atmmachineapi.exception.InsufficientFundException;
+import com.elleined.atmmachineapi.exception.ResourceNotFoundException;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

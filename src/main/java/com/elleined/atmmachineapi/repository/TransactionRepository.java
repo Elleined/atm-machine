@@ -1,6 +1,6 @@
-package com.moneysender.Money.Sender.repository;
+package com.elleined.atmmachineapi.repository;
 
-import com.moneysender.Money.Sender.model.Transaction;
+import com.elleined.atmmachineapi.model.Transaction;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 

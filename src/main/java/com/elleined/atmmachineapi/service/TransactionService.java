@@ -1,9 +1,9 @@
-package com.moneysender.Money.Sender.service;
+package com.elleined.atmmachineapi.service;
 
-import com.moneysender.Money.Sender.exception.ResourceNotFoundException;
-import com.moneysender.Money.Sender.model.Transaction;
-import com.moneysender.Money.Sender.model.User;
-import com.moneysender.Money.Sender.repository.TransactionRepository;
+import com.elleined.atmmachineapi.exception.ResourceNotFoundException;
+import com.elleined.atmmachineapi.model.Transaction;
+import com.elleined.atmmachineapi.model.User;
+import com.elleined.atmmachineapi.repository.TransactionRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

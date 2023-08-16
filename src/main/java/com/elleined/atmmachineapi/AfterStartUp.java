@@ -1,6 +1,6 @@
-package com.moneysender.Money.Sender;
+package com.elleined.atmmachineapi;
 
-import com.moneysender.Money.Sender.service.UserService;
+import com.elleined.atmmachineapi.service.UserService;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

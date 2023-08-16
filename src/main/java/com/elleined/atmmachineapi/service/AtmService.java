@@ -1,4 +1,4 @@
-package com.moneysender.Money.Sender.service;
+package com.elleined.atmmachineapi.service;
 
 import org.springframework.lang.NonNull;
 

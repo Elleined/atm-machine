@@ -1,4 +1,4 @@
-package com.moneysender.Money.Sender.model;
+package com.elleined.atmmachineapi.model;
 
 import jakarta.persistence.*;
 import lombok.*;

@@ -1,6 +1,9 @@
 package com.moneysender.Money.Sender.service;
 
-import com.moneysender.Money.Sender.model.User;
+import com.elleined.atmmachineapi.model.User;
+import com.elleined.atmmachineapi.service.ATMValidator;
+import com.elleined.atmmachineapi.service.MoneySenderService;
+import com.elleined.atmmachineapi.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

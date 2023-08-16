@@ -1,4 +1,4 @@
-package com.moneysender.Money.Sender.exception;
+package com.elleined.atmmachineapi.exception;
 
 public class ResourceNotFoundException extends RuntimeException {
     public ResourceNotFoundException(String message) {
