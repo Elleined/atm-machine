@@ -2,7 +2,7 @@ package com.elleined.atmmachineapi.controller;
 
 import com.elleined.atmmachineapi.exception.InsufficientFundException;
 import com.elleined.atmmachineapi.exception.ResourceNotFoundException;
-import com.elleined.atmmachineapi.model.Response;
+import com.elleined.atmmachineapi.dto.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;

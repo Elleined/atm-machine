@@ -1,4 +1,4 @@
-package com.elleined.atmmachineapi.model;
+package com.elleined.atmmachineapi.dto;
 
 import lombok.Data;
 import org.springframework.http.HttpStatus;

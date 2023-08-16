@@ -6,7 +6,7 @@ import com.elleined.atmmachineapi.exception.ResourceNotFoundException;
 import com.elleined.atmmachineapi.model.User;
 import com.elleined.atmmachineapi.model.transaction.ATMTransaction;
 import com.elleined.atmmachineapi.model.transaction.WithdrawATMTransaction;
-import com.elleined.atmmachineapi.service.UserService;
+import com.elleined.atmmachineapi.service.user.UserServiceImpl;
 import com.elleined.atmmachineapi.service.atm.transaction.TransactionService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,7 +23,7 @@ import java.util.UUID;
 @Slf4j
 @Transactional
 public class WithdrawService {
-    private final UserService userService;
+    private final UserServiceImpl userServiceImpl;
     private final ATMValidator atmValidator;
     private final TransactionService transactionService;
 
@@ -32,14 +32,14 @@ public class WithdrawService {
             InsufficientFundException,
             ResourceNotFoundException {
 
-        User currentUser = userService.getById(currentUserId);
+        User currentUser = userServiceImpl.getById(currentUserId);
         if (atmValidator.isValidAmount(withdrawalAmount)) throw new IllegalArgumentException("Amount should be positive and cannot be zero!");
         if (atmValidator.isBalanceEnough(currentUser, withdrawalAmount)) throw new InsufficientFundException("Insufficient Funds!");
 
         BigDecimal oldBalance = currentUser.getBalance();
         BigDecimal newBalance = currentUser.getBalance().subtract(withdrawalAmount);
         currentUser.setBalance(newBalance);
-        userService.save(currentUser);
+        userServiceImpl.save(currentUser);
 
         saveWithdrawTransaction(currentUser, withdrawalAmount);
         log.debug("User with id of {} withdraw amounting {}.\nOld balance: {}\nNew Balance: {}", currentUser.getId(), withdrawalAmount, oldBalance, newBalance);

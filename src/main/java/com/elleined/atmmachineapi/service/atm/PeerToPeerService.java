@@ -5,7 +5,7 @@ import com.elleined.atmmachineapi.exception.ResourceNotFoundException;
 import com.elleined.atmmachineapi.model.User;
 import com.elleined.atmmachineapi.model.transaction.ATMTransaction;
 import com.elleined.atmmachineapi.model.transaction.PeerToPeerATMTransaction;
-import com.elleined.atmmachineapi.service.UserService;
+import com.elleined.atmmachineapi.service.user.UserServiceImpl;
 import com.elleined.atmmachineapi.service.atm.transaction.TransactionService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,7 +21,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 @Transactional
 public class PeerToPeerService {
-    private final UserService userService;
+    private final UserServiceImpl userServiceImpl;
     private final ATMValidator atmValidator;
     private final TransactionService transactionService;
 
@@ -30,8 +30,8 @@ public class PeerToPeerService {
             InsufficientFundException,
             ResourceNotFoundException {
 
-        User sender = userService.getById(senderId);
-        User receiver = userService.getById(receiverId);
+        User sender = userServiceImpl.getById(senderId);
+        User receiver = userServiceImpl.getById(receiverId);
 
         if (atmValidator.isSenderSendingToHimself(senderId, receiverId)) throw new IllegalArgumentException("You cannot send to yourself");
         if (atmValidator.isValidAmount(amount)) throw new IllegalArgumentException("Amount should be positive and cannot be zero!");
@@ -48,13 +48,13 @@ public class PeerToPeerService {
     private void updateSenderBalance(User sender, BigDecimal amountToBeDeducted) {
         BigDecimal newBalance = sender.getBalance().subtract(amountToBeDeducted);
         sender.setBalance(newBalance);
-        userService.save(sender);
+        userServiceImpl.save(sender);
     }
 
     private void updateRecipientBalance(User receiver, BigDecimal amountToBeAdded) {
         BigDecimal newBalance = receiver.getBalance().add(amountToBeAdded);
         receiver.setBalance(newBalance);
-        userService.save(receiver);
+        userServiceImpl.save(receiver);
     }
 
     private void savePeerToPeerTransaction(User sender, BigDecimal amount, User receiver) {

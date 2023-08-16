@@ -6,6 +6,7 @@ import com.elleined.atmmachineapi.model.User;
 import com.elleined.atmmachineapi.service.atm.DepositService;
 import com.elleined.atmmachineapi.service.atm.PeerToPeerService;
 import com.elleined.atmmachineapi.service.atm.WithdrawService;
+import com.elleined.atmmachineapi.service.user.UserServiceImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -24,7 +25,7 @@ public class CommandLineATMService implements ATMService, Runnable {
     private final DepositService depositService;
     private final WithdrawService withdrawService;
     private final PeerToPeerService peerToPeerService;
-    private final UserService userService;
+    private final UserServiceImpl userServiceImpl;
 
     @Override
     public void deposit(int userId, @NonNull BigDecimal amount) {
@@ -64,18 +65,18 @@ public class CommandLineATMService implements ATMService, Runnable {
         final Scanner in = new Scanner(System.in);
         System.out.print("Enter your user id: ");
         int userId = in.nextInt();
-        if (!userService.isUserExists(userId)) {
+        if (!userServiceImpl.isUserExists(userId)) {
             log.error("User with id of {} does not exists!", userId);
             return;
         }
 
-        String name = userService.getById(userId).getName();
+        String name = userServiceImpl.getById(userId).getName();
         System.out.println("=== Welcome " + name + " ====");
 
         final Scanner yerOrNo = new Scanner(System.in);
         char response = 'Y';
         do {
-            User user = userService.getById(userId);
+            User user = userServiceImpl.getById(userId);
 
             System.out.print("""
 				1. Withdraw
@@ -106,7 +107,7 @@ public class CommandLineATMService implements ATMService, Runnable {
                     System.out.println("=== Account Balance: " + user.getBalance() + " ===");
                     System.out.print("Enter the recipient's id: " );
                     int receiverId = in.nextInt();
-                    if (!userService.isUserExists(receiverId)) {
+                    if (!userServiceImpl.isUserExists(receiverId)) {
                         log.error("User with id of {} does not exists!", receiverId);
                         return;
                     }

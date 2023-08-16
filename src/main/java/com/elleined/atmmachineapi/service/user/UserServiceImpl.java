@@ -1,4 +1,4 @@
-package com.elleined.atmmachineapi.service;
+package com.elleined.atmmachineapi.service.user;
 
 import com.elleined.atmmachineapi.exception.ResourceNotFoundException;
 import com.elleined.atmmachineapi.model.User;
@@ -14,10 +14,9 @@ import java.math.BigDecimal;
 @Slf4j
 @RequiredArgsConstructor
 @Transactional
-public class UserService {
+public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
-
     public void save(String name, String uuid) {
         User user = User.builder()
                 .name(name)
@@ -33,11 +32,35 @@ public class UserService {
         userRepository.save(user);
     }
 
+    public boolean isUserExists(int userId) {
+        return userRepository.existsById(userId);
+    }
+
+    public BigDecimal getBalance(int id) throws ResourceNotFoundException {
+        return getById(id).getBalance();
+    }
+
+    public BigDecimal getBalance(String uuid) throws ResourceNotFoundException {
+        return getByUUID(uuid).getBalance();
+    }
+
+    @Override
     public User getById(int userId) throws ResourceNotFoundException {
         return userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User with id of " + userId + " does not exists"));
     }
 
-    public boolean isUserExists(int userId) {
-        return userRepository.existsById(userId);
+    @Override
+    public User getByUUID(String uuid) throws ResourceNotFoundException {
+        return userRepository.fetchByUUID(uuid).orElseThrow(() -> new ResourceNotFoundException("User with UUID of " + uuid + " does not exists!"));
+    }
+
+    @Override
+    public int getIdByUUID(String uuid) throws ResourceNotFoundException {
+        return getByUUID(uuid).getId();
+    }
+
+    @Override
+    public String getUUIDById(int id) throws ResourceNotFoundException {
+        return getById(id).getUuid();
     }
 }
