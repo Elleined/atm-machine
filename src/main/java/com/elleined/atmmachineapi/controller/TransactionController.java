@@ -1,11 +1,14 @@
 package com.elleined.atmmachineapi.controller;
 
+import com.elleined.atmmachineapi.dto.transaction.DepositTransactionDTO;
+import com.elleined.atmmachineapi.dto.transaction.PeerToPeerTransactionDTO;
+import com.elleined.atmmachineapi.dto.transaction.TransactionDTO;
+import com.elleined.atmmachineapi.dto.transaction.WithdrawTransactionDTO;
+import com.elleined.atmmachineapi.mapper.TransactionMapper;
 import com.elleined.atmmachineapi.model.User;
-import com.elleined.atmmachineapi.model.transaction.DepositTransaction;
-import com.elleined.atmmachineapi.model.transaction.PeerToPeerTransaction;
 import com.elleined.atmmachineapi.model.transaction.Transaction;
-import com.elleined.atmmachineapi.model.transaction.WithdrawTransaction;
 import com.elleined.atmmachineapi.service.atm.transaction.TransactionService;
+import com.elleined.atmmachineapi.service.user.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,29 +18,43 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/users/{userId}/transactions")
+@RequestMapping("/users/{currentUserId}/transactions")
 @RequiredArgsConstructor
 public class TransactionController {
+    private final UserService userService;
+
     private final TransactionService transactionService;
+    private final TransactionMapper transactionMapper;
 
-    @GetMapping("/{transactionTRN}")
-    public Transaction getByTRN(@PathVariable("transactionTRN") String transactionTRN) {
-        return transactionService.getByTRN(transactionTRN);
+    @GetMapping("/withdraw")
+    public List<WithdrawTransactionDTO> getAllWithdrawalTransactions(@PathVariable("currentUserId") int currentUserId) {
+        User currentUser = userService.getById(currentUserId);
+        return transactionService.getAllWithdrawalTransactions(currentUser).stream()
+                .map(transactionMapper::toWithdrawTransactionDTO)
+                .toList();
     }
 
-    public List<WithdrawTransaction> getAllWithdrawalTransactions(User currentUser) {
-        return null;
+    @GetMapping("/deposit")
+    public List<DepositTransactionDTO> getAllDepositTransactions(@PathVariable("currentUserId") int currentUserId) {
+        User currentUser = userService.getById(currentUserId);
+        return transactionService.getAllDepositTransactions(currentUser).stream()
+                .map(transactionMapper::toDepositTransactionDTO)
+                .toList();
     }
 
-    public List<DepositTransaction> getAllDepositTransactions(User currentUser) {
-        return null;
+    @GetMapping("/receive-money")
+    public List<PeerToPeerTransactionDTO> getAllReceiveMoneyTransactions(@PathVariable("currentUserId") int currentUserId) {
+        User currentUser = userService.getById(currentUserId);
+        return transactionService.getAllReceiveMoneyTransactions(currentUser).stream()
+                .map(transactionMapper::toPeer2PeerTransactionDTO)
+                .toList();
     }
 
-    public List<PeerToPeerTransaction> getAllReceiveMoneyTransactions(User currentUser) {
-        return null;
-    }
-
-    public List<PeerToPeerTransaction> getAllSentMoneyTransactions(User currentUser) {
-        return null;
+    @GetMapping("/sent-money")
+    public List<PeerToPeerTransactionDTO> getAllSentMoneyTransactions(@PathVariable("currentUserId") int currentUserId) {
+        User currentUser = userService.getById(currentUserId);
+        return transactionService.getAllSentMoneyTransactions(currentUser).stream()
+                .map(transactionMapper::toPeer2PeerTransactionDTO)
+                .toList();
     }
 }

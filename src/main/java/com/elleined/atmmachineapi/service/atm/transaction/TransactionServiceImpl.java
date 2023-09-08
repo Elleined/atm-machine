@@ -12,6 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Comparator;
 import java.util.List;
 
 @Service
@@ -25,28 +26,32 @@ public class TransactionServiceImpl implements TransactionService {
     public Transaction save(Transaction atmTransaction) {
         return transactionRepository.save(atmTransaction);
     }
-    @Override
-    public Transaction getByTRN(String trn) {
-        return transactionRepository.fetchByTRN(trn).orElseThrow(() -> new ResourceNotFoundException("Transaction with TRN of " + trn + " does not exists!"));
-    }
 
     @Override
     public List<WithdrawTransaction> getAllWithdrawalTransactions(User currentUser) {
-        return currentUser.getWithdrawTransactions();
+        return currentUser.getWithdrawTransactions().stream()
+                .sorted(Comparator.comparing(WithdrawTransaction::getTransactionDate).reversed())
+                .toList();
     }
 
     @Override
     public List<DepositTransaction> getAllDepositTransactions(User currentUser) {
-        return currentUser.getDepositTransactions();
+        return currentUser.getDepositTransactions().stream()
+                .sorted(Comparator.comparing(DepositTransaction::getTransactionDate).reversed())
+                .toList();
     }
 
     @Override
     public List<PeerToPeerTransaction> getAllReceiveMoneyTransactions(User currentUser) {
-        return currentUser.getReceiveMoneyTransactions();
+        return currentUser.getReceiveMoneyTransactions().stream()
+                .sorted(Comparator.comparing(PeerToPeerTransaction::getTransactionDate).reversed())
+                .toList();
     }
 
     @Override
     public List<PeerToPeerTransaction> getAllSentMoneyTransactions(User currentUser) {
-        return currentUser.getSentMoneyTransactions();
+        return currentUser.getSentMoneyTransactions().stream()
+                .sorted(Comparator.comparing(PeerToPeerTransaction::getTransactionDate).reversed())
+                .toList();
     }
 }

@@ -11,7 +11,6 @@ import java.util.List;
 public interface TransactionService {
 
     Transaction save(Transaction transaction);
-    Transaction getByTRN(String trn);
 
     List<WithdrawTransaction> getAllWithdrawalTransactions(User currentUser);
     List<DepositTransaction> getAllDepositTransactions(User currentUser);
