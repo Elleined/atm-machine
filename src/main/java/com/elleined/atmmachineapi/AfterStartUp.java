@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
+import java.math.BigDecimal;
 import java.util.UUID;
 
 @Component
@@ -23,13 +24,15 @@ public class AfterStartUp {
             return;
         }
         UserDTO user1 = UserDTO.builder()
-                .name("User 1")
+                .name("Sample user 1")
                 .uuid(UUID.randomUUID().toString())
+                .balance(new BigDecimal(100))
                 .build();
 
         UserDTO user2 = UserDTO.builder()
-                .name("User 2")
+                .name("Sample user 2")
                 .uuid(UUID.randomUUID().toString())
+                .balance(new BigDecimal(100))
                 .build();
 
         userService.save(user1);
