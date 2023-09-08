@@ -39,11 +39,11 @@ public class User {
 
     // sender id reference is in peer to peer transaction table
     @OneToMany(mappedBy = "sender")
-    List<PeerToPeerTransaction> sentATMTransactions;
+    List<PeerToPeerTransaction> sentMoneyTransactions;
 
     // recipient id reference is in peer to peer transaction table
     @OneToMany(mappedBy = "receiver")
-    List<PeerToPeerTransaction> receiveATMTransactions;
+    List<PeerToPeerTransaction> receiveMoneyTransactions;
 
     // user id reference is in withdraw transaction table
     @OneToMany(mappedBy = "user")
