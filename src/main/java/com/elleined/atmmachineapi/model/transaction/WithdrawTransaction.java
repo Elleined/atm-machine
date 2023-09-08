@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Getter
 @Setter
-public class WithdrawATMTransaction extends ATMTransaction {
+public class WithdrawTransaction extends Transaction {
 
     @Column(name = "account_balance",
             updatable = false,
@@ -31,7 +31,7 @@ public class WithdrawATMTransaction extends ATMTransaction {
     private User user;
 
     @Builder
-    public WithdrawATMTransaction(int id, String trn, BigDecimal amount, LocalDateTime transactionDate, BigDecimal accountBalance, User user) {
+    public WithdrawTransaction(int id, String trn, BigDecimal amount, LocalDateTime transactionDate, BigDecimal accountBalance, User user) {
         super(id, trn, amount, transactionDate);
         this.accountBalance = accountBalance;
         this.user = user;

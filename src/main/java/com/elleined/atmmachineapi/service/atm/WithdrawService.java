@@ -4,8 +4,8 @@ package com.elleined.atmmachineapi.service.atm;
 import com.elleined.atmmachineapi.exception.InsufficientFundException;
 import com.elleined.atmmachineapi.exception.ResourceNotFoundException;
 import com.elleined.atmmachineapi.model.User;
-import com.elleined.atmmachineapi.model.transaction.ATMTransaction;
-import com.elleined.atmmachineapi.model.transaction.WithdrawATMTransaction;
+import com.elleined.atmmachineapi.model.transaction.Transaction;
+import com.elleined.atmmachineapi.model.transaction.WithdrawTransaction;
 import com.elleined.atmmachineapi.service.atm.transaction.TransactionService;
 import com.elleined.atmmachineapi.service.user.UserServiceImpl;
 import lombok.RequiredArgsConstructor;
@@ -49,7 +49,7 @@ public class WithdrawService {
     private void saveWithdrawTransaction(@NonNull User user, @NonNull BigDecimal withdrawalAmount) {
         String trn = UUID.randomUUID().toString();
 
-        ATMTransaction withdrawTransaction = WithdrawATMTransaction.builder()
+        Transaction withdrawTransaction = WithdrawTransaction.builder()
                 .trn(trn)
                 .amount(withdrawalAmount)
                 .transactionDate(LocalDateTime.now())

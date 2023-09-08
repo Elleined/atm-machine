@@ -8,6 +8,8 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
+
 @RestController
 @RequestMapping("/users")
 @RequiredArgsConstructor
@@ -22,15 +24,22 @@ public class UserController {
         return userMapper.toDTO(savedUser);
     }
 
-    @GetMapping("/getById/{userId}")
+    @GetMapping("/id/{userId}")
     public UserDTO getById(@PathVariable("userId") int userId) {
         User user = userService.getById(userId);
         return userMapper.toDTO(user);
     }
 
-    @GetMapping("/getByUUID/{uuid}")
+    @GetMapping("/uuid/{uuid}")
     public UserDTO getByUUID(@PathVariable("uuid") String uuid) {
         User user = userService.getByUUID(uuid);
         return userMapper.toDTO(user);
+    }
+
+    @PatchMapping("/{uuid}/balance")
+    public void updateBalance(@PathVariable("uuid") String uuid,
+                              @RequestParam("newBalance") BigDecimal newBalance) {
+        User user = userService.getByUUID(uuid);
+        userService.updateBalance(user, newBalance);
     }
 }

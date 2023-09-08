@@ -19,7 +19,7 @@ import java.time.LocalDateTime;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public abstract class ATMTransaction {
+public abstract class Transaction {
 
     @Id
     @GeneratedValue(

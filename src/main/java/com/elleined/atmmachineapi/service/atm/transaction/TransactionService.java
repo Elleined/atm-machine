@@ -1,10 +1,10 @@
 package com.elleined.atmmachineapi.service.atm.transaction;
 
-import com.elleined.atmmachineapi.model.transaction.ATMTransaction;
+import com.elleined.atmmachineapi.model.transaction.Transaction;
 
 public interface TransactionService {
 
-    ATMTransaction save(ATMTransaction t);
-    ATMTransaction getById(int transactionId);
-    ATMTransaction getByTRN(String trn);
+    Transaction save(Transaction t);
+    Transaction getById(int transactionId);
+    Transaction getByTRN(String trn);
 }

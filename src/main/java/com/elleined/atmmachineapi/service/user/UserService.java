@@ -4,6 +4,8 @@ import com.elleined.atmmachineapi.dto.UserDTO;
 import com.elleined.atmmachineapi.exception.ResourceNotFoundException;
 import com.elleined.atmmachineapi.model.User;
 
+import java.math.BigDecimal;
+
 public interface UserService {
 
     User save(UserDTO userDTO);
@@ -15,4 +17,6 @@ public interface UserService {
     User getByUUID(String uuid) throws ResourceNotFoundException;
 
     boolean isUserExists(int id);
+
+    void updateBalance(User user, BigDecimal newBalance);
 }

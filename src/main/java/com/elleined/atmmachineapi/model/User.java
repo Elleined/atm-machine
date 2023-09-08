@@ -1,8 +1,8 @@
 package com.elleined.atmmachineapi.model;
 
-import com.elleined.atmmachineapi.model.transaction.DepositATMTransaction;
-import com.elleined.atmmachineapi.model.transaction.PeerToPeerATMTransaction;
-import com.elleined.atmmachineapi.model.transaction.WithdrawATMTransaction;
+import com.elleined.atmmachineapi.model.transaction.DepositTransaction;
+import com.elleined.atmmachineapi.model.transaction.PeerToPeerTransaction;
+import com.elleined.atmmachineapi.model.transaction.WithdrawTransaction;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -39,17 +39,17 @@ public class User {
 
     // sender id reference is in peer to peer transaction table
     @OneToMany(mappedBy = "sender")
-    List<PeerToPeerATMTransaction> sentATMTransactions;
+    List<PeerToPeerTransaction> sentATMTransactions;
 
     // recipient id reference is in peer to peer transaction table
     @OneToMany(mappedBy = "receiver")
-    List<PeerToPeerATMTransaction> receiveATMTransactions;
+    List<PeerToPeerTransaction> receiveATMTransactions;
 
     // user id reference is in withdraw transaction table
     @OneToMany(mappedBy = "user")
-    List<WithdrawATMTransaction> withdrawTransactions;
+    List<WithdrawTransaction> withdrawTransactions;
 
     // user id reference is in withdraw transaction table
     @OneToMany(mappedBy = "user")
-    List<DepositATMTransaction> depositTransactions;
+    List<DepositTransaction> depositTransactions;
 }

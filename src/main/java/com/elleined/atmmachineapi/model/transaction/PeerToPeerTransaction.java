@@ -18,7 +18,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Getter
 @Setter
-public class PeerToPeerATMTransaction extends ATMTransaction {
+public class PeerToPeerTransaction extends Transaction {
 
     @ManyToOne
     @JoinColumn(
@@ -39,7 +39,7 @@ public class PeerToPeerATMTransaction extends ATMTransaction {
     private User receiver;
 
     @Builder
-    public PeerToPeerATMTransaction(int id, String trn, BigDecimal amount, LocalDateTime transactionDate, User sender, User receiver) {
+    public PeerToPeerTransaction(int id, String trn, BigDecimal amount, LocalDateTime transactionDate, User sender, User receiver) {
         super(id, trn, amount, transactionDate);
         this.sender = sender;
         this.receiver = receiver;

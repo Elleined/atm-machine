@@ -10,6 +10,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
+
 @Service
 @Slf4j
 @RequiredArgsConstructor
@@ -22,6 +24,13 @@ public class UserServiceImpl implements UserService {
     @Override
     public boolean isUserExists(int userId) {
         return userRepository.existsById(userId);
+    }
+
+    @Override
+    public void updateBalance(User user, BigDecimal newBalance) {
+        user.setBalance(newBalance);
+        userRepository.save(user);
+        log.debug("User with id of {} now have new balance of {}", user.getId(), newBalance);
     }
 
     @Override

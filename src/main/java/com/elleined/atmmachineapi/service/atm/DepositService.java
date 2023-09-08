@@ -2,8 +2,8 @@ package com.elleined.atmmachineapi.service.atm;
 
 import com.elleined.atmmachineapi.exception.ResourceNotFoundException;
 import com.elleined.atmmachineapi.model.User;
-import com.elleined.atmmachineapi.model.transaction.ATMTransaction;
-import com.elleined.atmmachineapi.model.transaction.DepositATMTransaction;
+import com.elleined.atmmachineapi.model.transaction.Transaction;
+import com.elleined.atmmachineapi.model.transaction.DepositTransaction;
 import com.elleined.atmmachineapi.service.atm.transaction.TransactionService;
 import com.elleined.atmmachineapi.service.user.UserServiceImpl;
 import lombok.RequiredArgsConstructor;
@@ -45,7 +45,7 @@ public class DepositService {
     private void saveDepositTransaction(User user, @NonNull BigDecimal depositedAmount) {
         String trn = UUID.randomUUID().toString();
 
-        ATMTransaction depositTransaction = DepositATMTransaction.builder()
+        Transaction depositTransaction = DepositTransaction.builder()
                 .trn(trn)
                 .amount(depositedAmount)
                 .transactionDate(LocalDateTime.now())

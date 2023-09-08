@@ -3,8 +3,8 @@ package com.elleined.atmmachineapi.service.atm;
 import com.elleined.atmmachineapi.exception.InsufficientFundException;
 import com.elleined.atmmachineapi.exception.ResourceNotFoundException;
 import com.elleined.atmmachineapi.model.User;
-import com.elleined.atmmachineapi.model.transaction.ATMTransaction;
-import com.elleined.atmmachineapi.model.transaction.PeerToPeerATMTransaction;
+import com.elleined.atmmachineapi.model.transaction.Transaction;
+import com.elleined.atmmachineapi.model.transaction.PeerToPeerTransaction;
 import com.elleined.atmmachineapi.service.atm.transaction.TransactionService;
 import com.elleined.atmmachineapi.service.user.UserServiceImpl;
 import lombok.RequiredArgsConstructor;
@@ -60,7 +60,7 @@ public class PeerToPeerService {
     private void savePeerToPeerTransaction(User sender, BigDecimal amount, User receiver) {
         String trn = UUID.randomUUID().toString();
 
-        ATMTransaction peerToPeerTransaction = PeerToPeerATMTransaction.builder()
+        Transaction peerToPeerTransaction = PeerToPeerTransaction.builder()
                 .trn(trn)
                 .amount(amount)
                 .transactionDate(LocalDateTime.now())
