@@ -17,7 +17,7 @@ public class PeerToPeerTransactionDTO extends TransactionDTO {
     private int senderId;
     private int receiverId;
 
-    @Builder
+    @Builder(builderMethodName = "peerToPeerTransactionDTOBuilder")
     public PeerToPeerTransactionDTO(int id, String trn, BigDecimal amount, LocalDateTime transactionDate, int senderId, int receiverId) {
         super(id, trn, amount, transactionDate);
         this.senderId = senderId;

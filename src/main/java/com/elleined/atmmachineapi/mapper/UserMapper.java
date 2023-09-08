@@ -7,16 +7,16 @@ import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;
 
 @Mapper(componentModel = "spring")
-public abstract class UserMapper {
+public interface UserMapper {
 
-    public abstract UserDTO toDTO(User user);
+    UserDTO toDTO(User user);
 
     @Mappings({
             @Mapping(target = "id", ignore = true),
             @Mapping(target = "depositTransactions", ignore = true),
-            @Mapping(target = "receiveATMTransactions", ignore = true),
-            @Mapping(target = "sentATMTransactions", ignore = true),
+            @Mapping(target = "receiveMoneyTransactions", ignore = true),
+            @Mapping(target = "sentMoneyTransactions", ignore = true),
             @Mapping(target = "withdrawTransactions", ignore = true)
     })
-    public abstract User toEntity(UserDTO userDTO);
+    User toEntity(UserDTO userDTO);
 }
