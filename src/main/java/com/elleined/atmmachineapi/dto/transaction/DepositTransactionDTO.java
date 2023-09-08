@@ -13,13 +13,13 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 public class DepositTransactionDTO extends TransactionDTO {
-    private BigDecimal accountBalance;
+
     private int userId;
 
     @Builder(builderMethodName = "depositTransactionBuilder")
-    public DepositTransactionDTO(int id, String trn, BigDecimal amount, LocalDateTime transactionDate, BigDecimal accountBalance, int userId) {
+
+    public DepositTransactionDTO(int id, String trn, BigDecimal amount, LocalDateTime transactionDate, int userId) {
         super(id, trn, amount, transactionDate);
-        this.accountBalance = accountBalance;
         this.userId = userId;
     }
 }

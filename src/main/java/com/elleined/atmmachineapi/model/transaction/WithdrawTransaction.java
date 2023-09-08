@@ -1,7 +1,10 @@
 package com.elleined.atmmachineapi.model.transaction;
 
 import com.elleined.atmmachineapi.model.User;
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,23 +20,18 @@ import java.time.LocalDateTime;
 @Setter
 public class WithdrawTransaction extends Transaction {
 
-    @Column(name = "account_balance",
-            updatable = false,
-            nullable = false)
-    private BigDecimal accountBalance;
-
-    @ManyToOne
+    @ManyToOne(optional = false)
     @JoinColumn(
             nullable = false,
+            updatable = false,
             name = "user_id",
             referencedColumnName = "user_id"
     )
     private User user;
 
     @Builder
-    public WithdrawTransaction(int id, String trn, BigDecimal amount, LocalDateTime transactionDate, BigDecimal accountBalance, User user) {
+    public WithdrawTransaction(int id, String trn, BigDecimal amount, LocalDateTime transactionDate, User user) {
         super(id, trn, amount, transactionDate);
-        this.accountBalance = accountBalance;
         this.user = user;
     }
 }

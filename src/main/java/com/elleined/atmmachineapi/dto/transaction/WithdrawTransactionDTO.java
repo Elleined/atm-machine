@@ -12,14 +12,12 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 public class WithdrawTransactionDTO extends TransactionDTO {
-    private BigDecimal accountBalance;
     private int userId;
 
     @Builder(builderMethodName = "withdrawTransactionDTOBuilder")
 
-    public WithdrawTransactionDTO(int id, String trn, BigDecimal amount, LocalDateTime transactionDate, BigDecimal accountBalance, int userId) {
+    public WithdrawTransactionDTO(int id, String trn, BigDecimal amount, LocalDateTime transactionDate, int userId) {
         super(id, trn, amount, transactionDate);
-        this.accountBalance = accountBalance;
         this.userId = userId;
     }
 }

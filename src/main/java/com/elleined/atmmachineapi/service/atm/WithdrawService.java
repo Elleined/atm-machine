@@ -4,7 +4,6 @@ package com.elleined.atmmachineapi.service.atm;
 import com.elleined.atmmachineapi.exception.InsufficientFundException;
 import com.elleined.atmmachineapi.exception.ResourceNotFoundException;
 import com.elleined.atmmachineapi.model.User;
-import com.elleined.atmmachineapi.model.transaction.Transaction;
 import com.elleined.atmmachineapi.model.transaction.WithdrawTransaction;
 import com.elleined.atmmachineapi.service.atm.transaction.TransactionService;
 import com.elleined.atmmachineapi.service.user.UserServiceImpl;
@@ -27,7 +26,7 @@ public class WithdrawService {
     private final ATMValidator atmValidator;
     private final TransactionService transactionService;
 
-    public BigDecimal withdraw(int currentUserId, @NonNull BigDecimal withdrawalAmount)
+    public WithdrawTransaction withdraw(int currentUserId, @NonNull BigDecimal withdrawalAmount)
             throws IllegalArgumentException,
             InsufficientFundException,
             ResourceNotFoundException {
@@ -41,23 +40,23 @@ public class WithdrawService {
         currentUser.setBalance(newBalance);
         userServiceImpl.save(currentUser);
 
-        saveWithdrawTransaction(currentUser, withdrawalAmount);
+        WithdrawTransaction withdrawTransaction = saveWithdrawTransaction(currentUser, withdrawalAmount);
         log.debug("User with id of {} withdraw amounting {}.\nOld balance: {}\nNew Balance: {}", currentUser.getId(), withdrawalAmount, oldBalance, newBalance);
-        return currentUser.getBalance();
+        return withdrawTransaction;
     }
 
-    private void saveWithdrawTransaction(@NonNull User user, @NonNull BigDecimal withdrawalAmount) {
+    private WithdrawTransaction saveWithdrawTransaction(@NonNull User user, @NonNull BigDecimal withdrawalAmount) {
         String trn = UUID.randomUUID().toString();
 
-        Transaction withdrawTransaction = WithdrawTransaction.builder()
+        WithdrawTransaction withdrawTransaction = WithdrawTransaction.builder()
                 .trn(trn)
                 .amount(withdrawalAmount)
                 .transactionDate(LocalDateTime.now())
                 .user(user)
-                .accountBalance(user.getBalance())
                 .build();
 
         transactionService.save(withdrawTransaction);
         log.debug("Deposit transaction saved with trn of {}", trn);
+        return withdrawTransaction;
     }
 }

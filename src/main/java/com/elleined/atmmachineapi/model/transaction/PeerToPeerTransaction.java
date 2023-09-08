@@ -20,7 +20,7 @@ import java.time.LocalDateTime;
 @Setter
 public class PeerToPeerTransaction extends Transaction {
 
-    @ManyToOne
+    @ManyToOne(optional = false)
     @JoinColumn(
             updatable = false,
             nullable = false,
@@ -29,7 +29,7 @@ public class PeerToPeerTransaction extends Transaction {
     )
     private User sender;
 
-    @ManyToOne
+    @ManyToOne(optional = false)
     @JoinColumn(
             updatable = false,
             nullable = false,

@@ -4,7 +4,6 @@ import com.elleined.atmmachineapi.exception.InsufficientFundException;
 import com.elleined.atmmachineapi.exception.ResourceNotFoundException;
 import com.elleined.atmmachineapi.model.User;
 import com.elleined.atmmachineapi.model.transaction.PeerToPeerTransaction;
-import com.elleined.atmmachineapi.model.transaction.Transaction;
 import com.elleined.atmmachineapi.service.atm.transaction.TransactionService;
 import com.elleined.atmmachineapi.service.user.UserServiceImpl;
 import lombok.RequiredArgsConstructor;
@@ -25,7 +24,7 @@ public class PeerToPeerService {
     private final ATMValidator atmValidator;
     private final TransactionService transactionService;
 
-    public BigDecimal peerToPeer(int senderId, BigDecimal amount, int receiverId)
+    public PeerToPeerTransaction peerToPeer(int senderId, BigDecimal amount, int receiverId)
             throws IllegalArgumentException,
             InsufficientFundException,
             ResourceNotFoundException {
@@ -39,10 +38,10 @@ public class PeerToPeerService {
 
         updateSenderBalance(sender, amount);
         updateRecipientBalance(receiver, amount);
-        savePeerToPeerTransaction(sender, amount, receiver);
+        PeerToPeerTransaction peerToPeerTransaction = savePeerToPeerTransaction(sender, amount, receiver);
 
         log.debug("Money send successfully to the receiver {} amounting {} your new balance is {}.", receiver.getName(), amount, sender.getBalance());
-        return sender.getBalance();
+        return peerToPeerTransaction;
     }
 
     private void updateSenderBalance(User sender, BigDecimal amountToBeDeducted) {
@@ -57,10 +56,10 @@ public class PeerToPeerService {
         userServiceImpl.save(receiver);
     }
 
-    private void savePeerToPeerTransaction(User sender, BigDecimal amount, User receiver) {
+    private PeerToPeerTransaction savePeerToPeerTransaction(User sender, BigDecimal amount, User receiver) {
         String trn = UUID.randomUUID().toString();
 
-        Transaction peerToPeerTransaction = PeerToPeerTransaction.builder()
+        PeerToPeerTransaction peerToPeerTransaction = PeerToPeerTransaction.builder()
                 .trn(trn)
                 .amount(amount)
                 .transactionDate(LocalDateTime.now())
@@ -70,5 +69,6 @@ public class PeerToPeerService {
 
         transactionService.save(peerToPeerTransaction);
         log.debug("Peer to peer transaction saved successfully with trn of {}", trn);
+        return peerToPeerTransaction;
     }
 }

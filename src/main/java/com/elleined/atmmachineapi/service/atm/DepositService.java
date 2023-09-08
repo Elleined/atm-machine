@@ -3,7 +3,6 @@ package com.elleined.atmmachineapi.service.atm;
 import com.elleined.atmmachineapi.exception.ResourceNotFoundException;
 import com.elleined.atmmachineapi.model.User;
 import com.elleined.atmmachineapi.model.transaction.DepositTransaction;
-import com.elleined.atmmachineapi.model.transaction.Transaction;
 import com.elleined.atmmachineapi.service.atm.transaction.TransactionService;
 import com.elleined.atmmachineapi.service.user.UserServiceImpl;
 import lombok.RequiredArgsConstructor;
@@ -25,7 +24,7 @@ public class DepositService {
     private final ATMValidator atmValidator;
     private final TransactionService transactionService;
 
-    public BigDecimal deposit(int currentUserId, @NonNull BigDecimal depositAmount)
+    public DepositTransaction deposit(int currentUserId, @NonNull BigDecimal depositAmount)
             throws ResourceNotFoundException, IllegalArgumentException {
 
         if (atmValidator.isValidAmount(depositAmount)) throw new IllegalArgumentException("Amount should be positive and cannot be zero!");
@@ -36,24 +35,24 @@ public class DepositService {
 
         currentUser.setBalance(newBalance);
         userServiceImpl.save(currentUser);
-        saveDepositTransaction(currentUser, depositAmount);
+        DepositTransaction depositTransaction = saveDepositTransaction(currentUser, depositAmount);
 
         log.debug("User with id of {} deposited amounting {}.\nOld balance: {}\nNew Balance: {}", currentUserId, depositAmount, oldBalance, newBalance);
-        return currentUser.getBalance();
+        return depositTransaction;
     }
 
-    private void saveDepositTransaction(User user, @NonNull BigDecimal depositedAmount) {
+    private DepositTransaction saveDepositTransaction(User user, @NonNull BigDecimal depositedAmount) {
         String trn = UUID.randomUUID().toString();
 
-        Transaction depositTransaction = DepositTransaction.builder()
+        DepositTransaction depositTransaction = DepositTransaction.builder()
                 .trn(trn)
                 .amount(depositedAmount)
                 .transactionDate(LocalDateTime.now())
                 .user(user)
-                .accountBalance(user.getBalance())
                 .build();
 
         transactionService.save(depositTransaction);
         log.debug("Deposit transaction saved with trn of {}", trn);
+        return depositTransaction;
     }
 }

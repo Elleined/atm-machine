@@ -2,6 +2,9 @@ package com.elleined.atmmachineapi.service;
 
 import com.elleined.atmmachineapi.exception.InsufficientFundException;
 import com.elleined.atmmachineapi.exception.ResourceNotFoundException;
+import com.elleined.atmmachineapi.model.transaction.DepositTransaction;
+import com.elleined.atmmachineapi.model.transaction.PeerToPeerTransaction;
+import com.elleined.atmmachineapi.model.transaction.WithdrawTransaction;
 import com.elleined.atmmachineapi.service.atm.DepositService;
 import com.elleined.atmmachineapi.service.atm.PeerToPeerService;
 import com.elleined.atmmachineapi.service.atm.WithdrawService;
@@ -26,27 +29,26 @@ public class WebATMService implements ATMService {
     private final PeerToPeerService peerToPeerService;
 
     @Override
-    public void deposit(int userId, @NonNull BigDecimal amount)
+    public DepositTransaction deposit(int userId, @NonNull BigDecimal amount)
             throws ResourceNotFoundException, IllegalArgumentException {
 
-        depositService.deposit(userId, amount);
+        return depositService.deposit(userId, amount);
     }
 
     @Override
-    public void withdraw(int userId, @NonNull BigDecimal amount)
+    public WithdrawTransaction withdraw(int userId, @NonNull BigDecimal amount)
             throws IllegalArgumentException,
             InsufficientFundException,
             ResourceNotFoundException {
 
-        withdrawService.withdraw(userId, amount);
+        return withdrawService.withdraw(userId, amount);
     }
 
     @Override
-    public void peerToPeer(int senderId, @NonNull BigDecimal amount, int recipientId)
+    public PeerToPeerTransaction peerToPeer(int senderId, @NonNull BigDecimal amount, int recipientId)
             throws IllegalArgumentException,
             InsufficientFundException,
             ResourceNotFoundException {
-
-        peerToPeerService.peerToPeer(senderId, amount, recipientId);
+        return peerToPeerService.peerToPeer(senderId, amount, recipientId);
     }
 }
