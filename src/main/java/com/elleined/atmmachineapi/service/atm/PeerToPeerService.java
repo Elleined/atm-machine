@@ -43,6 +43,7 @@ public class PeerToPeerService {
         BigDecimal finalSentAmount = feeService.deductP2pFee(sentAmount, p2pFee);
         BigDecimal senderOldBalance = sender.getBalance();
         BigDecimal receiverOldBalance = receiver.getBalance();
+
         updateSenderBalance(sender, finalSentAmount);
         updateRecipientBalance(receiver, finalSentAmount);
         appWalletService.addAndSaveBalance(p2pFee * 2);
@@ -69,12 +70,9 @@ public class PeerToPeerService {
     private PeerToPeerTransaction savePeerToPeerTransaction(User sender, User receiver, BigDecimal sentAmount) {
         String trn = UUID.randomUUID().toString();
 
-        float p2pFee = feeService.getP2pFee(sentAmount);
-        BigDecimal finalSentAmount = sentAmount.subtract(new BigDecimal(p2pFee));
-
         PeerToPeerTransaction peerToPeerTransaction = PeerToPeerTransaction.builder()
                 .trn(trn)
-                .amount(finalSentAmount)
+                .amount(sentAmount)
                 .transactionDate(LocalDateTime.now())
                 .sender(sender)
                 .receiver(receiver)

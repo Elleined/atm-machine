@@ -41,7 +41,7 @@ public class DepositService {
         BigDecimal oldBalance = currentUser.getBalance();
         float depositFee = feeService.getDepositFee(depositedAmount);
         BigDecimal finalDepositedAmount = feeService.deductDepositFee(depositedAmount, depositFee);
-        currentUser.setBalance(finalDepositedAmount);
+        currentUser.setBalance(oldBalance.add(finalDepositedAmount));
         userRepository.save(currentUser);
         appWalletService.addAndSaveBalance(depositFee);
 

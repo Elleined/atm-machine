@@ -45,7 +45,7 @@ public class WithdrawService {
         BigDecimal oldBalance = currentUser.getBalance();
         float withdrawalFee = feeService.getWithdrawalFee(withdrawalAmount);
         BigDecimal finalWithdrawalAmount = feeService.deductWithdrawalFee(withdrawalAmount, withdrawalFee);
-        currentUser.setBalance(finalWithdrawalAmount);
+        currentUser.setBalance(oldBalance.subtract(finalWithdrawalAmount));
         userRepository.save(currentUser);
         appWalletService.addAndSaveBalance(withdrawalFee);
 
@@ -65,7 +65,7 @@ public class WithdrawService {
                 .build();
 
         transactionService.save(withdrawTransaction);
-        log.debug("Deposit transaction saved with trn of {}", trn);
+        log.debug("Withdraw transaction saved with trn of {}", trn);
         return withdrawTransaction;
     }
 }
