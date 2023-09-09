@@ -13,9 +13,9 @@ public interface FeeService {
     float getDepositFee(BigDecimal depositedAmount);
     float getP2pFee(BigDecimal sentAmount);
 
-    void deductDepositFee(User currentUser, BigDecimal depositedAmount);
+    BigDecimal deductDepositFee(BigDecimal depositedAmount, float depositFee);
 
-    void deductWithdrawalFee(User currentUser, BigDecimal withdrawnAmount);
+    BigDecimal deductWithdrawalFee(BigDecimal withdrawnAmount, float withdrawalFee);
 
-    void deductP2pFee(User sender, User receiver, BigDecimal sentAmount);
+    BigDecimal deductP2pFee(BigDecimal sentAmount, float p2pFee);
 }

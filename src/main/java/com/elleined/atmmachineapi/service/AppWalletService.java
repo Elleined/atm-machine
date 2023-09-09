@@ -16,10 +16,10 @@ import java.math.BigDecimal;
 public class AppWalletService {
     private final AppWalletRepository appWalletRepository;
 
-    public void addAndSaveBalance(final BigDecimal amountToAdd) {
+    public <T> void addAndSaveBalance(T t) {
         AppWallet appWallet = appWalletRepository.findById(1).orElseThrow();
         BigDecimal oldAppWalletBalance = appWallet.getBalance();
-        BigDecimal newAppWalletBalance = oldAppWalletBalance.add(amountToAdd);
+        BigDecimal newAppWalletBalance = oldAppWalletBalance.add(new BigDecimal(String.valueOf(t)));
         appWallet.setBalance(newAppWalletBalance);
 
         appWalletRepository.save(appWallet);

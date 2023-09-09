@@ -5,6 +5,8 @@ import com.elleined.atmmachineapi.exception.InsufficientFundException;
 import com.elleined.atmmachineapi.exception.NotValidAmountException;
 import com.elleined.atmmachineapi.model.User;
 import com.elleined.atmmachineapi.model.transaction.WithdrawTransaction;
+import com.elleined.atmmachineapi.repository.UserRepository;
+import com.elleined.atmmachineapi.service.AppWalletService;
 import com.elleined.atmmachineapi.service.atm.transaction.TransactionService;
 import com.elleined.atmmachineapi.service.fee.FeeService;
 import com.elleined.atmmachineapi.service.user.UserService;
@@ -23,13 +25,14 @@ import java.util.UUID;
 @Slf4j
 @Transactional
 public class WithdrawService {
-    private final UserService userService;
+    private final UserRepository userRepository;
 
     private final ATMValidator atmValidator;
 
     private final TransactionService transactionService;
 
     private final FeeService feeService;
+    private final AppWalletService appWalletService;
 
 
     public WithdrawTransaction withdraw(User currentUser, @NonNull BigDecimal withdrawalAmount)
@@ -40,23 +43,23 @@ public class WithdrawService {
         if (atmValidator.isBalanceEnough(currentUser, withdrawalAmount)) throw new InsufficientFundException("Insufficient Funds!");
 
         BigDecimal oldBalance = currentUser.getBalance();
-        currentUser.setBalance(oldBalance.subtract(withdrawalAmount));
-        userService.save(currentUser);
-        feeService.deductWithdrawalFee(currentUser, withdrawalAmount);
+        float withdrawalFee = feeService.getWithdrawalFee(withdrawalAmount);
+        BigDecimal finalWithdrawalAmount = feeService.deductWithdrawalFee(withdrawalAmount, withdrawalFee);
+        currentUser.setBalance(finalWithdrawalAmount);
+        userRepository.save(currentUser);
+        appWalletService.addAndSaveBalance(withdrawalFee);
 
-        WithdrawTransaction withdrawTransaction = saveWithdrawTransaction(currentUser, withdrawalAmount);
-        log.debug("User with id of {} withdraw amounting {} and has new balance of {} from {}", currentUser.getId(), withdrawalAmount, currentUser.getBalance(), oldBalance);
+        WithdrawTransaction withdrawTransaction = saveWithdrawTransaction(currentUser, finalWithdrawalAmount);
+        log.debug("User with id of {} withdraw amounting {} from {} because of withdrawal fee of {} which is the {}% of withdrawn amount and has new balance of {} from {}", currentUser.getId(), finalWithdrawalAmount, withdrawalAmount, withdrawalFee, FeeService.WITHDRAWAL_FEE_PERCENTAGE, currentUser.getBalance(), oldBalance);
         return withdrawTransaction;
     }
 
     private WithdrawTransaction saveWithdrawTransaction(@NonNull User user, @NonNull BigDecimal withdrawalAmount) {
         String trn = UUID.randomUUID().toString();
 
-        float withdrawalFee = feeService.getWithdrawalFee(withdrawalAmount);
-        BigDecimal finalWithdrawalAmount = withdrawalAmount.subtract(new BigDecimal(withdrawalFee));
         WithdrawTransaction withdrawTransaction = WithdrawTransaction.builder()
                 .trn(trn)
-                .amount(finalWithdrawalAmount)
+                .amount(withdrawalAmount)
                 .transactionDate(LocalDateTime.now())
                 .user(user)
                 .build();

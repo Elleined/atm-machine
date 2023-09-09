@@ -4,6 +4,7 @@ import com.elleined.atmmachineapi.exception.NotValidAmountException;
 import com.elleined.atmmachineapi.model.User;
 import com.elleined.atmmachineapi.model.transaction.DepositTransaction;
 import com.elleined.atmmachineapi.repository.UserRepository;
+import com.elleined.atmmachineapi.service.AppWalletService;
 import com.elleined.atmmachineapi.service.atm.transaction.TransactionService;
 import com.elleined.atmmachineapi.service.fee.FeeService;
 import lombok.RequiredArgsConstructor;
@@ -29,34 +30,33 @@ public class DepositService {
 
     private final FeeService feeService;
 
+    private final AppWalletService appWalletService;
+
 
     public DepositTransaction deposit(User currentUser, @NonNull BigDecimal depositedAmount)
             throws NotValidAmountException {
 
         if (atmValidator.isValidAmount(depositedAmount)) throw new NotValidAmountException("Amount should be positive and cannot be zero!");
 
-
-
-
         BigDecimal oldBalance = currentUser.getBalance();
-        currentUser.setBalance(oldBalance.add(depositedAmount));
+        float depositFee = feeService.getDepositFee(depositedAmount);
+        BigDecimal finalDepositedAmount = feeService.deductDepositFee(depositedAmount, depositFee);
+        currentUser.setBalance(finalDepositedAmount);
         userRepository.save(currentUser);
-        feeService.deductDepositFee(currentUser, depositedAmount);
+        appWalletService.addAndSaveBalance(depositFee);
 
-        DepositTransaction depositTransaction = saveDepositTransaction(currentUser, depositedAmount);
+        DepositTransaction depositTransaction = saveDepositTransaction(currentUser, finalDepositedAmount);
 
-        log.debug("User with id of {} deposited amounting {} and now has new balance of {} from {}", currentUser.getId(), depositedAmount, currentUser.getBalance(), oldBalance);
+        log.debug("User with id of {} deposited amounting {} from {} because of deposit fee of {} which is the {}% of the deposited amount and now has new balance of {} from {}", currentUser.getId(), finalDepositedAmount, depositedAmount, depositFee, FeeService.DEPOSIT_FEE_PERCENTAGE, currentUser.getBalance(), oldBalance);
         return depositTransaction;
     }
 
     private DepositTransaction saveDepositTransaction(User user, @NonNull BigDecimal depositedAmount) {
         String trn = UUID.randomUUID().toString();
 
-        float depositFee = feeService.getDepositFee(depositedAmount);
-        BigDecimal finalDepositedAmount = depositedAmount.subtract(new BigDecimal(depositFee));
         DepositTransaction depositTransaction = DepositTransaction.builder()
                 .trn(trn)
-                .amount(finalDepositedAmount)
+                .amount(depositedAmount)
                 .transactionDate(LocalDateTime.now())
                 .user(user)
                 .build();
