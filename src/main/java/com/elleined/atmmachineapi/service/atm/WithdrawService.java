@@ -41,8 +41,8 @@ public class WithdrawService {
 
         BigDecimal oldBalance = currentUser.getBalance();
         currentUser.setBalance(oldBalance.subtract(withdrawalAmount));
-//        feeService.deductWithdrawalFee(currentUser, withdrawalAmount);
         userService.save(currentUser);
+        feeService.deductWithdrawalFee(currentUser, withdrawalAmount);
 
         WithdrawTransaction withdrawTransaction = saveWithdrawTransaction(currentUser, withdrawalAmount);
         log.debug("User with id of {} withdraw amounting {} and has new balance of {} from {}", currentUser.getId(), withdrawalAmount, currentUser.getBalance(), oldBalance);
@@ -52,9 +52,11 @@ public class WithdrawService {
     private WithdrawTransaction saveWithdrawTransaction(@NonNull User user, @NonNull BigDecimal withdrawalAmount) {
         String trn = UUID.randomUUID().toString();
 
+        float withdrawalFee = feeService.getWithdrawalFee(withdrawalAmount);
+        BigDecimal finalWithdrawalAmount = withdrawalAmount.subtract(new BigDecimal(withdrawalFee));
         WithdrawTransaction withdrawTransaction = WithdrawTransaction.builder()
                 .trn(trn)
-                .amount(withdrawalAmount)
+                .amount(finalWithdrawalAmount)
                 .transactionDate(LocalDateTime.now())
                 .user(user)
                 .build();

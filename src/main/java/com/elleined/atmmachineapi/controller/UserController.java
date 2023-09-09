@@ -35,11 +35,4 @@ public class UserController {
         User user = userService.getByUUID(uuid);
         return userMapper.toDTO(user);
     }
-
-    @PatchMapping("/{uuid}/balance")
-    public void updateBalance(@PathVariable("uuid") String uuid,
-                              @RequestParam("newBalance") BigDecimal newBalance) {
-        User user = userService.getByUUID(uuid);
-        userService.updateBalance(user, newBalance);
-    }
 }

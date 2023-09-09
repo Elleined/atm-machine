@@ -39,8 +39,8 @@ public class PeerToPeerService {
 
         updateSenderBalance(sender, sentAmount);
         updateRecipientBalance(receiver, sentAmount);
-//        feeService.deductP2pFee(sender, receiver, sentAmount);
-        PeerToPeerTransaction peerToPeerTransaction = savePeerToPeerTransaction(sender, sentAmount, receiver);
+        feeService.deductP2pFee(sender, receiver, sentAmount);
+        PeerToPeerTransaction peerToPeerTransaction = savePeerToPeerTransaction(sender, receiver, sentAmount);
 
         log.debug("Money send successfully to the receiver {} amounting {} your new balance is {}.", receiver.getName(), sentAmount, sender.getBalance());
         return peerToPeerTransaction;
@@ -58,12 +58,15 @@ public class PeerToPeerService {
         userRepository.save(receiver);
     }
 
-    private PeerToPeerTransaction savePeerToPeerTransaction(User sender, BigDecimal amount, User receiver) {
+    private PeerToPeerTransaction savePeerToPeerTransaction(User sender, User receiver, BigDecimal sentAmount) {
         String trn = UUID.randomUUID().toString();
+
+        float p2pFee = feeService.getP2pFee(sentAmount);
+        BigDecimal finalSentAmount = sentAmount.subtract(new BigDecimal(p2pFee));
 
         PeerToPeerTransaction peerToPeerTransaction = PeerToPeerTransaction.builder()
                 .trn(trn)
-                .amount(amount)
+                .amount(finalSentAmount)
                 .transactionDate(LocalDateTime.now())
                 .sender(sender)
                 .receiver(receiver)

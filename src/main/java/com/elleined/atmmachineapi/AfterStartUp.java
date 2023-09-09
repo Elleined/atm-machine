@@ -45,6 +45,7 @@ public class AfterStartUp {
         AppWallet appWallet = AppWallet.builder()
                 .balance(new BigDecimal(0))
                 .build();
+        appWalletRepository.save(appWallet);
 
         log.debug("Saving initial users and app wallet successful... Thanks");
     }

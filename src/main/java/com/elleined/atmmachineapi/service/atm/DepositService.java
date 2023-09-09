@@ -29,28 +29,34 @@ public class DepositService {
 
     private final FeeService feeService;
 
-    public DepositTransaction deposit(User currentUser, @NonNull BigDecimal depositAmount)
+
+    public DepositTransaction deposit(User currentUser, @NonNull BigDecimal depositedAmount)
             throws NotValidAmountException {
 
-        if (atmValidator.isValidAmount(depositAmount)) throw new NotValidAmountException("Amount should be positive and cannot be zero!");
+        if (atmValidator.isValidAmount(depositedAmount)) throw new NotValidAmountException("Amount should be positive and cannot be zero!");
+
+
+
 
         BigDecimal oldBalance = currentUser.getBalance();
-//        feeService.deductDepositFee(currentUser, depositAmount);
-        currentUser.setBalance(oldBalance.add(depositAmount));
+        currentUser.setBalance(oldBalance.add(depositedAmount));
         userRepository.save(currentUser);
+        feeService.deductDepositFee(currentUser, depositedAmount);
 
-        DepositTransaction depositTransaction = saveDepositTransaction(currentUser, depositAmount);
+        DepositTransaction depositTransaction = saveDepositTransaction(currentUser, depositedAmount);
 
-        log.debug("User with id of {} deposited amounting {} and now has new balance of {} from {}", currentUser.getId(), depositAmount, currentUser.getBalance(), oldBalance);
+        log.debug("User with id of {} deposited amounting {} and now has new balance of {} from {}", currentUser.getId(), depositedAmount, currentUser.getBalance(), oldBalance);
         return depositTransaction;
     }
 
     private DepositTransaction saveDepositTransaction(User user, @NonNull BigDecimal depositedAmount) {
         String trn = UUID.randomUUID().toString();
 
+        float depositFee = feeService.getDepositFee(depositedAmount);
+        BigDecimal finalDepositedAmount = depositedAmount.subtract(new BigDecimal(depositFee));
         DepositTransaction depositTransaction = DepositTransaction.builder()
                 .trn(trn)
-                .amount(depositedAmount)
+                .amount(finalDepositedAmount)
                 .transactionDate(LocalDateTime.now())
                 .user(user)
                 .build();
