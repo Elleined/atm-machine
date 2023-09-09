@@ -1,7 +1,9 @@
 package com.elleined.atmmachineapi.service;
 
 import com.elleined.atmmachineapi.exception.InsufficientFundException;
-import com.elleined.atmmachineapi.exception.ResourceNotFoundException;
+import com.elleined.atmmachineapi.exception.NotValidAmountException;
+import com.elleined.atmmachineapi.exception.SendingToHimselfException;
+import com.elleined.atmmachineapi.model.User;
 import com.elleined.atmmachineapi.model.transaction.DepositTransaction;
 import com.elleined.atmmachineapi.model.transaction.PeerToPeerTransaction;
 import com.elleined.atmmachineapi.model.transaction.WithdrawTransaction;
@@ -29,26 +31,20 @@ public class WebATMService implements ATMService {
     private final PeerToPeerService peerToPeerService;
 
     @Override
-    public DepositTransaction deposit(int userId, @NonNull BigDecimal amount)
-            throws ResourceNotFoundException, IllegalArgumentException {
-
-        return depositService.deposit(userId, amount);
+    public DepositTransaction deposit(User currentUser, @NonNull  BigDecimal depositedAmount)
+            throws NotValidAmountException {
+        return depositService.deposit(currentUser, depositedAmount);
     }
 
     @Override
-    public WithdrawTransaction withdraw(int userId, @NonNull BigDecimal amount)
-            throws IllegalArgumentException,
-            InsufficientFundException,
-            ResourceNotFoundException {
-
-        return withdrawService.withdraw(userId, amount);
+    public WithdrawTransaction withdraw(User currentUser, @NonNull  BigDecimal withdrawnAmount)
+            throws InsufficientFundException, NotValidAmountException {
+        return withdrawService.withdraw(currentUser, withdrawnAmount);
     }
 
     @Override
-    public PeerToPeerTransaction peerToPeer(int senderId, @NonNull BigDecimal amount, int recipientId)
-            throws IllegalArgumentException,
-            InsufficientFundException,
-            ResourceNotFoundException {
-        return peerToPeerService.peerToPeer(senderId, amount, recipientId);
+    public PeerToPeerTransaction peerToPeer(User sender, User receiver, @NonNull  BigDecimal sentAmount)
+            throws SendingToHimselfException, InsufficientFundException, NotValidAmountException {
+        return peerToPeerService.peerToPeer(sender, receiver, sentAmount);
     }
 }

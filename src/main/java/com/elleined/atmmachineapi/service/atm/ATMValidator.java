@@ -16,7 +16,7 @@ public class ATMValidator {
         return amount.compareTo(BigDecimal.ZERO) <= 0;
     }
 
-    public boolean isSenderSendingToHimself(int senderId, int receiverId) {
-        return senderId == receiverId;
+    public boolean isSenderSendingToHimself(User sender, User receiver) {
+        return sender.getId() == receiver.getId();
     }
 }

@@ -1,12 +1,14 @@
 package com.elleined.atmmachineapi.service.atm;
 
 import com.elleined.atmmachineapi.exception.InsufficientFundException;
-import com.elleined.atmmachineapi.exception.ResourceNotFoundException;
+import com.elleined.atmmachineapi.exception.NotValidAmountException;
+import com.elleined.atmmachineapi.exception.SendingToHimselfException;
 import com.elleined.atmmachineapi.model.User;
 import com.elleined.atmmachineapi.model.transaction.PeerToPeerTransaction;
+import com.elleined.atmmachineapi.repository.UserRepository;
 import com.elleined.atmmachineapi.service.atm.transaction.TransactionService;
-import com.elleined.atmmachineapi.service.user.UserService;
-import com.elleined.atmmachineapi.service.user.UserServiceImpl;
+import com.elleined.atmmachineapi.service.fee.FeeService;
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -21,40 +23,39 @@ import java.util.UUID;
 @RequiredArgsConstructor
 @Transactional
 public class PeerToPeerService {
-    private final UserService userService;
+    private final UserRepository userRepository;
+    private final FeeService feeService;
     private final ATMValidator atmValidator;
     private final TransactionService transactionService;
 
-    public PeerToPeerTransaction peerToPeer(int senderId, BigDecimal amount, int receiverId)
-            throws IllegalArgumentException,
+    public PeerToPeerTransaction peerToPeer(User sender, User receiver, @NonNull BigDecimal sentAmount)
+            throws SendingToHimselfException,
             InsufficientFundException,
-            ResourceNotFoundException {
+            NotValidAmountException {
 
-        User sender = userService.getById(senderId);
-        User receiver = userService.getById(receiverId);
+        if (atmValidator.isSenderSendingToHimself(sender, receiver)) throw new SendingToHimselfException("You cannot send to yourself");
+        if (atmValidator.isValidAmount(sentAmount)) throw new NotValidAmountException("Amount should be positive and cannot be zero!");
+        if (atmValidator.isBalanceEnough(sender, sentAmount)) throw new InsufficientFundException("Insufficient Funds!");
 
-        if (atmValidator.isSenderSendingToHimself(senderId, receiverId)) throw new IllegalArgumentException("You cannot send to yourself");
-        if (atmValidator.isValidAmount(amount)) throw new IllegalArgumentException("Amount should be positive and cannot be zero!");
-        if (atmValidator.isBalanceEnough(sender, amount)) throw new InsufficientFundException("Insufficient Funds!");
+        updateSenderBalance(sender, sentAmount);
+        updateRecipientBalance(receiver, sentAmount);
+//        feeService.deductP2pFee(sender, receiver, sentAmount);
+        PeerToPeerTransaction peerToPeerTransaction = savePeerToPeerTransaction(sender, sentAmount, receiver);
 
-        updateSenderBalance(sender, amount);
-        updateRecipientBalance(receiver, amount);
-        PeerToPeerTransaction peerToPeerTransaction = savePeerToPeerTransaction(sender, amount, receiver);
-
-        log.debug("Money send successfully to the receiver {} amounting {} your new balance is {}.", receiver.getName(), amount, sender.getBalance());
+        log.debug("Money send successfully to the receiver {} amounting {} your new balance is {}.", receiver.getName(), sentAmount, sender.getBalance());
         return peerToPeerTransaction;
     }
 
     private void updateSenderBalance(User sender, BigDecimal amountToBeDeducted) {
         BigDecimal newBalance = sender.getBalance().subtract(amountToBeDeducted);
         sender.setBalance(newBalance);
-        userService.save(sender);
+        userRepository.save(sender);
     }
 
     private void updateRecipientBalance(User receiver, BigDecimal amountToBeAdded) {
         BigDecimal newBalance = receiver.getBalance().add(amountToBeAdded);
         receiver.setBalance(newBalance);
-        userService.save(receiver);
+        userRepository.save(receiver);
     }
 
     private PeerToPeerTransaction savePeerToPeerTransaction(User sender, BigDecimal amount, User receiver) {

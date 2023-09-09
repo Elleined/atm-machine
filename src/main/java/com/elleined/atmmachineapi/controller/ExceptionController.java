@@ -2,7 +2,9 @@ package com.elleined.atmmachineapi.controller;
 
 import com.elleined.atmmachineapi.dto.Response;
 import com.elleined.atmmachineapi.exception.InsufficientFundException;
+import com.elleined.atmmachineapi.exception.NotValidAmountException;
 import com.elleined.atmmachineapi.exception.ResourceNotFoundException;
+import com.elleined.atmmachineapi.exception.SendingToHimselfException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindException;
@@ -21,7 +23,11 @@ public class ExceptionController {
         return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
     }
 
-    @ExceptionHandler({IllegalArgumentException.class, InsufficientFundException.class})
+    @ExceptionHandler({
+            NotValidAmountException.class,
+            InsufficientFundException.class,
+            SendingToHimselfException.class
+    })
     public ResponseEntity<Response> handleIllegalArgumentException(RuntimeException ex) {
         var response = new Response(HttpStatus.BAD_REQUEST, ex.getMessage());
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);

@@ -1,11 +1,11 @@
 package com.elleined.atmmachineapi.service.atm;
 
-import com.elleined.atmmachineapi.exception.ResourceNotFoundException;
+import com.elleined.atmmachineapi.exception.NotValidAmountException;
 import com.elleined.atmmachineapi.model.User;
 import com.elleined.atmmachineapi.model.transaction.DepositTransaction;
+import com.elleined.atmmachineapi.repository.UserRepository;
 import com.elleined.atmmachineapi.service.atm.transaction.TransactionService;
-import com.elleined.atmmachineapi.service.user.UserService;
-import com.elleined.atmmachineapi.service.user.UserServiceImpl;
+import com.elleined.atmmachineapi.service.fee.FeeService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.lang.NonNull;
@@ -21,24 +21,27 @@ import java.util.UUID;
 @Slf4j
 @Transactional
 public class DepositService {
-    private final UserService userService;
+    private final UserRepository userRepository;
+
     private final ATMValidator atmValidator;
+
     private final TransactionService transactionService;
 
-    public DepositTransaction deposit(int currentUserId, @NonNull BigDecimal depositAmount)
-            throws ResourceNotFoundException, IllegalArgumentException {
+    private final FeeService feeService;
 
-        if (atmValidator.isValidAmount(depositAmount)) throw new IllegalArgumentException("Amount should be positive and cannot be zero!");
+    public DepositTransaction deposit(User currentUser, @NonNull BigDecimal depositAmount)
+            throws NotValidAmountException {
 
-        User currentUser = userService.getById(currentUserId);
+        if (atmValidator.isValidAmount(depositAmount)) throw new NotValidAmountException("Amount should be positive and cannot be zero!");
+
         BigDecimal oldBalance = currentUser.getBalance();
-        BigDecimal newBalance = currentUser.getBalance().add(depositAmount);
+//        feeService.deductDepositFee(currentUser, depositAmount);
+        currentUser.setBalance(oldBalance.add(depositAmount));
+        userRepository.save(currentUser);
 
-        currentUser.setBalance(newBalance);
-        userService.save(currentUser);
         DepositTransaction depositTransaction = saveDepositTransaction(currentUser, depositAmount);
 
-        log.debug("User with id of {} deposited amounting {}.\nOld balance: {}\nNew Balance: {}", currentUserId, depositAmount, oldBalance, newBalance);
+        log.debug("User with id of {} deposited amounting {} and now has new balance of {} from {}", currentUser.getId(), depositAmount, currentUser.getBalance(), oldBalance);
         return depositTransaction;
     }
 

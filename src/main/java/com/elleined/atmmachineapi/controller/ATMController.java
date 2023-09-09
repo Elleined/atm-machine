@@ -5,6 +5,7 @@ import com.elleined.atmmachineapi.dto.transaction.PeerToPeerTransactionDTO;
 import com.elleined.atmmachineapi.dto.transaction.WithdrawTransactionDTO;
 import com.elleined.atmmachineapi.mapper.TransactionMapper;
 import com.elleined.atmmachineapi.mapper.UserMapper;
+import com.elleined.atmmachineapi.model.User;
 import com.elleined.atmmachineapi.model.transaction.DepositTransaction;
 import com.elleined.atmmachineapi.model.transaction.PeerToPeerTransaction;
 import com.elleined.atmmachineapi.model.transaction.WithdrawTransaction;
@@ -20,17 +21,15 @@ import java.math.BigDecimal;
 @RequiredArgsConstructor
 public class ATMController  {
     private final ATMService atmService;
-
-    private final TransactionMapper transactionMapper;
-
     private final UserService userService;
-    private final UserMapper userMapper;
+    private final TransactionMapper transactionMapper;
 
     @PostMapping("/deposit")
     public DepositTransactionDTO deposit(@PathVariable("currentUserId") int currentUserId,
                                          @RequestParam("amount") BigDecimal amount) {
 
-        DepositTransaction depositTransaction = atmService.deposit(currentUserId, amount);
+        User currentUser = userService.getById(currentUserId);
+        DepositTransaction depositTransaction = atmService.deposit(currentUser, amount);
         return transactionMapper.toDepositTransactionDTO(depositTransaction);
     }
 
@@ -38,17 +37,21 @@ public class ATMController  {
     @PostMapping("/withdraw")
     public WithdrawTransactionDTO withdraw(@PathVariable("currentUserId") int currentUserId,
                                            @RequestParam("amount") BigDecimal amount) {
-        WithdrawTransaction withdrawTransaction = atmService.withdraw(currentUserId, amount);
+
+        User currentUser = userService.getById(currentUserId);
+        WithdrawTransaction withdrawTransaction = atmService.withdraw(currentUser, amount);
         return transactionMapper.toWithdrawTransactionDTO(withdrawTransaction);
     }
 
 
     @PostMapping("/peer-to-peer/{receiverId}")
     public PeerToPeerTransactionDTO peerToPeer(@PathVariable("currentUserId") int senderId,
-                                               @RequestParam("amount") BigDecimal amount,
+                                               @RequestParam("amount") BigDecimal sentAmount,
                                                @PathVariable("receiverId") int receiverId) {
 
-        PeerToPeerTransaction peerToPeerTransaction = atmService.peerToPeer(senderId, amount, receiverId);
+        User sender = userService.getById(senderId);
+        User receiver = userService.getById(receiverId);
+        PeerToPeerTransaction peerToPeerTransaction = atmService.peerToPeer(sender, receiver, sentAmount);
         return transactionMapper.toPeer2PeerTransactionDTO(peerToPeerTransaction);
     }
 }
