@@ -4,6 +4,7 @@ import com.elleined.atmmachineapi.exception.ResourceNotFoundException;
 import com.elleined.atmmachineapi.model.User;
 import com.elleined.atmmachineapi.model.transaction.DepositTransaction;
 import com.elleined.atmmachineapi.service.atm.transaction.TransactionService;
+import com.elleined.atmmachineapi.service.user.UserService;
 import com.elleined.atmmachineapi.service.user.UserServiceImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,7 +21,7 @@ import java.util.UUID;
 @Slf4j
 @Transactional
 public class DepositService {
-    private final UserServiceImpl userServiceImpl;
+    private final UserService userService;
     private final ATMValidator atmValidator;
     private final TransactionService transactionService;
 
@@ -29,12 +30,12 @@ public class DepositService {
 
         if (atmValidator.isValidAmount(depositAmount)) throw new IllegalArgumentException("Amount should be positive and cannot be zero!");
 
-        User currentUser = userServiceImpl.getById(currentUserId);
+        User currentUser = userService.getById(currentUserId);
         BigDecimal oldBalance = currentUser.getBalance();
         BigDecimal newBalance = currentUser.getBalance().add(depositAmount);
 
         currentUser.setBalance(newBalance);
-        userServiceImpl.save(currentUser);
+        userService.save(currentUser);
         DepositTransaction depositTransaction = saveDepositTransaction(currentUser, depositAmount);
 
         log.debug("User with id of {} deposited amounting {}.\nOld balance: {}\nNew Balance: {}", currentUserId, depositAmount, oldBalance, newBalance);

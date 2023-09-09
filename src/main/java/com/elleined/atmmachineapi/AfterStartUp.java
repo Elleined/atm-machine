@@ -1,6 +1,8 @@
 package com.elleined.atmmachineapi;
 
 import com.elleined.atmmachineapi.dto.UserDTO;
+import com.elleined.atmmachineapi.model.AppWallet;
+import com.elleined.atmmachineapi.repository.AppWalletRepository;
 import com.elleined.atmmachineapi.service.user.UserService;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
@@ -15,6 +17,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class AfterStartUp {
 
+    private final AppWalletRepository appWalletRepository;
     private final UserService userService;
 
     @PostConstruct
@@ -23,6 +26,7 @@ public class AfterStartUp {
             log.info("Initial user instantiation cancelled! Because initial users are already saved!");
             return;
         }
+        log.debug("Saving initial users and app wallet Please wait...");
         UserDTO user1 = UserDTO.builder()
                 .name("Sample user 1")
                 .uuid(UUID.randomUUID().toString())
@@ -37,5 +41,11 @@ public class AfterStartUp {
 
         userService.save(user1);
         userService.save(user2);
+
+        AppWallet appWallet = AppWallet.builder()
+                .balance(new BigDecimal(0))
+                .build();
+
+        log.debug("Saving initial users and app wallet successful... Thanks");
     }
 }
