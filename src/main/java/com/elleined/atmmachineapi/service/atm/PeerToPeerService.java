@@ -108,7 +108,7 @@ public class PeerToPeerService {
         BigDecimal totalSentAmount = peerToPeerTransactions.stream()
                 .map(Transaction::getAmount)
                 .reduce(BigDecimal::add)
-                .orElseThrow();
+                .orElseGet(() -> new BigDecimal(0));
         int comparisonResult = totalSentAmount.compareTo(new BigDecimal(PEER_TO_PEER_LIMIT_PER_DAY));
         return comparisonResult >= 0;
     }
