@@ -21,7 +21,7 @@ public class AfterStartUp {
     private final UserService userService;
 
     @PostConstruct
-    public void saveInitialUser() {
+    public void init() {
         if (userService.isUserExists(1)) {
             log.info("Initial user instantiation cancelled! Because initial users are already saved!");
             return;

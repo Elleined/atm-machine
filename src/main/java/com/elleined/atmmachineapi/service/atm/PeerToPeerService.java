@@ -44,10 +44,10 @@ public class PeerToPeerService {
         BigDecimal senderOldBalance = sender.getBalance();
         BigDecimal receiverOldBalance = receiver.getBalance();
 
-        updateSenderBalance(sender, finalSentAmount);
+        updateSenderBalance(sender, sentAmount);
         updateRecipientBalance(receiver, finalSentAmount);
         appWalletService.addAndSaveBalance(p2pFee * 2);
-        PeerToPeerTransaction peerToPeerTransaction = savePeerToPeerTransaction(sender, receiver, finalSentAmount);
+        PeerToPeerTransaction peerToPeerTransaction = savePeerToPeerTransaction(sender, receiver, sentAmount);
 
         log.debug("Sender with id of {} sent money amounting {} from {} because of p2p fee of {} which is the {}% of sent amount.", sender.getId(), finalSentAmount, sentAmount, p2pFee, FeeService.P2P_FEE_PERCENTAGE);
         log.debug("Sender with id of {} has now new balance of {} from {}.", sender.getId(), sender.getBalance(), senderOldBalance);

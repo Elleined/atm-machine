@@ -45,8 +45,7 @@ public class DepositService {
         userRepository.save(currentUser);
         appWalletService.addAndSaveBalance(depositFee);
 
-        DepositTransaction depositTransaction = saveDepositTransaction(currentUser, finalDepositedAmount);
-
+        DepositTransaction depositTransaction = saveDepositTransaction(currentUser, depositedAmount);
         log.debug("User with id of {} deposited amounting {} from {} because of deposit fee of {} which is the {}% of the deposited amount and now has new balance of {} from {}", currentUser.getId(), finalDepositedAmount, depositedAmount, depositFee, FeeService.DEPOSIT_FEE_PERCENTAGE, currentUser.getBalance(), oldBalance);
         return depositTransaction;
     }

@@ -45,11 +45,11 @@ public class WithdrawService {
         BigDecimal oldBalance = currentUser.getBalance();
         float withdrawalFee = feeService.getWithdrawalFee(withdrawalAmount);
         BigDecimal finalWithdrawalAmount = feeService.deductWithdrawalFee(withdrawalAmount, withdrawalFee);
-        currentUser.setBalance(oldBalance.subtract(finalWithdrawalAmount));
+        currentUser.setBalance(oldBalance.subtract(withdrawalAmount));
         userRepository.save(currentUser);
         appWalletService.addAndSaveBalance(withdrawalFee);
 
-        WithdrawTransaction withdrawTransaction = saveWithdrawTransaction(currentUser, finalWithdrawalAmount);
+        WithdrawTransaction withdrawTransaction = saveWithdrawTransaction(currentUser, withdrawalAmount);
         log.debug("User with id of {} withdraw amounting {} from {} because of withdrawal fee of {} which is the {}% of withdrawn amount and has new balance of {} from {}", currentUser.getId(), finalWithdrawalAmount, withdrawalAmount, withdrawalFee, FeeService.WITHDRAWAL_FEE_PERCENTAGE, currentUser.getBalance(), oldBalance);
         return withdrawTransaction;
     }

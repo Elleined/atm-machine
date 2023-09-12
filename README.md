@@ -9,6 +9,14 @@ REST API that has functionality of atm machine.
  - Record withdraw transaction
  - Record sent money transaction
 
+# Logics
+ - 10_000 deposit limit
+ - 10_000 withdraw limit
+ - 10_000 peer to peer limit
+ - 2% of deposited amount will be deducted
+ - 2% of sent amount will be deducted
+ - 2% of peer to peer amount will be deducted
+
 # Technologies used
 - Spring boot
 - Spring mvc
