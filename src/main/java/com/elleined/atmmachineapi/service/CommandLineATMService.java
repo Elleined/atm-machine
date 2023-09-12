@@ -2,6 +2,7 @@ package com.elleined.atmmachineapi.service;
 
 import com.elleined.atmmachineapi.exception.InsufficientFundException;
 import com.elleined.atmmachineapi.exception.ResourceNotFoundException;
+import com.elleined.atmmachineapi.exception.limit.LimitException;
 import com.elleined.atmmachineapi.model.User;
 import com.elleined.atmmachineapi.model.transaction.DepositTransaction;
 import com.elleined.atmmachineapi.model.transaction.PeerToPeerTransaction;
@@ -36,7 +37,7 @@ public class CommandLineATMService implements ATMService, Runnable {
             DepositTransaction depositTransaction = depositService.deposit(currentUser, depositedAmount);
             System.out.println("You successfully deposited amounting " + depositedAmount);
             System.out.println("=== Your new Account balance is " + depositTransaction.getUser().getBalance() + " ===");
-        } catch (ResourceNotFoundException | IllegalArgumentException e) {
+        } catch (ResourceNotFoundException | LimitException | IllegalArgumentException e) {
             log.error("Error Occurred! {}", e.getMessage());
         }
         return null;
@@ -48,7 +49,7 @@ public class CommandLineATMService implements ATMService, Runnable {
             WithdrawTransaction withdrawTransaction = withdrawService.withdraw(currentUser, withdrawnAmount);
             System.out.println("You successfully withdrawn amounting " + withdrawnAmount);
             System.out.println("=== Your new Account balance is " + withdrawTransaction.getUser().getBalance() + " ===");
-        } catch (IllegalArgumentException | ResourceNotFoundException | InsufficientFundException e) {
+        } catch (IllegalArgumentException | ResourceNotFoundException | LimitException | InsufficientFundException e) {
             log.error("Error Occurred! {}", e.getMessage());
         }
         return null;
@@ -60,7 +61,7 @@ public class CommandLineATMService implements ATMService, Runnable {
             PeerToPeerTransaction peerToPeerTransaction = peerToPeerService.peerToPeer(sender, receiver, sentAmount);
             System.out.println("You successfully send money to the recipient with id of " + receiver.getId() + " amounting " + sentAmount);
             System.out.println("=== Your new Account balance is " + peerToPeerTransaction.getSender().getBalance() + " ===");
-        } catch (IllegalArgumentException | ResourceNotFoundException | InsufficientFundException e) {
+        } catch (IllegalArgumentException | ResourceNotFoundException | LimitException | InsufficientFundException e) {
             log.error("Error Occurred! {}", e.getMessage());
         }
         return null;

@@ -3,6 +3,10 @@ package com.elleined.atmmachineapi.service;
 import com.elleined.atmmachineapi.exception.InsufficientFundException;
 import com.elleined.atmmachineapi.exception.NotValidAmountException;
 import com.elleined.atmmachineapi.exception.SendingToHimselfException;
+import com.elleined.atmmachineapi.exception.limit.DepositLimitPerDayException;
+import com.elleined.atmmachineapi.exception.limit.LimitException;
+import com.elleined.atmmachineapi.exception.limit.PeerToPeerLimitPerDayException;
+import com.elleined.atmmachineapi.exception.limit.WithdrawLimitPerDayException;
 import com.elleined.atmmachineapi.model.User;
 import com.elleined.atmmachineapi.model.transaction.DepositTransaction;
 import com.elleined.atmmachineapi.model.transaction.PeerToPeerTransaction;
@@ -13,14 +17,17 @@ import java.math.BigDecimal;
 
 public interface ATMService {
     DepositTransaction deposit(User currentUser, @NonNull BigDecimal depositedAmount)
-            throws NotValidAmountException;
+            throws NotValidAmountException,
+            LimitException;
 
     WithdrawTransaction withdraw(User currentUser, @NonNull BigDecimal withdrawnAmount)
             throws InsufficientFundException,
-            NotValidAmountException;
+            NotValidAmountException,
+            LimitException;
 
     PeerToPeerTransaction peerToPeer(User sender, User receiver, @NonNull BigDecimal sentAmount)
             throws SendingToHimselfException,
             InsufficientFundException,
-            NotValidAmountException;
+            NotValidAmountException,
+            LimitException;
 }

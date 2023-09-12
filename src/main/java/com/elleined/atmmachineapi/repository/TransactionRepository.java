@@ -10,4 +10,6 @@ import java.util.Optional;
 public interface TransactionRepository extends JpaRepository<Transaction, Integer> {
     @Query("SELECT t FROM Transaction t WHERE t.trn = :trn")
     Optional<Transaction> fetchByTRN(@Param("trn") String trn);
+
+
 }
