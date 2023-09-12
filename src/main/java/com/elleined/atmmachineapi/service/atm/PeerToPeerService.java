@@ -57,7 +57,7 @@ public class PeerToPeerService {
 
         updateSenderBalance(sender, sentAmount);
         updateRecipientBalance(receiver, finalSentAmount);
-        appWalletService.addAndSaveBalance(p2pFee * 2);
+        appWalletService.addAndSaveBalance(p2pFee);
         PeerToPeerTransaction peerToPeerTransaction = savePeerToPeerTransaction(sender, receiver, sentAmount);
 
         log.debug("Sender with id of {} sent money amounting {} from {} because of p2p fee of {} which is the {}% of sent amount.", sender.getId(), finalSentAmount, sentAmount, p2pFee, FeeService.P2P_FEE_PERCENTAGE);
@@ -97,7 +97,7 @@ public class PeerToPeerService {
     public boolean isSentAmountAboveLimit(BigDecimal sentAmount) {
         return sentAmount.compareTo(new BigDecimal(PEER_TO_PEER_LIMIT_PER_DAY)) > 0;
     }
-    
+
     public boolean isSenderReachedSentLimitPerDay(User currentUser) {
         final LocalDateTime currentDateTimeMidnight = LocalDateTime.now().withHour(0).withMinute(0).withSecond(0).withNano(0);
         final LocalDateTime tomorrowMidnight = currentDateTimeMidnight.plusDays(1);
