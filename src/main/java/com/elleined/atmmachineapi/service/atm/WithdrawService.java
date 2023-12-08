@@ -10,7 +10,7 @@ import com.elleined.atmmachineapi.model.transaction.Transaction;
 import com.elleined.atmmachineapi.model.transaction.WithdrawTransaction;
 import com.elleined.atmmachineapi.repository.UserRepository;
 import com.elleined.atmmachineapi.service.AppWalletService;
-import com.elleined.atmmachineapi.service.atm.transaction.TransactionService;
+import com.elleined.atmmachineapi.service.transaction.TransactionService;
 import com.elleined.atmmachineapi.service.fee.FeeService;
 import com.elleined.atmmachineapi.utils.TransactionUtils;
 import lombok.RequiredArgsConstructor;
@@ -29,7 +29,10 @@ import java.util.UUID;
 @Slf4j
 @Transactional
 public class WithdrawService {
-    int WITHDRAWAL_LIMIT_PER_DAY = 10_000;
+    public static final int WITHDRAWAL_LIMIT_PER_DAY = 10_000;
+    public static final int MAXIMUM_WITHDRAW_AMOUNT = 10_000;
+    public static final int MINIMUM_WITHDRAW_AMOUNT = 500;
+
     private final UserRepository userRepository;
 
     private final ATMValidator atmValidator;

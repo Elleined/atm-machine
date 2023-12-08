@@ -1,4 +1,4 @@
-package com.elleined.atmmachineapi.repository;
+package com.elleined.atmmachineapi.repository.transaction;
 
 import com.elleined.atmmachineapi.model.transaction.Transaction;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -10,6 +10,4 @@ import java.util.Optional;
 public interface TransactionRepository extends JpaRepository<Transaction, Integer> {
     @Query("SELECT t FROM Transaction t WHERE t.trn = :trn")
     Optional<Transaction> fetchByTRN(@Param("trn") String trn);
-
-
 }

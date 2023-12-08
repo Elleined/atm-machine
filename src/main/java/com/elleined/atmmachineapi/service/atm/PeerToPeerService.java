@@ -6,12 +6,11 @@ import com.elleined.atmmachineapi.exception.SendingToHimselfException;
 import com.elleined.atmmachineapi.exception.limit.LimitException;
 import com.elleined.atmmachineapi.exception.limit.PeerToPeerLimitPerDayException;
 import com.elleined.atmmachineapi.model.User;
-import com.elleined.atmmachineapi.model.transaction.DepositTransaction;
 import com.elleined.atmmachineapi.model.transaction.PeerToPeerTransaction;
 import com.elleined.atmmachineapi.model.transaction.Transaction;
 import com.elleined.atmmachineapi.repository.UserRepository;
 import com.elleined.atmmachineapi.service.AppWalletService;
-import com.elleined.atmmachineapi.service.atm.transaction.TransactionService;
+import com.elleined.atmmachineapi.service.transaction.TransactionService;
 import com.elleined.atmmachineapi.service.fee.FeeService;
 import com.elleined.atmmachineapi.utils.TransactionUtils;
 import lombok.NonNull;
@@ -30,7 +29,10 @@ import java.util.UUID;
 @RequiredArgsConstructor
 @Transactional
 public class PeerToPeerService {
-    int PEER_TO_PEER_LIMIT_PER_DAY = 10_000;
+    public static final int PEER_TO_PEER_LIMIT_PER_DAY = 10_000;
+    public static final int MAXIMUM_AMOUNT = 10_000;
+    public static final int MINIMUM_AMOUNT = 500;
+
 
     private final UserRepository userRepository;
     private final FeeService feeService;

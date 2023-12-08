@@ -1,6 +1,8 @@
 package com.elleined.atmmachineapi.exception.limit;
 
-public class LimitException extends RuntimeException {
+import com.elleined.atmmachineapi.exception.ATMException;
+
+public class LimitException extends ATMException {
 
     public LimitException(String message) {
         super(message);

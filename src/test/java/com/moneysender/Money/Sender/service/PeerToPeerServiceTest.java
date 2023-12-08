@@ -1,7 +1,6 @@
 package com.moneysender.Money.Sender.service;
 
 import com.elleined.atmmachineapi.model.User;
-import com.elleined.atmmachineapi.service.atm.ATMValidator;
 import com.elleined.atmmachineapi.service.atm.PeerToPeerService;
 import com.elleined.atmmachineapi.service.user.UserServiceImpl;
 import lombok.extern.slf4j.Slf4j;
@@ -10,8 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.math.BigDecimal;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Slf4j

@@ -5,7 +5,7 @@ import com.elleined.atmmachineapi.dto.transaction.PeerToPeerTransactionDTO;
 import com.elleined.atmmachineapi.dto.transaction.WithdrawTransactionDTO;
 import com.elleined.atmmachineapi.mapper.TransactionMapper;
 import com.elleined.atmmachineapi.model.User;
-import com.elleined.atmmachineapi.service.atm.transaction.TransactionService;
+import com.elleined.atmmachineapi.service.transaction.TransactionService;
 import com.elleined.atmmachineapi.service.user.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;

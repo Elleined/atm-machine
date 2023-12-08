@@ -21,12 +21,7 @@ public class ExceptionController {
         return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
     }
 
-    @ExceptionHandler({
-            NotValidAmountException.class,
-            InsufficientFundException.class,
-            SendingToHimselfException.class,
-            LimitException.class
-    })
+    @ExceptionHandler(ATMException.class)
     public ResponseEntity<Response> handleIllegalArgumentException(RuntimeException ex) {
         var response = new Response(HttpStatus.BAD_REQUEST, ex.getMessage());
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
