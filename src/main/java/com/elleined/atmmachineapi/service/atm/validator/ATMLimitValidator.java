@@ -1,4 +1,4 @@
-package com.elleined.atmmachineapi.service.validator;
+package com.elleined.atmmachineapi.service.atm.validator;
 
 import java.math.BigDecimal;
 
