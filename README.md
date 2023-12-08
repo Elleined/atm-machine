@@ -10,11 +10,20 @@ REST API that has functionality of atm machine.
  - Record sent money transaction
 
 # Logics
+#### Deposit
  - 10_000 deposit limit per day 
+ - 500 minimum deposit
+ - 10_000 maximum deposit
+-  2% of deposited amount will be deducted
+
+#### Withdraw
  - 10_000 withdraw limit per day
+ - 500 minimum withdraw
+ - 10_000 maximum withdraw
+ - 2% of withdrawn amount will be deducted
+ 
+#### Peer to peer
  - 10_000 peer to peer limit per day
- - 2% of deposited amount will be deducted
- - 2% of sent amount will be deducted
  - 2% of peer to peer amount will be deducted
 
 # Technologies used
