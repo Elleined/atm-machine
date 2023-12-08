@@ -52,4 +52,8 @@ public class User {
     // user id reference is in withdraw transaction table
     @OneToMany(mappedBy = "user")
     List<DepositTransaction> depositTransactions;
+
+    public <T> boolean isBalanceNotEnough(T t) {
+        return this.getBalance().compareTo(new BigDecimal(String.valueOf(t))) < 0;
+    }
 }
