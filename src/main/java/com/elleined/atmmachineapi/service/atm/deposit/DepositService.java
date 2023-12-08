@@ -53,7 +53,7 @@ public class DepositService implements ATMLimitValidator, ATMLimitPerDayValidato
 
         BigDecimal oldBalance = currentUser.getBalance();
         float depositFee = feeService.getDepositFee(depositedAmount);
-        BigDecimal finalDepositedAmount = feeService.deductDepositFee(depositedAmount, depositFee);
+        BigDecimal finalDepositedAmount = depositedAmount.subtract(new BigDecimal(depositFee));
         currentUser.setBalance(oldBalance.add(finalDepositedAmount));
         userRepository.save(currentUser);
         appWalletService.addAndSaveBalance(depositFee);

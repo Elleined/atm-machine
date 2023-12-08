@@ -59,7 +59,7 @@ public class WithdrawService implements ATMLimitValidator, ATMLimitPerDayValidat
 
         BigDecimal oldBalance = currentUser.getBalance();
         float withdrawalFee = feeService.getWithdrawalFee(withdrawalAmount);
-        BigDecimal finalWithdrawalAmount = feeService.deductWithdrawalFee(withdrawalAmount, withdrawalFee);
+        BigDecimal finalWithdrawalAmount = withdrawalAmount.subtract(new BigDecimal(withdrawalFee));
         currentUser.setBalance(oldBalance.subtract(withdrawalAmount));
         userRepository.save(currentUser);
         appWalletService.addAndSaveBalance(withdrawalFee);
