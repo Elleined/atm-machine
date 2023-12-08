@@ -1,4 +1,4 @@
-package com.elleined.atmmachineapi.service.atm.transaction;
+package com.elleined.atmmachineapi.service.atm.p2p;
 
 import com.elleined.atmmachineapi.model.User;
 import com.elleined.atmmachineapi.model.transaction.PeerToPeerTransaction;

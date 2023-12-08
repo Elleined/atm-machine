@@ -1,4 +1,4 @@
-package com.elleined.atmmachineapi.service.atm;
+package com.elleined.atmmachineapi.service.atm.p2p;
 
 import com.elleined.atmmachineapi.exception.InsufficientFundException;
 import com.elleined.atmmachineapi.exception.NotValidAmountException;
@@ -10,8 +10,7 @@ import com.elleined.atmmachineapi.model.transaction.PeerToPeerTransaction;
 import com.elleined.atmmachineapi.model.transaction.Transaction;
 import com.elleined.atmmachineapi.repository.UserRepository;
 import com.elleined.atmmachineapi.service.AppWalletService;
-import com.elleined.atmmachineapi.service.atm.transaction.P2PTransactionService;
-import com.elleined.atmmachineapi.service.atm.transaction.TransactionService;
+import com.elleined.atmmachineapi.service.atm.TransactionService;
 import com.elleined.atmmachineapi.service.fee.FeeService;
 import com.elleined.atmmachineapi.service.atm.validator.ATMLimitPerDayValidator;
 import com.elleined.atmmachineapi.service.atm.validator.ATMValidator;

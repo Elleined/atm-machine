@@ -1,4 +1,4 @@
-package com.elleined.atmmachineapi.service.atm;
+package com.elleined.atmmachineapi.service.atm.deposit;
 
 import com.elleined.atmmachineapi.exception.NotValidAmountException;
 import com.elleined.atmmachineapi.exception.amount.ATMMinimumAmountException;
@@ -10,8 +10,7 @@ import com.elleined.atmmachineapi.model.transaction.DepositTransaction;
 import com.elleined.atmmachineapi.model.transaction.Transaction;
 import com.elleined.atmmachineapi.repository.UserRepository;
 import com.elleined.atmmachineapi.service.AppWalletService;
-import com.elleined.atmmachineapi.service.atm.transaction.DepositTransactionService;
-import com.elleined.atmmachineapi.service.atm.transaction.TransactionService;
+import com.elleined.atmmachineapi.service.atm.TransactionService;
 import com.elleined.atmmachineapi.service.fee.FeeService;
 import com.elleined.atmmachineapi.service.atm.validator.ATMLimitPerDayValidator;
 import com.elleined.atmmachineapi.service.atm.validator.ATMLimitValidator;
