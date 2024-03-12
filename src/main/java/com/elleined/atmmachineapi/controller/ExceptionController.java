@@ -1,8 +1,8 @@
 package com.elleined.atmmachineapi.controller;
 
 import com.elleined.atmmachineapi.dto.Response;
-import com.elleined.atmmachineapi.exception.*;
-import com.elleined.atmmachineapi.exception.limit.LimitException;
+import com.elleined.atmmachineapi.exception.ATMException;
+import com.elleined.atmmachineapi.exception.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindException;

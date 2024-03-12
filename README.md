@@ -1,5 +1,5 @@
 # atm-machine
-REST API that has functionality of atm machine.
+API that has ATM Machine functionalities
 
 # Features
  - Send money peer to peer 

@@ -1,7 +1,5 @@
 package com.elleined.atmmachineapi.service.fee;
 
-import com.elleined.atmmachineapi.model.User;
-
 import java.math.BigDecimal;
 
 public interface FeeService {

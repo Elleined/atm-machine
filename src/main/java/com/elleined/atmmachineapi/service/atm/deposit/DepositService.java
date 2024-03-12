@@ -1,8 +1,8 @@
 package com.elleined.atmmachineapi.service.atm.deposit;
 
 import com.elleined.atmmachineapi.exception.NotValidAmountException;
-import com.elleined.atmmachineapi.exception.amount.ATMMinimumAmountException;
 import com.elleined.atmmachineapi.exception.amount.ATMMaximumAmountException;
+import com.elleined.atmmachineapi.exception.amount.ATMMinimumAmountException;
 import com.elleined.atmmachineapi.exception.limit.LimitException;
 import com.elleined.atmmachineapi.exception.limit.LimitExceptionPerDayException;
 import com.elleined.atmmachineapi.model.User;
@@ -11,10 +11,10 @@ import com.elleined.atmmachineapi.model.transaction.Transaction;
 import com.elleined.atmmachineapi.repository.UserRepository;
 import com.elleined.atmmachineapi.service.AppWalletService;
 import com.elleined.atmmachineapi.service.atm.TransactionService;
-import com.elleined.atmmachineapi.service.fee.FeeService;
 import com.elleined.atmmachineapi.service.atm.validator.ATMLimitPerDayValidator;
 import com.elleined.atmmachineapi.service.atm.validator.ATMLimitValidator;
 import com.elleined.atmmachineapi.service.atm.validator.ATMValidator;
+import com.elleined.atmmachineapi.service.fee.FeeService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.lang.NonNull;
