@@ -6,7 +6,7 @@ services:
     container_name: ama_app
     restart: always
     ports:
-      - "8093:8093"
+      - "8087:8087"
     environment:
       - MYSQL_HOST=ama_mysql_server
       - MYSQL_PORT=3306

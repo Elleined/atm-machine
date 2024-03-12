@@ -8,5 +8,5 @@ ENV MYSQL_USER=root
 ENV MYSQL_PASSWORD=root
 
 ADD ./target/*.jar atm-machine-api.jar
-EXPOSE 8082
+EXPOSE 8092
 CMD ["java", "-jar", "atm-machine-api.jar"]
