@@ -1,0 +1,36 @@
+version: "3"
+services:
+  ama_app:
+    build: .
+    image: elleined/ama
+    container_name: ama_app
+    restart: always
+    ports:
+      - "8093:8093"
+    environment:
+      - MYSQL_HOST=ama_mysql_server
+      - MYSQL_PORT=3306
+      - MYSQL_DATABASE=ama_db
+      - MYSQL_USER=root
+      - MYSQL_PASSWORD=root
+    networks:
+      - ama_network
+    depends_on:
+      - ama_mysql_server
+  ama_mysql_server:
+    image: mysql:8.0.32
+    container_name: ama_mysql_server
+    restart: always
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=ama_db
+    ports:
+      - "3307:3306"
+    networks:
+      - ama_network
+networks:
+  ama_network:
+    name: ama_network
+    external: false
+    ipam:
+      driver: default
