@@ -1,4 +1,4 @@
-version: "3"
+version: "3.8"
 services:
   ama_app:
     build: .
@@ -16,7 +16,8 @@ services:
     networks:
       - ama_network
     depends_on:
-      - ama_mysql_server
+      ama_mysql_server:
+        condition: service_healthy
   ama_mysql_server:
     image: mysql:8.0.32
     container_name: ama_mysql_server
@@ -24,6 +25,8 @@ services:
     environment:
       - MYSQL_ROOT_PASSWORD=root
       - MYSQL_DATABASE=ama_db
+    healthcheck:
+      test: mysqladmin ping -h localhost -u root --password=$$MYSQL_ROOT_PASSWORD
     ports:
       - "3307:3306"
     networks:
