@@ -20,7 +20,7 @@ API that has ATM Machine functionalities
  - 10_000 withdraw limit per day
  - 500 minimum withdraw
  - 10_000 maximum withdraw
- - 2% of withdrawn amount will be deducted
+ - 2% of withdrawn amount will be deducted.
  
 #### Peer to peer
  - 10_000 peer to peer limit per day
