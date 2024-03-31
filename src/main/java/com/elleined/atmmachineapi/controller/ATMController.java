@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import java.math.BigDecimal;
 
 @RestController
-@RequestMapping("/machine/{currentUserId}")
+@RequestMapping("/users/{currentUserId}")
 @RequiredArgsConstructor
 public class ATMController  {
     private final ATMService atmService;
