@@ -1,9 +1,7 @@
 package com.elleined.atmmachineapi.model;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
 
-import org.antlr.v4.runtime.UnbufferedCharStream;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -33,5 +31,30 @@ class UserTest {
 
         // Assertions
         assertTrue(isBalanceEnough);
+    }
+
+    @Test
+    void isSenderSendingToHimself() {
+        // Expected Value
+
+        // Mock data
+        User sender = User.builder()
+                .id(1)
+                .build();
+
+        User receiver = User.builder()
+                .id(2)
+                .build();
+        // Set up method
+
+        // Stubbing methods
+
+        // Calling the method
+        boolean isSenderSendingToHimself = sender.isSendingToHimSelf(receiver);
+
+        // Behavior Verifications
+
+        // Assertions
+        assertFalse(isSenderSendingToHimself);
     }
 }

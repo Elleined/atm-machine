@@ -1,4 +1,4 @@
-package com.elleined.atmmachineapi.service.machine;
+package com.elleined.atmmachineapi.service.transaction;
 
 import com.elleined.atmmachineapi.exception.resource.ResourceNotFoundException;
 import com.elleined.atmmachineapi.model.User;

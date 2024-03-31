@@ -1,13 +1,10 @@
-package com.elleined.atmmachineapi.service.machine.deposit;
+package com.elleined.atmmachineapi.service.transaction.deposit;
 
 import com.elleined.atmmachineapi.exception.resource.ResourceNotFoundException;
-import com.elleined.atmmachineapi.mapper.transaction.DepositTransactionMapper;
 import com.elleined.atmmachineapi.model.User;
 import com.elleined.atmmachineapi.model.transaction.DepositTransaction;
 import com.elleined.atmmachineapi.model.transaction.Transaction;
 import com.elleined.atmmachineapi.repository.transaction.DepositTransactionRepository;
-import com.elleined.atmmachineapi.request.transaction.DepositTransactionRequest;
-import com.elleined.atmmachineapi.service.machine.TransactionService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -21,9 +18,8 @@ import java.util.Set;
 @RequiredArgsConstructor
 @Slf4j
 @Transactional
-public class DepositTransactionService implements TransactionService<DepositTransaction, DepositTransactionRequest> {
+public class DepositTransactionServiceImpl implements DepositTransactionService {
     private final DepositTransactionRepository depositTransactionRepository;
-    private final DepositTransactionMapper depositTransactionMapper;
 
     @Override
     public DepositTransaction getById(int id) throws ResourceNotFoundException {

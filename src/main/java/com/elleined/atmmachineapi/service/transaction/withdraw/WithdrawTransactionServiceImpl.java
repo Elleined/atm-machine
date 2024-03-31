@@ -1,13 +1,10 @@
-package com.elleined.atmmachineapi.service.machine.withdraw;
+package com.elleined.atmmachineapi.service.transaction.withdraw;
 
 import com.elleined.atmmachineapi.exception.resource.ResourceNotFoundException;
-import com.elleined.atmmachineapi.mapper.transaction.WithdrawTransactionMapper;
 import com.elleined.atmmachineapi.model.User;
 import com.elleined.atmmachineapi.model.transaction.Transaction;
 import com.elleined.atmmachineapi.model.transaction.WithdrawTransaction;
 import com.elleined.atmmachineapi.repository.transaction.WithdrawTransactionRepository;
-import com.elleined.atmmachineapi.request.transaction.WithdrawTransactionRequest;
-import com.elleined.atmmachineapi.service.machine.TransactionService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -21,9 +18,8 @@ import java.util.Set;
 @RequiredArgsConstructor
 @Slf4j
 @Transactional
-public class WithdrawTransactionService implements TransactionService<WithdrawTransaction, WithdrawTransactionRequest> {
+public class WithdrawTransactionServiceImpl implements WithdrawTransactionService {
     private final WithdrawTransactionRepository withdrawTransactionRepository;
-    private final WithdrawTransactionMapper withdrawTransactionMapper;
 
     @Override
     public WithdrawTransaction getById(int id) throws ResourceNotFoundException {

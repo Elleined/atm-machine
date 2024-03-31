@@ -1,4 +1,4 @@
-package com.elleined.atmmachineapi.service.machine.p2p;
+package com.elleined.atmmachineapi.service.transaction.p2p;
 
 import com.elleined.atmmachineapi.exception.resource.ResourceNotFoundException;
 import com.elleined.atmmachineapi.mapper.transaction.PeerToPeerTransactionMapper;

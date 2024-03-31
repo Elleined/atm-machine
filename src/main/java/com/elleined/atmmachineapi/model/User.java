@@ -82,6 +82,10 @@ public class User extends PrimaryKeyIdentity {
         return this.getBalance().compareTo(new BigDecimal(String.valueOf(t))) < 0;
     }
 
+    public boolean isSendingToHimSelf(User receiver) {
+        return this.getId() == receiver.getId() || this.equals(receiver);
+    }
+
     public List<Integer> getAllSentMoneyTransactionIds() {
         return this.getSentMoneyTransactions().stream()
                 .map(Transaction::getId)
