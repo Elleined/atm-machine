@@ -8,26 +8,20 @@ import java.math.BigDecimal;
 
 @Entity
 @Table(name = "app_wallet")
+@NoArgsConstructor
 @Getter
 @Setter
-@Builder
-@AllArgsConstructor
-@NoArgsConstructor
-public class AppWallet {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(
-            name = "app_wallet_id",
-            nullable = false,
-            updatable = false,
-            unique = true
-    )
-    private int id;
+public class AppWallet extends PrimaryKeyIdentity {
 
     @Column(
             name = "app_wallet_balance",
             nullable = false
     )
     private BigDecimal balance;
+
+    @Builder
+    public AppWallet(int id, BigDecimal balance) {
+        super(id);
+        this.balance = balance;
+    }
 }

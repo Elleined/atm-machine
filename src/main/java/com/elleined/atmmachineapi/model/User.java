@@ -11,19 +11,15 @@ import java.util.List;
 
 @Entity
 @Table(name = "tbl_user")
+@NoArgsConstructor
 @Getter
 @Setter
-@Builder
-@AllArgsConstructor
-@NoArgsConstructor
-public class User {
+public class User extends PrimaryKeyIdentity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "user_id")
-    private int id;
-
-    @Column(name = "name")
+    @Column(
+            name = "name",
+            nullable = false
+    )
     private String name;
 
     @Column(
@@ -34,7 +30,10 @@ public class User {
     )
     private String uuid;
 
-    @Column(name = "balance")
+    @Column(
+            name = "balance",
+            nullable = false
+    )
     private BigDecimal balance;
 
     // sender id reference is in peer to peer transaction table
@@ -55,5 +54,17 @@ public class User {
 
     public <T> boolean isBalanceNotEnough(T t) {
         return this.getBalance().compareTo(new BigDecimal(String.valueOf(t))) < 0;
+    }
+
+    @Builder
+    public User(int id, String name, String uuid, BigDecimal balance, List<PeerToPeerTransaction> sentMoneyTransactions, List<PeerToPeerTransaction> receiveMoneyTransactions, List<WithdrawTransaction> withdrawTransactions, List<DepositTransaction> depositTransactions) {
+        super(id);
+        this.name = name;
+        this.uuid = uuid;
+        this.balance = balance;
+        this.sentMoneyTransactions = sentMoneyTransactions;
+        this.receiveMoneyTransactions = receiveMoneyTransactions;
+        this.withdrawTransactions = withdrawTransactions;
+        this.depositTransactions = depositTransactions;
     }
 }

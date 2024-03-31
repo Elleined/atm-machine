@@ -25,7 +25,7 @@ public class DepositTransaction extends Transaction {
             updatable = false,
             nullable = false,
             name = "user_id",
-            referencedColumnName = "user_id"
+            referencedColumnName = "id"
     )
     private User user;
 

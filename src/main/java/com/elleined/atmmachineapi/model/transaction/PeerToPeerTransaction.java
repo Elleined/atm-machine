@@ -25,7 +25,7 @@ public class PeerToPeerTransaction extends Transaction {
             updatable = false,
             nullable = false,
             name = "sender_id",
-            referencedColumnName = "user_id"
+            referencedColumnName = "id"
     )
     private User sender;
 
@@ -34,7 +34,7 @@ public class PeerToPeerTransaction extends Transaction {
             updatable = false,
             nullable = false,
             name = "receiver_id",
-            referencedColumnName = "user_id"
+            referencedColumnName = "id"
     )
     private User receiver;
 

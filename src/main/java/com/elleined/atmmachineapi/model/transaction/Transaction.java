@@ -1,39 +1,16 @@
 package com.elleined.atmmachineapi.model.transaction;
 
+import com.elleined.atmmachineapi.model.PrimaryKeyIdentity;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
-@Entity
-@Table(
-        name = "tbl_transaction",
-        indexes = @Index(name = "trn_idx", columnList = "transaction_reference_number")
-)
-@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+@MappedSuperclass
 @Getter
-@Setter
-@AllArgsConstructor
 @NoArgsConstructor
-public abstract class Transaction {
-
-    @Id
-    @GeneratedValue(
-            strategy = GenerationType.TABLE,
-            generator = "autoIncrement"
-    )
-    @SequenceGenerator(
-            allocationSize = 1,
-            name = "autoIncrement",
-            sequenceName = "autoIncrement"
-    )
-    @Column(name = "transaction_id")
-    private int id;
-
+public abstract class Transaction extends PrimaryKeyIdentity {
 
     @Column(
             name = "transaction_reference_number",
@@ -56,4 +33,11 @@ public abstract class Transaction {
             nullable = false
     )
     private LocalDateTime transactionDate;
+
+    public Transaction(int id, String trn, BigDecimal amount, LocalDateTime transactionDate) {
+        super(id);
+        this.trn = trn;
+        this.amount = amount;
+        this.transactionDate = transactionDate;
+    }
 }

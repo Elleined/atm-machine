@@ -25,7 +25,7 @@ public class WithdrawTransaction extends Transaction {
             nullable = false,
             updatable = false,
             name = "user_id",
-            referencedColumnName = "user_id"
+            referencedColumnName = "id"
     )
     private User user;
 
