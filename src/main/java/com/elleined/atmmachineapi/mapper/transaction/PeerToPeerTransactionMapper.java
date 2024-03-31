@@ -27,8 +27,8 @@ public interface PeerToPeerTransactionMapper extends TransactionMapper<PeerToPee
             @Mapping(target = "trn", expression = "java(java.util.UUID.randomUUID().toString())"),
             @Mapping(target = "amount", source = "amount"),
             @Mapping(target = "transactionDate", expression = "java(java.time.LocalDateTime.now())"),
-            @Mapping(target = "receiverId", source = "receiver"),
-            @Mapping(target = "senderId", source = "sender")
+            @Mapping(target = "receiver", source = "receiver"),
+            @Mapping(target = "sender", source = "sender")
     })
     PeerToPeerTransaction toEntity(PeerToPeerTransactionRequest request);
 }

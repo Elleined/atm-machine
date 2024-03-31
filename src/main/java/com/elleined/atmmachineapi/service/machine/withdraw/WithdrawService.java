@@ -73,7 +73,7 @@ public class WithdrawService implements ATMLimitValidator, ATMLimitPerDayValidat
                 .build();
 
         WithdrawTransaction withdrawTransaction = withdrawTransactionMapper.toEntity(withdrawTransactionRequest);
-        withdrawTransactionService.save(withdrawTransactionRequest);
+        withdrawTransactionService.save(withdrawTransaction);
         log.debug("User with id of {} withdraw amounting {} from {} because of withdrawal fee of {} which is the {}% of withdrawn amount and has new balance of {} from {}", currentUser.getId(), finalWithdrawalAmount, withdrawalAmount, withdrawalFee, FeeService.WITHDRAWAL_FEE_PERCENTAGE, currentUser.getBalance(), oldBalance);
         return withdrawTransaction;
     }

@@ -28,7 +28,7 @@ public interface UserMapper extends CustomMapper<User, UserDTO, UserRequest> {
             @Mapping(target = "id", ignore = true),
             @Mapping(target = "name", source = "name"),
             @Mapping(target = "uuid", expression = "java(java.util.UUID.randomUUID().toString())"),
-            @Mapping(target = "balance", expression = "java(BigDecimal.ZERO)"),
+            @Mapping(target = "balance", expression = "java(java.math.BigDecimal.ZERO)"),
             @Mapping(target = "sentMoneyTransactions", expression = "java(new java.util.ArrayList<>())"),
             @Mapping(target = "receiveMoneyTransactions", expression = "java(new java.util.ArrayList<>())"),
             @Mapping(target = "withdrawTransactions", expression = "java(new java.util.ArrayList<>())"),

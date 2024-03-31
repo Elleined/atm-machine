@@ -26,7 +26,7 @@ public interface DepositTransactionMapper extends TransactionMapper<DepositTrans
             @Mapping(target = "trn", expression = "java(java.util.UUID.randomUUID().toString())"),
             @Mapping(target = "amount", source = "amount"),
             @Mapping(target = "transactionDate", expression = "java(java.time.LocalDateTime.now())"),
-            @Mapping(target = "userId", source = "user")
+            @Mapping(target = "user", source = "user")
     })
     DepositTransaction toEntity(DepositTransactionRequest request);
 }

@@ -43,8 +43,7 @@ public class WithdrawTransactionService implements TransactionService<WithdrawTr
     }
 
     @Override
-    public WithdrawTransaction save(WithdrawTransactionRequest withdrawTransactionRequest) {
-        WithdrawTransaction withdrawTransaction = withdrawTransactionMapper.toEntity(withdrawTransactionRequest);
+    public WithdrawTransaction save(WithdrawTransaction withdrawTransaction) {
         withdrawTransactionRepository.save(withdrawTransaction);
         return withdrawTransaction;
     }

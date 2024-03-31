@@ -11,8 +11,7 @@ import java.util.Set;
 
 public interface TransactionService<T extends Transaction, U extends TransactionRequest> {
 
-    T save(U request);
-
+    T save(T t);
     T getById(int id) throws ResourceNotFoundException;
     List<T> getAllById(Set<Integer> ids);
     List<T> getAll(User currentUser);

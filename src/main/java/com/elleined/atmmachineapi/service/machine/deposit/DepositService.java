@@ -67,7 +67,7 @@ public class DepositService implements ATMLimitValidator, ATMLimitPerDayValidato
                 .build();
 
         DepositTransaction depositTransaction = depositTransactionMapper.toEntity(depositTransactionRequest);
-        depositTransactionService.save(depositTransactionRequest);
+        depositTransactionService.save(depositTransaction);
         log.debug("User with id of {} deposited amounting {} from {} because of deposit fee of {} which is the {}% of the deposited amount and now has new balance of {} from {}", currentUser.getId(), finalDepositedAmount, depositedAmount, depositFee, FeeService.DEPOSIT_FEE_PERCENTAGE, currentUser.getBalance(), oldBalance);
         return depositTransaction;
     }

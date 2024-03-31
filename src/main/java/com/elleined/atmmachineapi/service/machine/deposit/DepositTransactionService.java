@@ -43,8 +43,7 @@ public class DepositTransactionService implements TransactionService<DepositTran
     }
 
     @Override
-    public DepositTransaction save(DepositTransactionRequest depositTransactionRequest) {
-        DepositTransaction depositTransaction = depositTransactionMapper.toEntity(depositTransactionRequest);
+    public DepositTransaction save(DepositTransaction depositTransaction) {
         depositTransactionRepository.save(depositTransaction);
         return depositTransaction;
     }

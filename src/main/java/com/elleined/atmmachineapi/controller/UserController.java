@@ -3,6 +3,7 @@ package com.elleined.atmmachineapi.controller;
 import com.elleined.atmmachineapi.dto.UserDTO;
 import com.elleined.atmmachineapi.mapper.UserMapper;
 import com.elleined.atmmachineapi.model.User;
+import com.elleined.atmmachineapi.request.user.UserRequest;
 import com.elleined.atmmachineapi.service.user.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -17,8 +18,8 @@ public class UserController {
     private final UserMapper userMapper;
 
     @PostMapping
-    public UserDTO save(@Valid @RequestBody UserDTO userDTO) {
-        User savedUser = userService.save(userDTO);
+    public UserDTO save(@Valid @RequestBody UserRequest userRequest) {
+        User savedUser = userService.save(userRequest);
         return userMapper.toDTO(savedUser);
     }
 

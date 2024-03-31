@@ -6,7 +6,6 @@ import com.elleined.atmmachineapi.model.User;
 import com.elleined.atmmachineapi.model.transaction.PeerToPeerTransaction;
 import com.elleined.atmmachineapi.model.transaction.Transaction;
 import com.elleined.atmmachineapi.repository.transaction.PeerToPeerTransactionRepository;
-import com.elleined.atmmachineapi.request.transaction.PeerToPeerTransactionRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -27,8 +26,7 @@ public class PeerToPeerTransactionServiceImpl implements PeerToPeerTransactionSe
     private final PeerToPeerTransactionMapper peerToPeerTransactionMapper;
 
     @Override
-    public PeerToPeerTransaction save(PeerToPeerTransactionRequest peerToPeerTransactionRequest) {
-        PeerToPeerTransaction peerToPeerTransaction = peerToPeerTransactionMapper.toEntity(peerToPeerTransactionRequest);
+    public PeerToPeerTransaction save(PeerToPeerTransaction peerToPeerTransaction) {
         peerToPeerTransactionRepository.save(peerToPeerTransaction);
         log.debug("Peer to peer transaction saved successfully with trn of {}", peerToPeerTransaction.getTrn());
         return peerToPeerTransaction;
