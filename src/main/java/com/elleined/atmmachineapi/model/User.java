@@ -60,7 +60,14 @@ public class User extends PrimaryKeyIdentity {
     List<DepositTransaction> depositTransactions;
 
     @Builder
-    public User(int id, String name, String uuid, BigDecimal balance, List<PeerToPeerTransaction> sentMoneyTransactions, List<PeerToPeerTransaction> receiveMoneyTransactions, List<WithdrawTransaction> withdrawTransactions, List<DepositTransaction> depositTransactions) {
+    public User(int id,
+                String name,
+                String uuid,
+                BigDecimal balance,
+                List<PeerToPeerTransaction> sentMoneyTransactions,
+                List<PeerToPeerTransaction> receiveMoneyTransactions,
+                List<WithdrawTransaction> withdrawTransactions,
+                List<DepositTransaction> depositTransactions) {
         super(id);
         this.name = name;
         this.uuid = uuid;

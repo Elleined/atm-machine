@@ -1,4 +1,0 @@
-Transaction Limits
-Incorrect Recipient Information
-Transaction Fees
-Transaction Confirmation
