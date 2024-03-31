@@ -1,7 +1,6 @@
 package com.elleined.atmmachineapi.service.transaction.p2p;
 
 import com.elleined.atmmachineapi.exception.resource.ResourceNotFoundException;
-import com.elleined.atmmachineapi.mapper.transaction.PeerToPeerTransactionMapper;
 import com.elleined.atmmachineapi.model.User;
 import com.elleined.atmmachineapi.model.transaction.PeerToPeerTransaction;
 import com.elleined.atmmachineapi.model.transaction.Transaction;
@@ -23,7 +22,6 @@ import java.util.stream.Stream;
 @Transactional
 public class PeerToPeerTransactionServiceImpl implements PeerToPeerTransactionService {
     private final PeerToPeerTransactionRepository peerToPeerTransactionRepository;
-    private final PeerToPeerTransactionMapper peerToPeerTransactionMapper;
 
     @Override
     public PeerToPeerTransaction save(PeerToPeerTransaction peerToPeerTransaction) {
@@ -44,15 +42,7 @@ public class PeerToPeerTransactionServiceImpl implements PeerToPeerTransactionSe
 
     @Override
     public List<PeerToPeerTransaction> getAll(User currentUser) {
-        List<PeerToPeerTransaction> sentMoneyTransactions = currentUser.getSentMoneyTransactions().stream()
-                .sorted(Comparator.comparing(Transaction::getTransactionDate).reversed())
-                .toList();
-
-        List<PeerToPeerTransaction> receiveMoneyTransactions = currentUser.getReceiveMoneyTransactions().stream()
-                .sorted(Comparator.comparing(Transaction::getTransactionDate).reversed())
-                .toList();
-
-        return Stream.of(sentMoneyTransactions, receiveMoneyTransactions)
+        return Stream.of(getAllSentMoneyTransactions(currentUser), getAllReceiveMoneyTransactions(currentUser))
                 .flatMap(Collection::stream)
                 .toList();
     }

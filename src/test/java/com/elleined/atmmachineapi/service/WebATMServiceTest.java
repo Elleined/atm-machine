@@ -1,8 +1,5 @@
 package com.elleined.atmmachineapi.service;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
-
 import com.elleined.atmmachineapi.model.User;
 import com.elleined.atmmachineapi.model.transaction.DepositTransaction;
 import com.elleined.atmmachineapi.model.transaction.PeerToPeerTransaction;
@@ -10,7 +7,6 @@ import com.elleined.atmmachineapi.model.transaction.WithdrawTransaction;
 import com.elleined.atmmachineapi.service.machine.deposit.DepositService;
 import com.elleined.atmmachineapi.service.machine.p2p.PeerToPeerService;
 import com.elleined.atmmachineapi.service.machine.withdraw.WithdrawService;
-import com.elleined.atmmachineapi.service.user.UserService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -19,6 +15,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class WebATMServiceTest {

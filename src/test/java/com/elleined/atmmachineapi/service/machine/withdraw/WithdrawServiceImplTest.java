@@ -1,20 +1,14 @@
 package com.elleined.atmmachineapi.service.machine.withdraw;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
-
 import com.elleined.atmmachineapi.mapper.transaction.WithdrawTransactionMapper;
 import com.elleined.atmmachineapi.model.User;
-import com.elleined.atmmachineapi.model.transaction.DepositTransaction;
 import com.elleined.atmmachineapi.model.transaction.WithdrawTransaction;
 import com.elleined.atmmachineapi.repository.UserRepository;
-import com.elleined.atmmachineapi.request.transaction.DepositTransactionRequest;
 import com.elleined.atmmachineapi.request.transaction.WithdrawTransactionRequest;
 import com.elleined.atmmachineapi.service.AppWalletService;
 import com.elleined.atmmachineapi.service.fee.FeeService;
 import com.elleined.atmmachineapi.service.transaction.withdraw.WithdrawTransactionServiceImpl;
 import com.elleined.atmmachineapi.service.validator.withdraw.WithdrawValidator;
-import org.hibernate.mapping.Bag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -22,6 +16,9 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.math.BigDecimal;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class WithdrawServiceImplTest {

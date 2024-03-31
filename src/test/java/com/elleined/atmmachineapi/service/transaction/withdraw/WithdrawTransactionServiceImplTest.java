@@ -1,8 +1,8 @@
-package com.elleined.atmmachineapi.service.transaction.deposit;
+package com.elleined.atmmachineapi.service.transaction.withdraw;
 
 import com.elleined.atmmachineapi.model.User;
-import com.elleined.atmmachineapi.model.transaction.DepositTransaction;
-import com.elleined.atmmachineapi.repository.transaction.DepositTransactionRepository;
+import com.elleined.atmmachineapi.model.transaction.WithdrawTransaction;
+import com.elleined.atmmachineapi.repository.transaction.WithdrawTransactionRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -19,32 +19,31 @@ import static org.junit.jupiter.api.Assertions.assertIterableEquals;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-class DepositTransactionServiceImplTest {
-
+class WithdrawTransactionServiceImplTest {
     @Mock
-    private DepositTransactionRepository depositTransactionRepository;
+    private WithdrawTransactionRepository withdrawTransactionRepository;
     @InjectMocks
-    private DepositTransactionServiceImpl depositTransactionService;
+    private WithdrawTransactionServiceImpl withdrawTransactionService;
 
     @Test
     void getById() {
         // Expected Value
 
         // Mock data
-        DepositTransaction depositTransaction = new DepositTransaction();
+        WithdrawTransaction withdrawTransaction = new WithdrawTransaction();
 
         // Set up method
 
         // Stubbing methods
-        when(depositTransactionRepository.findById(anyInt())).thenReturn(Optional.of(depositTransaction));
+        when(withdrawTransactionRepository.findById(anyInt())).thenReturn(Optional.of(withdrawTransaction));
 
         // Calling the method
-        depositTransactionService.getById(1);
+        withdrawTransactionService.getById(1);
 
         // Behavior Verifications
 
         // Assertions
-        verify(depositTransactionRepository).findById(anyInt());
+        verify(withdrawTransactionRepository).findById(anyInt());
     }
 
     @Test
@@ -56,15 +55,15 @@ class DepositTransactionServiceImplTest {
         // Set up method
 
         // Stubbing methods
-        when(depositTransactionRepository.findAllById(anySet())).thenReturn(new ArrayList<>());
+        when(withdrawTransactionRepository.findAllById(anySet())).thenReturn(new ArrayList<>());
 
         // Calling the method
-        depositTransactionService.getAllById(new HashSet<>());
+        withdrawTransactionService.getAllById(new HashSet<>());
 
         // Behavior Verifications
 
         // Assertions
-        verify(depositTransactionRepository).findAllById(anySet());
+        verify(withdrawTransactionRepository).findAllById(anySet());
     }
 
     @Test
@@ -74,23 +73,23 @@ class DepositTransactionServiceImplTest {
         // Mock data
         User currentUser = new User();
 
-        DepositTransaction depositTransaction1 = DepositTransaction.builder()
+        WithdrawTransaction withdrawTransaction1 = WithdrawTransaction.builder()
                 .transactionDate(LocalDateTime.now().plusDays(1))
                 .build();
 
-        DepositTransaction depositTransaction2 = DepositTransaction.builder()
+        WithdrawTransaction withdrawTransaction2 = WithdrawTransaction.builder()
                 .transactionDate(LocalDateTime.now().plusDays(2))
                 .build();
 
-        List<DepositTransaction> rawTransactions = List.of(depositTransaction1, depositTransaction2);
-        currentUser.setDepositTransactions(rawTransactions);
+        List<WithdrawTransaction> rawTransactions = List.of(withdrawTransaction1, withdrawTransaction2);
+        currentUser.setWithdrawTransactions(rawTransactions);
         // Set up method
-        List<DepositTransaction> expectedTransactions = List.of(depositTransaction2, depositTransaction1);
+        List<WithdrawTransaction> expectedTransactions = List.of(withdrawTransaction2, withdrawTransaction1);
 
         // Stubbing methods
 
         // Calling the method
-        List<DepositTransaction> actualTransactions = depositTransactionService.getAll(currentUser);
+        List<WithdrawTransaction> actualTransactions = withdrawTransactionService.getAll(currentUser);
 
         // Behavior Verifications
 
@@ -107,13 +106,13 @@ class DepositTransactionServiceImplTest {
         // Set up method
 
         // Stubbing methods
-        when(depositTransactionRepository.save(any(DepositTransaction.class))).thenReturn(new DepositTransaction());
+        when(withdrawTransactionRepository.save(any(WithdrawTransaction.class))).thenReturn(new WithdrawTransaction());
 
         // Calling the method
-        depositTransactionService.save(new DepositTransaction());
+        withdrawTransactionService.save(new WithdrawTransaction());
 
         // Behavior Verifications
-        verify(depositTransactionRepository).save(any(DepositTransaction.class));
+        verify(withdrawTransactionRepository).save(any(WithdrawTransaction.class));
 
         // Assertions
     }

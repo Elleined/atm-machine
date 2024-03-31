@@ -1,8 +1,5 @@
 package com.elleined.atmmachineapi.service;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
-
 import com.elleined.atmmachineapi.model.AppWallet;
 import com.elleined.atmmachineapi.repository.AppWalletRepository;
 import org.junit.jupiter.api.Test;
@@ -13,6 +10,9 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.math.BigDecimal;
 import java.util.Optional;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class AppWalletServiceTest {

@@ -1,8 +1,5 @@
 package com.elleined.atmmachineapi.service.machine.p2p;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
-
 import com.elleined.atmmachineapi.mapper.transaction.PeerToPeerTransactionMapper;
 import com.elleined.atmmachineapi.model.User;
 import com.elleined.atmmachineapi.model.transaction.PeerToPeerTransaction;
@@ -20,6 +17,9 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class PeerToPeerServiceImplTest {
