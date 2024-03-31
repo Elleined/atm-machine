@@ -1,7 +1,7 @@
 package com.elleined.atmmachineapi.service.user;
 
 import com.elleined.atmmachineapi.dto.UserDTO;
-import com.elleined.atmmachineapi.exception.ResourceNotFoundException;
+import com.elleined.atmmachineapi.exception.resource.ResourceNotFoundException;
 import com.elleined.atmmachineapi.mapper.UserMapper;
 import com.elleined.atmmachineapi.model.User;
 import com.elleined.atmmachineapi.repository.UserRepository;

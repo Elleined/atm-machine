@@ -1,6 +1,6 @@
 package com.elleined.atmmachineapi.service.atm.deposit;
 
-import com.elleined.atmmachineapi.exception.NotValidAmountException;
+import com.elleined.atmmachineapi.exception.amount.NotValidAmountException;
 import com.elleined.atmmachineapi.exception.amount.ATMMaximumAmountException;
 import com.elleined.atmmachineapi.exception.amount.ATMMinimumAmountException;
 import com.elleined.atmmachineapi.exception.limit.LimitException;

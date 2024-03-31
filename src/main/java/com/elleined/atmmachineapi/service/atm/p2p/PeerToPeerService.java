@@ -1,7 +1,7 @@
 package com.elleined.atmmachineapi.service.atm.p2p;
 
 import com.elleined.atmmachineapi.exception.InsufficientFundException;
-import com.elleined.atmmachineapi.exception.NotValidAmountException;
+import com.elleined.atmmachineapi.exception.amount.NotValidAmountException;
 import com.elleined.atmmachineapi.exception.SendingToHimselfException;
 import com.elleined.atmmachineapi.exception.limit.LimitException;
 import com.elleined.atmmachineapi.exception.limit.LimitExceptionPerDayException;

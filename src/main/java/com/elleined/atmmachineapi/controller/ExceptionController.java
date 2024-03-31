@@ -2,7 +2,8 @@ package com.elleined.atmmachineapi.controller;
 
 import com.elleined.atmmachineapi.dto.APIResponse;
 import com.elleined.atmmachineapi.exception.ATMException;
-import com.elleined.atmmachineapi.exception.ResourceNotFoundException;
+import com.elleined.atmmachineapi.exception.resource.ResourceException;
+import com.elleined.atmmachineapi.exception.resource.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindException;
@@ -15,7 +16,7 @@ import java.util.List;
 @ControllerAdvice
 public class ExceptionController {
 
-    @ExceptionHandler(ResourceNotFoundException.class)
+    @ExceptionHandler(ResourceException.class)
     public ResponseEntity<APIResponse> handleResourceNotFoundException(ResourceNotFoundException ex) {
         var response = new APIResponse(HttpStatus.NOT_FOUND, ex.getMessage());
         return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);

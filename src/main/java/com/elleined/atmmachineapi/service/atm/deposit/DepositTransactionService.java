@@ -1,6 +1,6 @@
 package com.elleined.atmmachineapi.service.atm.deposit;
 
-import com.elleined.atmmachineapi.exception.ResourceNotFoundException;
+import com.elleined.atmmachineapi.exception.resource.ResourceNotFoundException;
 import com.elleined.atmmachineapi.model.User;
 import com.elleined.atmmachineapi.model.transaction.DepositTransaction;
 import com.elleined.atmmachineapi.model.transaction.Transaction;
