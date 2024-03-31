@@ -1,10 +1,9 @@
 package com.elleined.atmmachineapi.dto;
 
-import com.elleined.atmmachineapi.model.transaction.DepositTransaction;
-import com.elleined.atmmachineapi.model.transaction.PeerToPeerTransaction;
-import com.elleined.atmmachineapi.model.transaction.WithdrawTransaction;
-import jakarta.validation.constraints.NotBlank;
-import lombok.*;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.util.List;

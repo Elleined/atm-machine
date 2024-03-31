@@ -2,7 +2,6 @@ package com.elleined.atmmachineapi.mapper;
 
 import com.elleined.atmmachineapi.dto.UserDTO;
 import com.elleined.atmmachineapi.model.User;
-import com.elleined.atmmachineapi.model.transaction.PeerToPeerTransaction;
 import com.elleined.atmmachineapi.request.user.UserRequest;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;

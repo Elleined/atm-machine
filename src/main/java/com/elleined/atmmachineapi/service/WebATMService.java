@@ -1,16 +1,16 @@
 package com.elleined.atmmachineapi.service;
 
 import com.elleined.atmmachineapi.exception.InsufficientFundException;
-import com.elleined.atmmachineapi.exception.amount.NotValidAmountException;
 import com.elleined.atmmachineapi.exception.SendingToHimselfException;
+import com.elleined.atmmachineapi.exception.amount.NotValidAmountException;
 import com.elleined.atmmachineapi.exception.limit.LimitException;
 import com.elleined.atmmachineapi.model.User;
 import com.elleined.atmmachineapi.model.transaction.DepositTransaction;
 import com.elleined.atmmachineapi.model.transaction.PeerToPeerTransaction;
 import com.elleined.atmmachineapi.model.transaction.WithdrawTransaction;
-import com.elleined.atmmachineapi.service.atm.deposit.DepositService;
-import com.elleined.atmmachineapi.service.atm.p2p.PeerToPeerService;
-import com.elleined.atmmachineapi.service.atm.withdraw.WithdrawService;
+import com.elleined.atmmachineapi.service.machine.deposit.DepositService;
+import com.elleined.atmmachineapi.service.machine.p2p.PeerToPeerService;
+import com.elleined.atmmachineapi.service.machine.withdraw.WithdrawService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Primary;

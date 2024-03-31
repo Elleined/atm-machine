@@ -1,17 +1,17 @@
-package com.elleined.atmmachineapi.service.atm;
+package com.elleined.atmmachineapi.service.machine;
 
 import com.elleined.atmmachineapi.exception.resource.ResourceNotFoundException;
 import com.elleined.atmmachineapi.model.User;
 import com.elleined.atmmachineapi.model.transaction.Transaction;
+import com.elleined.atmmachineapi.request.transaction.TransactionRequest;
 
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
 
-public interface TransactionService<T extends Transaction> {
+public interface TransactionService<T extends Transaction, U extends TransactionRequest> {
 
-    T save(User currentUser, BigDecimal amount);
+    T save(U request);
 
     T getById(int id) throws ResourceNotFoundException;
     List<T> getAllById(Set<Integer> ids);

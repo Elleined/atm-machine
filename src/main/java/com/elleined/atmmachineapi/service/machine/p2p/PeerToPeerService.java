@@ -1,8 +1,8 @@
-package com.elleined.atmmachineapi.service.atm.p2p;
+package com.elleined.atmmachineapi.service.machine.p2p;
 
 import com.elleined.atmmachineapi.exception.InsufficientFundException;
-import com.elleined.atmmachineapi.exception.amount.NotValidAmountException;
 import com.elleined.atmmachineapi.exception.SendingToHimselfException;
+import com.elleined.atmmachineapi.exception.amount.NotValidAmountException;
 import com.elleined.atmmachineapi.exception.limit.LimitException;
 import com.elleined.atmmachineapi.exception.limit.LimitExceptionPerDayException;
 import com.elleined.atmmachineapi.model.User;
@@ -10,10 +10,10 @@ import com.elleined.atmmachineapi.model.transaction.PeerToPeerTransaction;
 import com.elleined.atmmachineapi.model.transaction.Transaction;
 import com.elleined.atmmachineapi.repository.UserRepository;
 import com.elleined.atmmachineapi.service.AppWalletService;
-import com.elleined.atmmachineapi.service.atm.TransactionService;
-import com.elleined.atmmachineapi.service.atm.validator.ATMLimitPerDayValidator;
-import com.elleined.atmmachineapi.service.atm.validator.ATMValidator;
 import com.elleined.atmmachineapi.service.fee.FeeService;
+import com.elleined.atmmachineapi.service.machine.TransactionService;
+import com.elleined.atmmachineapi.service.machine.validator.ATMLimitPerDayValidator;
+import com.elleined.atmmachineapi.service.machine.validator.ATMValidator;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -34,7 +34,7 @@ public class PeerToPeerService implements ATMLimitPerDayValidator {
     private final UserRepository userRepository;
     private final FeeService feeService;
     private final ATMValidator atmValidator;
-    private final P2PTransactionService p2PTransactionService;
+    private final PeerToPeerTransactionService peerToPeerTransactionService;
     private final AppWalletService appWalletService;
 
     public PeerToPeerTransaction peerToPeer(User sender, User receiver, @NonNull BigDecimal sentAmount)
@@ -56,7 +56,7 @@ public class PeerToPeerService implements ATMLimitPerDayValidator {
         updateSenderBalance(sender, sentAmount);
         updateRecipientBalance(receiver, finalSentAmount);
         appWalletService.addAndSaveBalance(p2pFee);
-        PeerToPeerTransaction peerToPeerTransaction = p2PTransactionService.save(sender, receiver, sentAmount);
+        PeerToPeerTransaction peerToPeerTransaction = peerToPeerTransactionService.save(sender, receiver, sentAmount);
 
         log.debug("Sender with id of {} sent money amounting {} from {} because of p2p fee of {} which is the {}% of sent amount.", sender.getId(), finalSentAmount, sentAmount, p2pFee, FeeService.P2P_FEE_PERCENTAGE);
         log.debug("Sender with id of {} has now new balance of {} from {}.", sender.getId(), sender.getBalance(), senderOldBalance);

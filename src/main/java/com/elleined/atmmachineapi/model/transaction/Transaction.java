@@ -1,8 +1,10 @@
 package com.elleined.atmmachineapi.model.transaction;
 
 import com.elleined.atmmachineapi.model.PrimaryKeyIdentity;
-import jakarta.persistence.*;
-import lombok.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.MappedSuperclass;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;

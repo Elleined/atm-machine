@@ -1,22 +1,24 @@
-package com.elleined.atmmachineapi.service.atm.withdraw;
+package com.elleined.atmmachineapi.service.machine.withdraw;
 
 
 import com.elleined.atmmachineapi.exception.InsufficientFundException;
-import com.elleined.atmmachineapi.exception.amount.NotValidAmountException;
 import com.elleined.atmmachineapi.exception.amount.ATMMaximumAmountException;
 import com.elleined.atmmachineapi.exception.amount.ATMMinimumAmountException;
+import com.elleined.atmmachineapi.exception.amount.NotValidAmountException;
 import com.elleined.atmmachineapi.exception.limit.LimitException;
 import com.elleined.atmmachineapi.exception.limit.LimitExceptionPerDayException;
+import com.elleined.atmmachineapi.mapper.transaction.WithdrawTransactionMapper;
 import com.elleined.atmmachineapi.model.User;
 import com.elleined.atmmachineapi.model.transaction.Transaction;
 import com.elleined.atmmachineapi.model.transaction.WithdrawTransaction;
 import com.elleined.atmmachineapi.repository.UserRepository;
+import com.elleined.atmmachineapi.request.transaction.WithdrawTransactionRequest;
 import com.elleined.atmmachineapi.service.AppWalletService;
-import com.elleined.atmmachineapi.service.atm.TransactionService;
-import com.elleined.atmmachineapi.service.atm.validator.ATMLimitPerDayValidator;
-import com.elleined.atmmachineapi.service.atm.validator.ATMLimitValidator;
-import com.elleined.atmmachineapi.service.atm.validator.ATMValidator;
 import com.elleined.atmmachineapi.service.fee.FeeService;
+import com.elleined.atmmachineapi.service.machine.TransactionService;
+import com.elleined.atmmachineapi.service.machine.validator.ATMLimitPerDayValidator;
+import com.elleined.atmmachineapi.service.machine.validator.ATMLimitValidator;
+import com.elleined.atmmachineapi.service.machine.validator.ATMValidator;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.lang.NonNull;
@@ -41,6 +43,7 @@ public class WithdrawService implements ATMLimitValidator, ATMLimitPerDayValidat
     private final ATMValidator atmValidator;
 
     private final WithdrawTransactionService withdrawTransactionService;
+    private final WithdrawTransactionMapper withdrawTransactionMapper;
 
     private final FeeService feeService;
     private final AppWalletService appWalletService;
@@ -64,7 +67,13 @@ public class WithdrawService implements ATMLimitValidator, ATMLimitPerDayValidat
         userRepository.save(currentUser);
         appWalletService.addAndSaveBalance(withdrawalFee);
 
-        WithdrawTransaction withdrawTransaction = withdrawTransactionService.save(currentUser, withdrawalAmount);
+        WithdrawTransactionRequest withdrawTransactionRequest = WithdrawTransactionRequest.builder()
+                .amount(withdrawalAmount)
+                .user(currentUser)
+                .build();
+
+        WithdrawTransaction withdrawTransaction = withdrawTransactionMapper.toEntity(withdrawTransactionRequest);
+        withdrawTransactionService.save(withdrawTransactionRequest);
         log.debug("User with id of {} withdraw amounting {} from {} because of withdrawal fee of {} which is the {}% of withdrawn amount and has new balance of {} from {}", currentUser.getId(), finalWithdrawalAmount, withdrawalAmount, withdrawalFee, FeeService.WITHDRAWAL_FEE_PERCENTAGE, currentUser.getBalance(), oldBalance);
         return withdrawTransaction;
     }

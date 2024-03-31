@@ -1,10 +1,10 @@
 package com.elleined.atmmachineapi.service.user;
 
-import com.elleined.atmmachineapi.dto.UserDTO;
 import com.elleined.atmmachineapi.exception.resource.ResourceNotFoundException;
 import com.elleined.atmmachineapi.mapper.UserMapper;
 import com.elleined.atmmachineapi.model.User;
 import com.elleined.atmmachineapi.repository.UserRepository;
+import com.elleined.atmmachineapi.request.user.UserRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -22,7 +22,7 @@ public class UserServiceImpl implements UserService {
     private final UserMapper userMapper;
 
     @Override
-    public boolean isUserExists(int userId) {
+    public boolean isExists(int userId) {
         return userRepository.existsById(userId);
     }
 
@@ -34,14 +34,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User save(UserDTO userDTO) {
-        User user = userMapper.toEntity(userDTO);
+    public User save(UserRequest userRequest) {
+        User user = userMapper.toEntity(userRequest);
         return userRepository.save(user);
-    }
-
-    @Override
-    public void save(User user) {
-        userRepository.save(user);
     }
 
     @Override

@@ -1,20 +1,22 @@
-package com.elleined.atmmachineapi.service.atm.deposit;
+package com.elleined.atmmachineapi.service.machine.deposit;
 
-import com.elleined.atmmachineapi.exception.amount.NotValidAmountException;
 import com.elleined.atmmachineapi.exception.amount.ATMMaximumAmountException;
 import com.elleined.atmmachineapi.exception.amount.ATMMinimumAmountException;
+import com.elleined.atmmachineapi.exception.amount.NotValidAmountException;
 import com.elleined.atmmachineapi.exception.limit.LimitException;
 import com.elleined.atmmachineapi.exception.limit.LimitExceptionPerDayException;
+import com.elleined.atmmachineapi.mapper.transaction.DepositTransactionMapper;
 import com.elleined.atmmachineapi.model.User;
 import com.elleined.atmmachineapi.model.transaction.DepositTransaction;
 import com.elleined.atmmachineapi.model.transaction.Transaction;
 import com.elleined.atmmachineapi.repository.UserRepository;
+import com.elleined.atmmachineapi.request.transaction.DepositTransactionRequest;
 import com.elleined.atmmachineapi.service.AppWalletService;
-import com.elleined.atmmachineapi.service.atm.TransactionService;
-import com.elleined.atmmachineapi.service.atm.validator.ATMLimitPerDayValidator;
-import com.elleined.atmmachineapi.service.atm.validator.ATMLimitValidator;
-import com.elleined.atmmachineapi.service.atm.validator.ATMValidator;
 import com.elleined.atmmachineapi.service.fee.FeeService;
+import com.elleined.atmmachineapi.service.machine.TransactionService;
+import com.elleined.atmmachineapi.service.machine.validator.ATMLimitPerDayValidator;
+import com.elleined.atmmachineapi.service.machine.validator.ATMLimitValidator;
+import com.elleined.atmmachineapi.service.machine.validator.ATMValidator;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.lang.NonNull;
@@ -38,6 +40,7 @@ public class DepositService implements ATMLimitValidator, ATMLimitPerDayValidato
 
     private final ATMValidator atmValidator;
     private final DepositTransactionService depositTransactionService;
+    private final DepositTransactionMapper depositTransactionMapper;
     private final FeeService feeService;
 
     private final AppWalletService appWalletService;
@@ -58,7 +61,13 @@ public class DepositService implements ATMLimitValidator, ATMLimitPerDayValidato
         userRepository.save(currentUser);
         appWalletService.addAndSaveBalance(depositFee);
 
-        DepositTransaction depositTransaction = depositTransactionService.save(currentUser, depositedAmount);
+        DepositTransactionRequest depositTransactionRequest = DepositTransactionRequest.builder()
+                .amount(depositedAmount)
+                .user(currentUser)
+                .build();
+
+        DepositTransaction depositTransaction = depositTransactionMapper.toEntity(depositTransactionRequest);
+        depositTransactionService.save(depositTransactionRequest);
         log.debug("User with id of {} deposited amounting {} from {} because of deposit fee of {} which is the {}% of the deposited amount and now has new balance of {} from {}", currentUser.getId(), finalDepositedAmount, depositedAmount, depositFee, FeeService.DEPOSIT_FEE_PERCENTAGE, currentUser.getBalance(), oldBalance);
         return depositTransaction;
     }

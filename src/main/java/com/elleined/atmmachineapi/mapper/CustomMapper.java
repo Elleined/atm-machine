@@ -1,6 +1,5 @@
 package com.elleined.atmmachineapi.mapper;
 
-import com.elleined.atmmachineapi.dto.DTO;
 import com.elleined.atmmachineapi.model.PrimaryKeyIdentity;
 import com.elleined.atmmachineapi.request.Request;
 

@@ -4,9 +4,9 @@ import com.elleined.atmmachineapi.dto.transaction.DepositTransactionDTO;
 import com.elleined.atmmachineapi.dto.transaction.PeerToPeerTransactionDTO;
 import com.elleined.atmmachineapi.dto.transaction.WithdrawTransactionDTO;
 import com.elleined.atmmachineapi.model.User;
-import com.elleined.atmmachineapi.service.atm.deposit.DepositTransactionService;
-import com.elleined.atmmachineapi.service.atm.p2p.P2PTransactionService;
-import com.elleined.atmmachineapi.service.atm.withdraw.WithdrawTransactionService;
+import com.elleined.atmmachineapi.service.machine.deposit.DepositTransactionService;
+import com.elleined.atmmachineapi.service.machine.p2p.PeerToPeerTransactionService;
+import com.elleined.atmmachineapi.service.machine.withdraw.WithdrawTransactionService;
 import com.elleined.atmmachineapi.service.user.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,7 +24,7 @@ public class TransactionController {
 
     private final WithdrawTransactionService withdrawTransactionService;
     private final DepositTransactionService depositTransactionService;
-    private final P2PTransactionService p2PTransactionService;
+    private final PeerToPeerTransactionService peerToPeerTransactionService;
 
     private final TransactionMapper transactionMapper;
 
@@ -47,7 +47,7 @@ public class TransactionController {
     @GetMapping("/receive-money")
     public List<PeerToPeerTransactionDTO> getAllReceiveMoneyTransactions(@PathVariable("currentUserId") int currentUserId) {
         User currentUser = userService.getById(currentUserId);
-        return p2PTransactionService.getAllReceiveMoneyTransactions(currentUser).stream()
+        return peerToPeerTransactionService.getAllReceiveMoneyTransactions(currentUser).stream()
                 .map(transactionMapper::toPeer2PeerTransactionDTO)
                 .toList();
     }
@@ -55,7 +55,7 @@ public class TransactionController {
     @GetMapping("/sent-money")
     public List<PeerToPeerTransactionDTO> getAllSentMoneyTransactions(@PathVariable("currentUserId") int currentUserId) {
         User currentUser = userService.getById(currentUserId);
-        return p2PTransactionService.getAllSentMoneyTransactions(currentUser).stream()
+        return peerToPeerTransactionService.getAllSentMoneyTransactions(currentUser).stream()
                 .map(transactionMapper::toPeer2PeerTransactionDTO)
                 .toList();
     }

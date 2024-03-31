@@ -22,7 +22,7 @@ public class AfterStartUp {
 
     @PostConstruct
     public void init() {
-        if (userService.isUserExists(1)) {
+        if (userService.isExists(1)) {
             log.info("Initial user instantiation cancelled! Because initial users are already saved!");
             return;
         }

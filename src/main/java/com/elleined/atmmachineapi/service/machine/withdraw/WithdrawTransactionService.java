@@ -1,29 +1,29 @@
-package com.elleined.atmmachineapi.service.atm.withdraw;
+package com.elleined.atmmachineapi.service.machine.withdraw;
 
 import com.elleined.atmmachineapi.exception.resource.ResourceNotFoundException;
+import com.elleined.atmmachineapi.mapper.transaction.WithdrawTransactionMapper;
 import com.elleined.atmmachineapi.model.User;
 import com.elleined.atmmachineapi.model.transaction.Transaction;
 import com.elleined.atmmachineapi.model.transaction.WithdrawTransaction;
 import com.elleined.atmmachineapi.repository.transaction.WithdrawTransactionRepository;
-import com.elleined.atmmachineapi.service.atm.TransactionService;
+import com.elleined.atmmachineapi.request.transaction.WithdrawTransactionRequest;
+import com.elleined.atmmachineapi.service.machine.TransactionService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.math.BigDecimal;
-import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
-import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
 @Slf4j
 @Transactional
-public class WithdrawTransactionService implements TransactionService<WithdrawTransaction> {
+public class WithdrawTransactionService implements TransactionService<WithdrawTransaction, WithdrawTransactionRequest> {
     private final WithdrawTransactionRepository withdrawTransactionRepository;
+    private final WithdrawTransactionMapper withdrawTransactionMapper;
 
     @Override
     public WithdrawTransaction getById(int id) throws ResourceNotFoundException {
@@ -43,15 +43,8 @@ public class WithdrawTransactionService implements TransactionService<WithdrawTr
     }
 
     @Override
-    public WithdrawTransaction save(User user, BigDecimal withdrawalAmount) {
-        String trn = UUID.randomUUID().toString();
-
-        WithdrawTransaction withdrawTransaction = WithdrawTransaction.builder()
-                .trn(trn)
-                .amount(withdrawalAmount)
-                .transactionDate(LocalDateTime.now())
-                .user(user)
-                .build();
+    public WithdrawTransaction save(WithdrawTransactionRequest withdrawTransactionRequest) {
+        WithdrawTransaction withdrawTransaction = withdrawTransactionMapper.toEntity(withdrawTransactionRequest);
         withdrawTransactionRepository.save(withdrawTransaction);
         return withdrawTransaction;
     }

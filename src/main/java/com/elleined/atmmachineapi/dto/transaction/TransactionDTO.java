@@ -1,7 +1,9 @@
 package com.elleined.atmmachineapi.dto.transaction;
 
 import com.elleined.atmmachineapi.dto.DTO;
-import lombok.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
