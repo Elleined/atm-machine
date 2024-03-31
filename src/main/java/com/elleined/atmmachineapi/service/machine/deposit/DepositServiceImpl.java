@@ -4,6 +4,7 @@ import com.elleined.atmmachineapi.exception.amount.ATMMaximumAmountException;
 import com.elleined.atmmachineapi.exception.amount.ATMMinimumAmountException;
 import com.elleined.atmmachineapi.exception.amount.NotValidAmountException;
 import com.elleined.atmmachineapi.exception.limit.LimitException;
+import com.elleined.atmmachineapi.exception.limit.LimitExceptionPerDayException;
 import com.elleined.atmmachineapi.mapper.transaction.DepositTransactionMapper;
 import com.elleined.atmmachineapi.model.User;
 import com.elleined.atmmachineapi.model.transaction.DepositTransaction;
@@ -44,6 +45,7 @@ public class DepositServiceImpl implements DepositService {
         if (depositValidator.isNotValidAmount(depositedAmount)) throw new NotValidAmountException("Amount should be positive and cannot be zero!");
         if (depositValidator.isBelowMinimum(depositedAmount)) throw new ATMMaximumAmountException("Cannot deposit! because you are trying to deposit an amount that is below minimum which is " + DepositValidator.MINIMUM_DEPOSIT_AMOUNT);
         if (depositValidator.isAboveMaximum(depositedAmount)) throw new ATMMinimumAmountException("You cannot deposit an amount that is greater than to deposit limit which is " + DepositValidator.DEPOSIT_LIMIT_PER_DAY);
+        if (depositValidator.reachedLimitAmountPerDay(currentUser)) throw new LimitExceptionPerDayException("Cannot deposit! because you've already reached limit per day!");
 
         BigDecimal oldBalance = currentUser.getBalance();
         float depositFee = feeService.getDepositFee(depositedAmount);
