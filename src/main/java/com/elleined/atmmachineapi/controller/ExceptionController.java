@@ -1,6 +1,6 @@
 package com.elleined.atmmachineapi.controller;
 
-import com.elleined.atmmachineapi.dto.Response;
+import com.elleined.atmmachineapi.dto.APIResponse;
 import com.elleined.atmmachineapi.exception.ATMException;
 import com.elleined.atmmachineapi.exception.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
@@ -16,22 +16,22 @@ import java.util.List;
 public class ExceptionController {
 
     @ExceptionHandler(ResourceNotFoundException.class)
-    public ResponseEntity<Response> handleResourceNotFoundException(ResourceNotFoundException ex) {
-        var response = new Response(HttpStatus.NOT_FOUND, ex.getMessage());
+    public ResponseEntity<APIResponse> handleResourceNotFoundException(ResourceNotFoundException ex) {
+        var response = new APIResponse(HttpStatus.NOT_FOUND, ex.getMessage());
         return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(ATMException.class)
-    public ResponseEntity<Response> handleIllegalArgumentException(RuntimeException ex) {
-        var response = new Response(HttpStatus.BAD_REQUEST, ex.getMessage());
+    public ResponseEntity<APIResponse> handleIllegalArgumentException(RuntimeException ex) {
+        var response = new APIResponse(HttpStatus.BAD_REQUEST, ex.getMessage());
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(BindException.class)
-    public ResponseEntity<List<Response>> handleBindException(BindException ex) {
-        List<Response> errors = ex.getBindingResult().getAllErrors().stream()
+    public ResponseEntity<List<APIResponse>> handleBindException(BindException ex) {
+        List<APIResponse> errors = ex.getBindingResult().getAllErrors().stream()
                 .map(ObjectError::getDefaultMessage)
-                .map(errorMessage -> new Response(HttpStatus.BAD_REQUEST, errorMessage))
+                .map(errorMessage -> new APIResponse(HttpStatus.BAD_REQUEST, errorMessage))
                 .toList();
         return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
     }
