@@ -11,7 +11,6 @@ import org.mapstruct.Mappings;
 public interface DepositTransactionMapper extends TransactionMapper<DepositTransaction, DepositTransactionDTO, DepositTransactionRequest> {
     @Override
     @Mappings({
-
             @Mapping(target = "id", source = "id"),
             @Mapping(target = "trn", source = "trn"),
             @Mapping(target = "amount", source = "amount"),
@@ -23,7 +22,11 @@ public interface DepositTransactionMapper extends TransactionMapper<DepositTrans
 
     @Override
     @Mappings({
-
+            @Mapping(target = "id", ignore = true),
+            @Mapping(target = "trn", expression = "java(java.util.UUID.randomUUID().toString())"),
+            @Mapping(target = "amount", source = "amount"),
+            @Mapping(target = "transactionDate", expression = "java(java.time.LocalDateTime.now())"),
+            @Mapping(target = "userId", source = "user")
     })
     DepositTransaction toEntity(DepositTransactionRequest request);
 }

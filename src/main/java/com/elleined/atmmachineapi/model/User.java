@@ -2,6 +2,7 @@ package com.elleined.atmmachineapi.model;
 
 import com.elleined.atmmachineapi.model.transaction.DepositTransaction;
 import com.elleined.atmmachineapi.model.transaction.PeerToPeerTransaction;
+import com.elleined.atmmachineapi.model.transaction.Transaction;
 import com.elleined.atmmachineapi.model.transaction.WithdrawTransaction;
 import jakarta.persistence.*;
 import lombok.*;
@@ -52,10 +53,6 @@ public class User extends PrimaryKeyIdentity {
     @OneToMany(mappedBy = "user")
     List<DepositTransaction> depositTransactions;
 
-    public <T> boolean isBalanceNotEnough(T t) {
-        return this.getBalance().compareTo(new BigDecimal(String.valueOf(t))) < 0;
-    }
-
     @Builder
     public User(int id, String name, String uuid, BigDecimal balance, List<PeerToPeerTransaction> sentMoneyTransactions, List<PeerToPeerTransaction> receiveMoneyTransactions, List<WithdrawTransaction> withdrawTransactions, List<DepositTransaction> depositTransactions) {
         super(id);
@@ -67,4 +64,34 @@ public class User extends PrimaryKeyIdentity {
         this.withdrawTransactions = withdrawTransactions;
         this.depositTransactions = depositTransactions;
     }
+
+    public <T> boolean isBalanceNotEnough(T t) {
+        return this.getBalance().compareTo(new BigDecimal(String.valueOf(t))) < 0;
+    }
+
+    public List<Integer> getAllSentMoneyTransactionIds() {
+        return this.getSentMoneyTransactions().stream()
+                .map(Transaction::getId)
+                .toList();
+    }
+
+    public List<Integer> getAllReceiveMoneyTransactionIds() {
+        return this.getReceiveMoneyTransactions().stream()
+                .map(Transaction::getId)
+                .toList();
+    }
+
+    public List<Integer> getAllWithdrawTransactionIds() {
+        return this.getWithdrawTransactions().stream()
+                .map(Transaction::getId)
+                .toList();
+    }
+
+    public List<Integer> getAllDepositTransactionIds() {
+        return this.getDepositTransactions().stream()
+                .map(Transaction::getId)
+                .toList();
+    }
+
+
 }

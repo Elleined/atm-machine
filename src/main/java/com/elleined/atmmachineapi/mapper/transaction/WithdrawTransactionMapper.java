@@ -19,4 +19,14 @@ public interface WithdrawTransactionMapper extends TransactionMapper<WithdrawTra
             @Mapping(target = "userId", source = "user.id")
     })
     WithdrawTransactionDTO toDTO(WithdrawTransaction withdrawTransaction);
+
+    @Override
+    @Mappings({
+            @Mapping(target = "id", ignore = true),
+            @Mapping(target = "trn", expression = "java(java.util.UUID.randomUUID().toString())"),
+            @Mapping(target = "amount", source = "amount"),
+            @Mapping(target = "transactionDate", expression = "java(java.time.LocalDateTime.now())"),
+            @Mapping(target = "userId", source = "user")
+    })
+    WithdrawTransaction toEntity(WithdrawTransactionRequest request);
 }
