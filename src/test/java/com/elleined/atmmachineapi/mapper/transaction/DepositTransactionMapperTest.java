@@ -1,9 +1,5 @@
 package com.elleined.atmmachineapi.mapper.transaction;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
-
-import com.elleined.atmmachineapi.dto.UserDTO;
 import com.elleined.atmmachineapi.dto.transaction.DepositTransactionDTO;
 import com.elleined.atmmachineapi.model.User;
 import com.elleined.atmmachineapi.model.transaction.DepositTransaction;
@@ -15,6 +11,9 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @ExtendWith(MockitoExtension.class)
 class DepositTransactionMapperTest {
