@@ -12,13 +12,9 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 public abstract class TransactionRequest extends Request {
-    private String trn;
     private BigDecimal amount;
-    private LocalDateTime transactionDate;
 
-    public TransactionRequest(String trn, BigDecimal amount, LocalDateTime transactionDate) {
-        this.trn = trn;
+    public TransactionRequest(BigDecimal amount) {
         this.amount = amount;
-        this.transactionDate = transactionDate;
     }
 }

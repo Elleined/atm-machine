@@ -3,7 +3,6 @@ package com.elleined.atmmachineapi.controller;
 import com.elleined.atmmachineapi.dto.transaction.DepositTransactionDTO;
 import com.elleined.atmmachineapi.dto.transaction.PeerToPeerTransactionDTO;
 import com.elleined.atmmachineapi.dto.transaction.WithdrawTransactionDTO;
-import com.elleined.atmmachineapi.mapper.TransactionMapper;
 import com.elleined.atmmachineapi.model.User;
 import com.elleined.atmmachineapi.service.atm.deposit.DepositTransactionService;
 import com.elleined.atmmachineapi.service.atm.p2p.P2PTransactionService;

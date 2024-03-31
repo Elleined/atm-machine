@@ -1,5 +1,6 @@
 package com.elleined.atmmachineapi.request.transaction;
 
+import com.elleined.atmmachineapi.model.User;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,11 +14,11 @@ import java.time.LocalDateTime;
 @Setter
 public class DepositTransactionRequest extends TransactionRequest {
 
-    private int userId;
+    private User user;
 
     @Builder
-    public DepositTransactionRequest(String trn, BigDecimal amount, LocalDateTime transactionDate, int userId) {
-        super(trn, amount, transactionDate);
-        this.userId = userId;
+    public DepositTransactionRequest(BigDecimal amount, User user) {
+        super(amount);
+        this.user = user;
     }
 }

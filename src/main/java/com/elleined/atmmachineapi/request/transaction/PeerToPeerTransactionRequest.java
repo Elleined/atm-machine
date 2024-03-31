@@ -1,5 +1,6 @@
 package com.elleined.atmmachineapi.request.transaction;
 
+import com.elleined.atmmachineapi.model.User;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,13 +14,13 @@ import java.time.LocalDateTime;
 @Setter
 public class PeerToPeerTransactionRequest extends TransactionRequest {
 
-    private int senderId;
-    private int receiverId;
+    private User sender;
+    private User receiver;
 
     @Builder
-    public PeerToPeerTransactionRequest(String trn, BigDecimal amount, LocalDateTime transactionDate, int senderId, int receiverId) {
-        super(trn, amount, transactionDate);
-        this.senderId = senderId;
-        this.receiverId = receiverId;
+    public PeerToPeerTransactionRequest(BigDecimal amount, User sender, User receiver) {
+        super(amount);
+        this.sender = sender;
+        this.receiver = receiver;
     }
 }
