@@ -43,7 +43,7 @@ public class DepositServiceImpl implements DepositService {
         if (depositValidator.isAboveMaximum(depositedAmount))
             throw new ATMMinimumAmountException("Cannot deposit! because you are trying to deposit an amount that is greater than to deposit limit which is " + DepositValidator.DEPOSIT_LIMIT_PER_DAY);
 
-        if (depositValidator.reachedLimitAmountPerDay(currentUser))
+        if (depositValidator.reachedLimitAmountPerDay(currentUser, depositedAmount))
             throw new LimitExceptionPerDayException("Cannot deposit! because you've already reached limit per day!");
 
         BigDecimal oldBalance = currentUser.getBalance();

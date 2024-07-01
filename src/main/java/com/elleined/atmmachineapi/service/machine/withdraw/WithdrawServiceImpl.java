@@ -12,7 +12,6 @@ import com.elleined.atmmachineapi.repository.UserRepository;
 import com.elleined.atmmachineapi.service.AppWalletService;
 import com.elleined.atmmachineapi.service.fee.FeeService;
 import com.elleined.atmmachineapi.service.transaction.withdraw.WithdrawTransactionService;
-import com.elleined.atmmachineapi.service.transaction.withdraw.WithdrawTransactionServiceImpl;
 import com.elleined.atmmachineapi.service.validator.withdraw.WithdrawValidator;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -49,7 +48,7 @@ public class WithdrawServiceImpl implements WithdrawService {
         if (withdrawValidator.isAboveMaximum(withdrawalAmount))
             throw new ATMMaximumAmountException("Cannot withdraw! You cannot withdraw an amount that is greater than withdraw limit which is " + WithdrawValidator.MAXIMUM_WITHDRAW_AMOUNT);
 
-        if (withdrawValidator.reachedLimitAmountPerDay(currentUser))
+        if (withdrawValidator.reachedLimitAmountPerDay(currentUser, withdrawalAmount))
             throw new LimitExceptionPerDayException("Cannot withdraw! You already reached withdrawal limit per day which is " + WithdrawValidator.WITHDRAWAL_LIMIT_PER_DAY);
 
         BigDecimal oldBalance = currentUser.getBalance();

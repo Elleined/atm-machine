@@ -42,7 +42,7 @@ public class PeerToPeerServiceImpl implements PeerToPeerService {
         if (sender.isBalanceNotEnough(sentAmount))
             throw new InsufficientFundException("Cannot deposit! insufficient funds!");
 
-        if (peerToPeerValidator.reachedLimitAmountPerDay(sender))
+        if (peerToPeerValidator.reachedLimitAmountPerDay(sender, sentAmount))
             throw new LimitExceptionPerDayException("Cannot send money! Because you already reached the sent amount limit per day which is " + PeerToPeerValidator.PEER_TO_PEER_LIMIT_PER_DAY);
 
         float p2pFee = feeService.getP2pFee(sentAmount);

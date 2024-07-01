@@ -23,6 +23,7 @@ import java.math.BigDecimal;
 public class ATMController  {
     private final ATMService atmService;
     private final UserService userService;
+
     private final DepositTransactionMapper depositTransactionMapper;
     private final WithdrawTransactionMapper withdrawTransactionMapper;
     private final PeerToPeerTransactionMapper peerToPeerTransactionMapper;

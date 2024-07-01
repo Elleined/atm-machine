@@ -8,6 +8,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.time.LocalDateTime;
+import java.util.List;
+
 public interface DepositTransactionRepository extends JpaRepository<DepositTransaction, Integer> {
 
     @Query("SELECT dt FROM DepositTransaction dt WHERE dt.trn = :trn")
@@ -15,4 +18,9 @@ public interface DepositTransactionRepository extends JpaRepository<DepositTrans
 
     @Query("SELECT dt FROM DepositTransaction dt WHERE dt.user = :currentUser")
     Page<DepositTransaction> findAll(@Param("currentUser") User currentUser, Pageable pageable);
+
+    @Query("SELECT dt FROM DepositTransaction dt WHERE dt.user = :currentUser AND dt.transactionDate BETWEEN :startDate AND :endDate")
+    List<DepositTransaction> findAllByDateRange(@Param("currentUser") User currentUser,
+                                                @Param("startDate") LocalDateTime startDate,
+                                                @Param("endDate") LocalDateTime endDate);
 }
