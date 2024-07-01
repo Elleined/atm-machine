@@ -3,9 +3,6 @@ package com.elleined.atmmachineapi.controller;
 import com.elleined.atmmachineapi.dto.transaction.DepositTransactionDTO;
 import com.elleined.atmmachineapi.dto.transaction.PeerToPeerTransactionDTO;
 import com.elleined.atmmachineapi.dto.transaction.WithdrawTransactionDTO;
-import com.elleined.atmmachineapi.hateoas.transaction.DepositTransactionHateoasAssembler;
-import com.elleined.atmmachineapi.hateoas.transaction.PeerToPeerTransactionHateoasAssembler;
-import com.elleined.atmmachineapi.hateoas.transaction.WithdrawTransactionHateoasAssembler;
 import com.elleined.atmmachineapi.mapper.transaction.DepositTransactionMapper;
 import com.elleined.atmmachineapi.mapper.transaction.PeerToPeerTransactionMapper;
 import com.elleined.atmmachineapi.mapper.transaction.WithdrawTransactionMapper;
@@ -29,15 +26,12 @@ public class TransactionController {
 
     private final WithdrawTransactionService withdrawTransactionService;
     private final WithdrawTransactionMapper withdrawTransactionMapper;
-    private final WithdrawTransactionHateoasAssembler withdrawTransactionHateoasAssembler;
 
     private final DepositTransactionService depositTransactionService;
     private final DepositTransactionMapper depositTransactionMapper;
-    private final DepositTransactionHateoasAssembler depositTransactionHateoasAssembler;
 
     private final PeerToPeerTransactionService peerToPeerTransactionService;
     private final PeerToPeerTransactionMapper peerToPeerTransactionMapper;
-    private final PeerToPeerTransactionHateoasAssembler peerToPeerTransactionHateoasAssembler;
 
     @GetMapping("/withdraw-transactions")
     public Page<WithdrawTransactionDTO> getAllWithdrawalTransactions(@PathVariable("currentUserId") int currentUserId,
@@ -48,11 +42,11 @@ public class TransactionController {
                                                                      @RequestParam(defaultValue = "false", name = "includeRelatedLinks") boolean includeRelatedLinks) {
 
         User currentUser = userService.getById(currentUserId);
-
         Pageable pageable = PageRequest.of(pageNumber - 1, pageSize, direction, sortBy);
-        Page<WithdrawTransactionDTO> withdrawTransactionDTOS = withdrawTransactionService.getAll(currentUser, pageable).map(withdrawTransactionMapper::toDTO);
-        withdrawTransactionHateoasAssembler.addLinks(currentUser, withdrawTransactionDTOS, includeRelatedLinks);
-        return withdrawTransactionDTOS;
+
+        return withdrawTransactionService.getAll(currentUser, pageable)
+                .map(withdrawTransactionMapper::toDTO)
+                .map(dto -> dto.addLinks(currentUser, includeRelatedLinks));
     }
 
     @GetMapping("/deposit-transactions")
@@ -65,9 +59,9 @@ public class TransactionController {
         User currentUser = userService.getById(currentUserId);
 
         Pageable pageable = PageRequest.of(pageNumber - 1, pageSize, direction, sortBy);
-        Page<DepositTransactionDTO> depositTransactionDTOS = depositTransactionService.getAll(currentUser, pageable).map(depositTransactionMapper::toDTO);
-        depositTransactionHateoasAssembler.addLinks(currentUser, depositTransactionDTOS, includeRelatedLinks);
-        return depositTransactionDTOS;
+        return depositTransactionService.getAll(currentUser, pageable)
+                .map(depositTransactionMapper::toDTO)
+                .map(dto -> dto.addLinks(currentUser, includeRelatedLinks));
     }
 
     @GetMapping("/receive-money-transactions")
@@ -78,11 +72,11 @@ public class TransactionController {
                                                                          @RequestParam(required = false, defaultValue = "id", value = "sortBy") String sortBy,
                                                                          @RequestParam(defaultValue = "false", name = "includeRelatedLinks") boolean includeRelatedLinks) {
         User currentUser = userService.getById(currentUserId);
-
         Pageable pageable = PageRequest.of(pageNumber - 1, pageSize, direction, sortBy);
-        Page<PeerToPeerTransactionDTO> peerToPeerTransactionDTOS = peerToPeerTransactionService.getAllReceiveMoneyTransactions(currentUser, pageable).map(peerToPeerTransactionMapper::toDTO);
-        peerToPeerTransactionHateoasAssembler.addLinks(currentUser, peerToPeerTransactionDTOS, includeRelatedLinks);
-        return peerToPeerTransactionDTOS;
+
+        return peerToPeerTransactionService.getAllReceiveMoneyTransactions(currentUser, pageable)
+                .map(peerToPeerTransactionMapper::toDTO)
+                .map(dto -> dto.addLinks(currentUser, includeRelatedLinks));
     }
 
     @GetMapping("/sent-money-transactions")
@@ -94,10 +88,10 @@ public class TransactionController {
                                                                       @RequestParam(defaultValue = "false", name = "includeRelatedLinks") boolean includeRelatedLinks) {
 
         User currentUser = userService.getById(currentUserId);
-
         Pageable pageable = PageRequest.of(pageNumber - 1, pageSize, direction, sortBy);
-        Page<PeerToPeerTransactionDTO> peerToPeerTransactionDTOS = peerToPeerTransactionService.getAllReceiveMoneyTransactions(currentUser, pageable).map(peerToPeerTransactionMapper::toDTO);
-        peerToPeerTransactionHateoasAssembler.addLinks(currentUser, peerToPeerTransactionDTOS, includeRelatedLinks);
-        return peerToPeerTransactionDTOS;
+
+        return peerToPeerTransactionService.getAllReceiveMoneyTransactions(currentUser, pageable)
+                .map(peerToPeerTransactionMapper::toDTO)
+                .map(dto -> dto.addLinks(currentUser, includeRelatedLinks));
     }
 }
