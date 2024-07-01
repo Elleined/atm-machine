@@ -9,15 +9,17 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "tbl_deposit_transaction")
-@NoArgsConstructor
 @Getter
 @Setter
+@NoArgsConstructor
+@SuperBuilder
 public class DepositTransaction extends Transaction {
 
     @ManyToOne(optional = false)
@@ -28,10 +30,4 @@ public class DepositTransaction extends Transaction {
             referencedColumnName = "id"
     )
     private User user;
-
-    @Builder
-    public DepositTransaction(int id, String trn, BigDecimal amount, LocalDateTime transactionDate, User user) {
-        super(id, trn, amount, transactionDate);
-        this.user = user;
-    }
 }

@@ -5,17 +5,21 @@ import jakarta.persistence.Column;
 import jakarta.persistence.MappedSuperclass;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @MappedSuperclass
 @Getter
+@Setter
 @NoArgsConstructor
+@SuperBuilder
 public abstract class Transaction extends PrimaryKeyIdentity {
 
     @Column(
-            name = "transaction_reference_number",
+            name = "trn",
             updatable = false,
             nullable = false,
             unique = true
@@ -35,11 +39,4 @@ public abstract class Transaction extends PrimaryKeyIdentity {
             nullable = false
     )
     private LocalDateTime transactionDate;
-
-    public Transaction(int id, String trn, BigDecimal amount, LocalDateTime transactionDate) {
-        super(id);
-        this.trn = trn;
-        this.amount = amount;
-        this.transactionDate = transactionDate;
-    }
 }

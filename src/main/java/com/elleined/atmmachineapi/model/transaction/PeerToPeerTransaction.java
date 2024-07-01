@@ -9,15 +9,17 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "tbl_peer_to_peer_transaction")
-@NoArgsConstructor
 @Getter
 @Setter
+@NoArgsConstructor
+@SuperBuilder
 public class PeerToPeerTransaction extends Transaction {
 
     @ManyToOne(optional = false)
@@ -37,11 +39,4 @@ public class PeerToPeerTransaction extends Transaction {
             referencedColumnName = "id"
     )
     private User receiver;
-
-    @Builder
-    public PeerToPeerTransaction(int id, String trn, BigDecimal amount, LocalDateTime transactionDate, User sender, User receiver) {
-        super(id, trn, amount, transactionDate);
-        this.sender = sender;
-        this.receiver = receiver;
-    }
 }
