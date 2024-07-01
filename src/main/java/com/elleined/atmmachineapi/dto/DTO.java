@@ -1,13 +1,13 @@
 package com.elleined.atmmachineapi.dto;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
+import org.springframework.hateoas.RepresentationModel;
 
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
-@NoArgsConstructor
-public abstract class DTO {
-
+public abstract class DTO extends RepresentationModel<DTO> {
     private int id;
 }
