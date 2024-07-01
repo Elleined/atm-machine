@@ -25,7 +25,7 @@ public class UserController {
         User savedUser = userService.save(name);
 
         UserDTO userDTO = userMapper.toDTO(savedUser);
-        userHateoasAssembler.addLinks(userDTO, includeRelatedLinks);
+        userHateoasAssembler.addLinks(savedUser, userDTO, includeRelatedLinks);
 
         return userDTO;
     }
@@ -37,7 +37,7 @@ public class UserController {
         User user = userService.getById(userId);
 
         UserDTO userDTO = userMapper.toDTO(user);
-        userHateoasAssembler.addLinks(userDTO, includeRelatedLinks);
+        userHateoasAssembler.addLinks(user, userDTO, includeRelatedLinks);
 
         return userDTO;
     }
@@ -49,7 +49,7 @@ public class UserController {
         User user = userService.getByUUID(uuid);
 
         UserDTO userDTO = userMapper.toDTO(user);
-        userHateoasAssembler.addLinks(userDTO, includeRelatedLinks);
+        userHateoasAssembler.addLinks(user, userDTO, includeRelatedLinks);
 
         return userDTO;
     }

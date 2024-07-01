@@ -4,16 +4,13 @@ import com.elleined.atmmachineapi.controller.ATMController;
 import com.elleined.atmmachineapi.controller.TransactionController;
 import com.elleined.atmmachineapi.controller.UserController;
 import com.elleined.atmmachineapi.dto.UserDTO;
-import com.elleined.atmmachineapi.hateoas.transaction.WithdrawTransactionHateoasAssembler;
+import com.elleined.atmmachineapi.model.User;
 import lombok.RequiredArgsConstructor;
-import net.datafaker.Faker;
 import org.springframework.hateoas.Link;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
 import java.util.List;
-import java.util.UUID;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
@@ -23,7 +20,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 public class UserHateoasAssembler extends HateoasAssembler<UserDTO> {
 
     @Override
-    protected List<Link> getAllRelatedLinks(UserDTO dto, boolean doInclude) {
+    protected List<Link> getAllRelatedLinks(User currentUser, UserDTO dto, boolean doInclude) {
         return List.of(
                 linkTo(methodOn(ATMController.class)
                         .withdraw(dto.getId(), null, doInclude))
@@ -67,7 +64,7 @@ public class UserHateoasAssembler extends HateoasAssembler<UserDTO> {
     }
 
     @Override
-    protected List<Link> getAllSelfLinks(UserDTO dto, boolean doInclude) {
+    protected List<Link> getAllSelfLinks(User currentUser, UserDTO dto, boolean doInclude) {
         return List.of(
                 linkTo(methodOn(UserController.class)
                         .getById(dto.getId(), doInclude))

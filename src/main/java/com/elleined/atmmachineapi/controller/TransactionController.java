@@ -51,7 +51,7 @@ public class TransactionController {
 
         Pageable pageable = PageRequest.of(pageNumber - 1, pageSize, direction, sortBy);
         Page<WithdrawTransactionDTO> withdrawTransactionDTOS = withdrawTransactionService.getAll(currentUser, pageable).map(withdrawTransactionMapper::toDTO);
-        withdrawTransactionHateoasAssembler.addLinks(withdrawTransactionDTOS, includeRelatedLinks);
+        withdrawTransactionHateoasAssembler.addLinks(currentUser, withdrawTransactionDTOS, includeRelatedLinks);
         return withdrawTransactionDTOS;
     }
 
@@ -66,7 +66,7 @@ public class TransactionController {
 
         Pageable pageable = PageRequest.of(pageNumber - 1, pageSize, direction, sortBy);
         Page<DepositTransactionDTO> depositTransactionDTOS = depositTransactionService.getAll(currentUser, pageable).map(depositTransactionMapper::toDTO);
-        depositTransactionHateoasAssembler.addLinks(depositTransactionDTOS, includeRelatedLinks);
+        depositTransactionHateoasAssembler.addLinks(currentUser, depositTransactionDTOS, includeRelatedLinks);
         return depositTransactionDTOS;
     }
 
@@ -81,7 +81,7 @@ public class TransactionController {
 
         Pageable pageable = PageRequest.of(pageNumber - 1, pageSize, direction, sortBy);
         Page<PeerToPeerTransactionDTO> peerToPeerTransactionDTOS = peerToPeerTransactionService.getAllReceiveMoneyTransactions(currentUser, pageable).map(peerToPeerTransactionMapper::toDTO);
-        peerToPeerTransactionHateoasAssembler.addLinks(peerToPeerTransactionDTOS, includeRelatedLinks);
+        peerToPeerTransactionHateoasAssembler.addLinks(currentUser, peerToPeerTransactionDTOS, includeRelatedLinks);
         return peerToPeerTransactionDTOS;
     }
 
@@ -97,7 +97,7 @@ public class TransactionController {
 
         Pageable pageable = PageRequest.of(pageNumber - 1, pageSize, direction, sortBy);
         Page<PeerToPeerTransactionDTO> peerToPeerTransactionDTOS = peerToPeerTransactionService.getAllReceiveMoneyTransactions(currentUser, pageable).map(peerToPeerTransactionMapper::toDTO);
-        peerToPeerTransactionHateoasAssembler.addLinks(peerToPeerTransactionDTOS, includeRelatedLinks);
+        peerToPeerTransactionHateoasAssembler.addLinks(currentUser, peerToPeerTransactionDTOS, includeRelatedLinks);
         return peerToPeerTransactionDTOS;
     }
 }

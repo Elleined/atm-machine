@@ -10,4 +10,6 @@ import org.springframework.hateoas.RepresentationModel;
 @AllArgsConstructor
 public abstract class DTO extends RepresentationModel<DTO> {
     private int id;
+
+
 }

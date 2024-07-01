@@ -1,10 +1,10 @@
 package com.elleined.atmmachineapi.hateoas.transaction;
 
+import com.elleined.atmmachineapi.controller.ATMController;
 import com.elleined.atmmachineapi.controller.TransactionController;
 import com.elleined.atmmachineapi.dto.transaction.DepositTransactionDTO;
-import com.elleined.atmmachineapi.model.transaction.DepositTransaction;
+import com.elleined.atmmachineapi.model.User;
 import lombok.RequiredArgsConstructor;
-import net.datafaker.Faker;
 import org.springframework.hateoas.Link;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
@@ -18,15 +18,20 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 @RequiredArgsConstructor
 public class DepositTransactionHateoasAssembler extends TransactionHateoasAssembler<DepositTransactionDTO> {
     @Override
-    protected List<Link> getAllRelatedLinks(DepositTransactionDTO dto, boolean doInclude) {
-        return List.of();
+    protected List<Link> getAllRelatedLinks(User currentUser, DepositTransactionDTO dto, boolean doInclude) {
+        return List.of(
+                linkTo(methodOn(ATMController.class)
+                        .deposit(currentUser.getId(), null, doInclude))
+                        .withRel("deposit")
+                        .withType(HttpMethod.POST.name())
+        );
     }
 
     @Override
-    protected List<Link> getAllSelfLinks(DepositTransactionDTO dto, boolean doInclude) {
+    protected List<Link> getAllSelfLinks(User currentUser, DepositTransactionDTO dto, boolean doInclude) {
         return List.of(
                 linkTo(methodOn(TransactionController.class)
-                        .getAllDepositTransactions(dto.getUserDTO().getId(), 0, 0, null, null, doInclude))
+                        .getAllDepositTransactions(currentUser.getId(), 0, 0, null, null, doInclude))
                         .withSelfRel()
                         .withTitle("Get all deposit transactions")
                         .withType(HttpMethod.GET.name())
