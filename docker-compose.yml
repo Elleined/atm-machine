@@ -8,19 +8,20 @@ services:
     ports:
       - "8087:8087"
     environment:
-      - MYSQL_HOST=ama_mysql_server
+      - MYSQL_HOST=mysql_server
       - MYSQL_PORT=3306
       - MYSQL_DATABASE=ama_db
       - MYSQL_USER=root
       - MYSQL_PASSWORD=root
+      - PORT=8087
     networks:
       - ama_network
     depends_on:
-      ama_mysql_server:
+      mysql_server:
         condition: service_healthy
-  ama_mysql_server:
+  mysql_server:
     image: mysql:8.0.32
-    container_name: ama_mysql_server
+    container_name: mysql_server
     restart: always
     environment:
       - MYSQL_ROOT_PASSWORD=root
