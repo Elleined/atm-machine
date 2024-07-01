@@ -1,7 +1,6 @@
 package com.elleined.atmmachineapi.repository.transaction;
 
 import com.elleined.atmmachineapi.model.User;
-import com.elleined.atmmachineapi.model.transaction.DepositTransaction;
 import com.elleined.atmmachineapi.model.transaction.WithdrawTransaction;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

@@ -3,6 +3,9 @@ package com.elleined.atmmachineapi.controller;
 import com.elleined.atmmachineapi.dto.transaction.DepositTransactionDTO;
 import com.elleined.atmmachineapi.dto.transaction.PeerToPeerTransactionDTO;
 import com.elleined.atmmachineapi.dto.transaction.WithdrawTransactionDTO;
+import com.elleined.atmmachineapi.hateoas.transaction.DepositTransactionHateoasAssembler;
+import com.elleined.atmmachineapi.hateoas.transaction.PeerToPeerTransactionHateoasAssembler;
+import com.elleined.atmmachineapi.hateoas.transaction.WithdrawTransactionHateoasAssembler;
 import com.elleined.atmmachineapi.mapper.transaction.DepositTransactionMapper;
 import com.elleined.atmmachineapi.mapper.transaction.PeerToPeerTransactionMapper;
 import com.elleined.atmmachineapi.mapper.transaction.WithdrawTransactionMapper;
@@ -24,9 +27,14 @@ public class ATMController  {
     private final ATMService atmService;
     private final UserService userService;
 
-    private final DepositTransactionMapper depositTransactionMapper;
     private final WithdrawTransactionMapper withdrawTransactionMapper;
+    private final WithdrawTransactionHateoasAssembler withdrawTransactionHateoasAssembler;
+
+    private final DepositTransactionMapper depositTransactionMapper;
+    private final DepositTransactionHateoasAssembler depositTransactionHateoasAssembler;
+
     private final PeerToPeerTransactionMapper peerToPeerTransactionMapper;
+    private final PeerToPeerTransactionHateoasAssembler peerToPeerTransactionHateoasAssembler;
 
     @PostMapping("/deposit")
     public DepositTransactionDTO deposit(@PathVariable("currentUserId") int currentUserId,
@@ -35,7 +43,9 @@ public class ATMController  {
 
         User currentUser = userService.getById(currentUserId);
         DepositTransaction depositTransaction = atmService.deposit(currentUser, amount);
-        return depositTransactionMapper.toDTO(depositTransaction);
+        DepositTransactionDTO depositTransactionDTO = depositTransactionMapper.toDTO(depositTransaction);
+        depositTransactionHateoasAssembler.addLinks(depositTransactionDTO, includeRelatedLinks);
+        return depositTransactionDTO;
     }
 
 
@@ -46,7 +56,9 @@ public class ATMController  {
 
         User currentUser = userService.getById(currentUserId);
         WithdrawTransaction withdrawTransaction = atmService.withdraw(currentUser, amount);
-        return withdrawTransactionMapper.toDTO(withdrawTransaction);
+        WithdrawTransactionDTO withdrawTransactionDTO = withdrawTransactionMapper.toDTO(withdrawTransaction);
+        withdrawTransactionHateoasAssembler.addLinks(withdrawTransactionDTO, includeRelatedLinks);
+        return withdrawTransactionDTO;
     }
 
 
@@ -59,6 +71,8 @@ public class ATMController  {
         User sender = userService.getById(senderId);
         User receiver = userService.getById(receiverId);
         PeerToPeerTransaction peerToPeerTransaction = atmService.peerToPeer(sender, receiver, sentAmount);
-        return peerToPeerTransactionMapper.toDTO(peerToPeerTransaction);
+        PeerToPeerTransactionDTO peerToPeerTransactionDTO = peerToPeerTransactionMapper.toDTO(peerToPeerTransaction);
+        peerToPeerTransactionHateoasAssembler.addLinks(peerToPeerTransactionDTO, includeRelatedLinks);
+        return peerToPeerTransactionDTO;
     }
 }
