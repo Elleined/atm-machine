@@ -71,7 +71,7 @@ class PeerToPeerServiceImplTest {
         when(userRepository.save(any(User.class))).thenReturn(new User());
         doNothing().when(appWalletService).addAndSaveBalance(any());
         when(peerToPeerTransactionMapper.toEntity(any(PeerToPeerTransactionRequest.class))).thenReturn(peerToPeerTransaction);
-        when(peerToPeerTransactionService.save(any(PeerToPeerTransaction.class))).thenReturn(peerToPeerTransaction);
+        when(peerToPeerTransactionService.save(, any(PeerToPeerTransaction.class), )).thenReturn(peerToPeerTransaction);
 
         // Calling the method
         peerToPeerService.peerToPeer(sender, receiver, senderSentAmount);
@@ -83,7 +83,7 @@ class PeerToPeerServiceImplTest {
         verify(userRepository, times(2)).save(any(User.class));
         verify(appWalletService).addAndSaveBalance(any());
         verify(peerToPeerTransactionMapper).toEntity(any(PeerToPeerTransactionRequest.class));
-        verify(peerToPeerTransactionService).save(any(PeerToPeerTransaction.class));
+        verify(peerToPeerTransactionService).save(, any(PeerToPeerTransaction.class), );
 
         // Assertions
         assertEquals(senderExpectedBalance, sender.getBalance());

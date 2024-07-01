@@ -2,12 +2,14 @@ package com.elleined.atmmachineapi.service.transaction.p2p;
 
 import com.elleined.atmmachineapi.model.User;
 import com.elleined.atmmachineapi.model.transaction.PeerToPeerTransaction;
-import com.elleined.atmmachineapi.request.transaction.PeerToPeerTransactionRequest;
 import com.elleined.atmmachineapi.service.transaction.TransactionService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
-import java.util.List;
+import java.math.BigDecimal;
 
-public interface PeerToPeerTransactionService extends TransactionService<PeerToPeerTransaction, PeerToPeerTransactionRequest> {
-    List<PeerToPeerTransaction> getAllReceiveMoneyTransactions(User currentUser);
-    List<PeerToPeerTransaction> getAllSentMoneyTransactions(User currentUser);
+public interface PeerToPeerTransactionService extends TransactionService<PeerToPeerTransaction> {
+    PeerToPeerTransaction save(User currentUser, User receiver, BigDecimal amount);
+    Page<PeerToPeerTransaction> getAllReceiveMoneyTransactions(User currentUser, Pageable pageable);
+    Page<PeerToPeerTransaction> getAllSentMoneyTransactions(User currentUser, Pageable pageable);
 }

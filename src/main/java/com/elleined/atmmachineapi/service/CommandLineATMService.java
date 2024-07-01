@@ -14,15 +14,16 @@ import com.elleined.atmmachineapi.service.user.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.Scanner;
 
-@Service
-@RequiredArgsConstructor
 @Slf4j
+@Service
+@Transactional
+@RequiredArgsConstructor
 @Qualifier("commandLineAtm")
 public class CommandLineATMService implements ATMService, Runnable {
 
@@ -32,7 +33,7 @@ public class CommandLineATMService implements ATMService, Runnable {
     private final UserService userService;
 
     @Override
-    public DepositTransaction deposit(User currentUser, @NonNull BigDecimal depositedAmount) {
+    public DepositTransaction deposit(User currentUser, BigDecimal depositedAmount) {
         try {
             depositService.deposit(currentUser, depositedAmount);
             System.out.println("You successfully deposited amounting " + depositedAmount);
@@ -44,7 +45,7 @@ public class CommandLineATMService implements ATMService, Runnable {
     }
 
     @Override
-    public WithdrawTransaction withdraw(User currentUser, @NonNull BigDecimal withdrawnAmount) {
+    public WithdrawTransaction withdraw(User currentUser, BigDecimal withdrawnAmount) {
         try {
             withdrawService.withdraw(currentUser, withdrawnAmount);
             System.out.println("You successfully withdrawn amounting " + withdrawnAmount);
@@ -56,7 +57,7 @@ public class CommandLineATMService implements ATMService, Runnable {
     }
 
     @Override
-    public PeerToPeerTransaction peerToPeer(User sender, User receiver, @NonNull BigDecimal sentAmount) {
+    public PeerToPeerTransaction peerToPeer(User sender, User receiver, BigDecimal sentAmount) {
         try {
             peerToPeerService.peerToPeer(sender, receiver, sentAmount);
             System.out.println("You successfully send money to the recipient with id of " + receiver.getId() + " amounting " + sentAmount);

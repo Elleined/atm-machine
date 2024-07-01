@@ -79,7 +79,7 @@ class PeerToPeerTransactionServiceImplTest {
         when(peerToPeerTransactionRepository.save(any(PeerToPeerTransaction.class))).thenReturn(new PeerToPeerTransaction());
 
         // Calling the method
-        peerToPeerTransactionService.save(new PeerToPeerTransaction());
+        peerToPeerTransactionService.save(, new PeerToPeerTransaction(), );
 
         // Behavior Verifications
         verify(peerToPeerTransactionRepository).save(any(PeerToPeerTransaction.class));

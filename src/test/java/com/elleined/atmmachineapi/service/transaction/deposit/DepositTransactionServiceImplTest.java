@@ -90,7 +90,7 @@ class DepositTransactionServiceImplTest {
         // Stubbing methods
 
         // Calling the method
-        List<DepositTransaction> actualTransactions = depositTransactionService.getAll(currentUser);
+        List<DepositTransaction> actualTransactions = depositTransactionService.getAll(currentUser, );
 
         // Behavior Verifications
 
@@ -110,7 +110,7 @@ class DepositTransactionServiceImplTest {
         when(depositTransactionRepository.save(any(DepositTransaction.class))).thenReturn(new DepositTransaction());
 
         // Calling the method
-        depositTransactionService.save(new DepositTransaction());
+        depositTransactionService.save(, new DepositTransaction(), );
 
         // Behavior Verifications
         verify(depositTransactionRepository).save(any(DepositTransaction.class));

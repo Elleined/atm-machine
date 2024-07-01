@@ -36,7 +36,7 @@ public class TransactionController {
     @GetMapping("/withdraw")
     public List<WithdrawTransactionDTO> getAllWithdrawalTransactions(@PathVariable("currentUserId") int currentUserId) {
         User currentUser = userService.getById(currentUserId);
-        return withdrawTransactionService.getAll(currentUser).stream()
+        return withdrawTransactionService.getAll(currentUser, ).stream()
                 .map(withdrawTransactionMapper::toDTO)
                 .toList();
     }
@@ -44,7 +44,7 @@ public class TransactionController {
     @GetMapping("/deposit")
     public List<DepositTransactionDTO> getAllDepositTransactions(@PathVariable("currentUserId") int currentUserId) {
         User currentUser = userService.getById(currentUserId);
-        return depositTransactionService.getAll(currentUser).stream()
+        return depositTransactionService.getAll(currentUser, ).stream()
                 .map(depositTransactionMapper::toDTO)
                 .toList();
     }

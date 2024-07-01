@@ -4,18 +4,15 @@ import com.elleined.atmmachineapi.exception.resource.ResourceNotFoundException;
 import com.elleined.atmmachineapi.mapper.UserMapper;
 import com.elleined.atmmachineapi.model.User;
 import com.elleined.atmmachineapi.repository.UserRepository;
-import com.elleined.atmmachineapi.request.user.UserRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.math.BigDecimal;
-
-@Service
 @Slf4j
-@RequiredArgsConstructor
+@Service
 @Transactional
+@RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
@@ -27,16 +24,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void updateBalance(User user, BigDecimal newBalance) {
-        user.setBalance(newBalance);
-        userRepository.save(user);
-        log.debug("User with id of {} now have new balance of {}", user.getId(), newBalance);
-    }
+    public User save(String name) {
+        User user = userMapper.toEntity(name);
 
-    @Override
-    public User save(UserRequest userRequest) {
-        User user = userMapper.toEntity(userRequest);
-        return userRepository.save(user);
+        userRepository.save(user);
+        log.debug("Saving user success.");
+        return user;
     }
 
     @Override

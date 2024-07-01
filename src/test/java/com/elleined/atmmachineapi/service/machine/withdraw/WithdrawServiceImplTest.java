@@ -61,7 +61,7 @@ class WithdrawServiceImplTest {
         when(userRepository.save(any(User.class))).thenReturn(currentUser);
         doNothing().when(appWalletService).addAndSaveBalance(any());
         when(withdrawTransactionMapper.toEntity(any(WithdrawTransactionRequest.class))).thenReturn(withdrawTransaction);
-        when(withdrawTransactionService.save(any(WithdrawTransaction.class))).thenReturn(withdrawTransaction);
+        when(withdrawTransactionService.save(, any(WithdrawTransaction.class), )).thenReturn(withdrawTransaction);
 
         // Calling the method
         withdrawService.withdraw(currentUser, withdrawalAmount);
@@ -75,7 +75,7 @@ class WithdrawServiceImplTest {
         verify(userRepository).save(any(User.class));
         verify(appWalletService).addAndSaveBalance(any());
         verify(withdrawTransactionMapper).toEntity(any(WithdrawTransactionRequest.class));
-        verify(withdrawTransactionService).save(any(WithdrawTransaction.class));
+        verify(withdrawTransactionService).save(, any(WithdrawTransaction.class), );
 
         // Assertions
         assertEquals(expectedBalance, currentUser.getBalance());

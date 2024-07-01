@@ -4,7 +4,6 @@ package com.elleined.atmmachineapi.dto.transaction;
 import com.elleined.atmmachineapi.dto.UserDTO;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.math.BigDecimal;

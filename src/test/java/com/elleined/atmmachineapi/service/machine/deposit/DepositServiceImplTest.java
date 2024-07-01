@@ -64,7 +64,7 @@ class DepositServiceImplTest {
         when(userRepository.save(any(User.class))).thenReturn(currentUser);
         doNothing().when(appWalletService).addAndSaveBalance(any());
         when(depositTransactionMapper.toEntity(any(DepositTransactionRequest.class))).thenReturn(depositTransaction);
-        when(depositTransactionService.save(any(DepositTransaction.class))).thenReturn(depositTransaction);
+        when(depositTransactionService.save(, any(DepositTransaction.class), )).thenReturn(depositTransaction);
 
         // Calling the method
         depositService.deposit(currentUser, depositAmount);
@@ -78,7 +78,7 @@ class DepositServiceImplTest {
         verify(userRepository).save(any(User.class));
         verify(appWalletService).addAndSaveBalance(any());
         verify(depositTransactionMapper).toEntity(any(DepositTransactionRequest.class));
-        verify(depositTransactionService).save(any(DepositTransaction.class));
+        verify(depositTransactionService).save(, any(DepositTransaction.class), );
 
         // Assertions
         assertEquals(expectedBalance, currentUser.getBalance());

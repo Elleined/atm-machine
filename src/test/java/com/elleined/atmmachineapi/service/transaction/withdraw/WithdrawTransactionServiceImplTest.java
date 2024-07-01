@@ -89,7 +89,7 @@ class WithdrawTransactionServiceImplTest {
         // Stubbing methods
 
         // Calling the method
-        List<WithdrawTransaction> actualTransactions = withdrawTransactionService.getAll(currentUser);
+        List<WithdrawTransaction> actualTransactions = withdrawTransactionService.getAll(currentUser, );
 
         // Behavior Verifications
 
@@ -109,7 +109,7 @@ class WithdrawTransactionServiceImplTest {
         when(withdrawTransactionRepository.save(any(WithdrawTransaction.class))).thenReturn(new WithdrawTransaction());
 
         // Calling the method
-        withdrawTransactionService.save(new WithdrawTransaction());
+        withdrawTransactionService.save(, new WithdrawTransaction(), );
 
         // Behavior Verifications
         verify(withdrawTransactionRepository).save(any(WithdrawTransaction.class));

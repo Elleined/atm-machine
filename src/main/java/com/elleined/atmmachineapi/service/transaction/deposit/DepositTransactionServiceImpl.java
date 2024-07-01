@@ -1,25 +1,26 @@
 package com.elleined.atmmachineapi.service.transaction.deposit;
 
 import com.elleined.atmmachineapi.exception.resource.ResourceNotFoundException;
+import com.elleined.atmmachineapi.mapper.transaction.DepositTransactionMapper;
 import com.elleined.atmmachineapi.model.User;
 import com.elleined.atmmachineapi.model.transaction.DepositTransaction;
-import com.elleined.atmmachineapi.model.transaction.Transaction;
 import com.elleined.atmmachineapi.repository.transaction.DepositTransactionRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Comparator;
-import java.util.List;
-import java.util.Set;
+import java.math.BigDecimal;
 
-@Service
-@RequiredArgsConstructor
 @Slf4j
+@Service
 @Transactional
+@RequiredArgsConstructor
 public class DepositTransactionServiceImpl implements DepositTransactionService {
     private final DepositTransactionRepository depositTransactionRepository;
+    private final DepositTransactionMapper depositTransactionMapper;
 
     @Override
     public DepositTransaction getById(int id) throws ResourceNotFoundException {
@@ -27,20 +28,16 @@ public class DepositTransactionServiceImpl implements DepositTransactionService 
     }
 
     @Override
-    public List<DepositTransaction> getAllById(Set<Integer> ids) {
-        return depositTransactionRepository.findAllById(ids);
+    public Page<DepositTransaction> getAll(User currentUser, Pageable pageable) {
+        return depositTransactionRepository.findAll(currentUser, pageable);
     }
 
     @Override
-    public List<DepositTransaction> getAll(User currentUser) {
-        return currentUser.getDepositTransactions().stream()
-                .sorted(Comparator.comparing(Transaction::getTransactionDate).reversed())
-                .toList();
-    }
+    public DepositTransaction save(User currentUser, BigDecimal amount) {
+        DepositTransaction depositTransaction = depositTransactionMapper.toEntity(currentUser, amount);
 
-    @Override
-    public DepositTransaction save(DepositTransaction depositTransaction) {
         depositTransactionRepository.save(depositTransaction);
+        log.debug("Saving deposit transaction success.");
         return depositTransaction;
     }
 }
