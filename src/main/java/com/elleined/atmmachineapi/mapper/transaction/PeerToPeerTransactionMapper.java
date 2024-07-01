@@ -1,14 +1,22 @@
 package com.elleined.atmmachineapi.mapper.transaction;
 
 import com.elleined.atmmachineapi.dto.transaction.PeerToPeerTransactionDTO;
+import com.elleined.atmmachineapi.mapper.UserMapper;
+import com.elleined.atmmachineapi.model.User;
 import com.elleined.atmmachineapi.model.transaction.PeerToPeerTransaction;
-import com.elleined.atmmachineapi.request.transaction.PeerToPeerTransactionRequest;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;
 
-@Mapper(componentModel = "spring")
-public interface PeerToPeerTransactionMapper extends TransactionMapper<PeerToPeerTransaction, PeerToPeerTransactionDTO, PeerToPeerTransactionRequest> {
+import java.math.BigDecimal;
+
+@Mapper(
+        componentModel = "spring",
+        uses = {
+                UserMapper.class
+        }
+)
+public interface PeerToPeerTransactionMapper extends TransactionMapper<PeerToPeerTransaction, PeerToPeerTransactionDTO> {
 
     @Override
     @Mappings({
@@ -16,12 +24,11 @@ public interface PeerToPeerTransactionMapper extends TransactionMapper<PeerToPee
             @Mapping(target = "trn", source = "trn"),
             @Mapping(target = "amount", source = "amount"),
             @Mapping(target = "transactionDate", source = "transactionDate"),
-            @Mapping(target = "receiverId", source = "receiver.id"),
-            @Mapping(target = "senderId", source = "sender.id")
+            @Mapping(target = "receiverDTO", source = "receiver"),
+            @Mapping(target = "senderDTO", source = "sender")
     })
     PeerToPeerTransactionDTO toDTO(PeerToPeerTransaction peerToPeerTransaction);
 
-    @Override
     @Mappings({
             @Mapping(target = "id", ignore = true),
             @Mapping(target = "trn", expression = "java(java.util.UUID.randomUUID().toString())"),
@@ -30,5 +37,7 @@ public interface PeerToPeerTransactionMapper extends TransactionMapper<PeerToPee
             @Mapping(target = "receiver", source = "receiver"),
             @Mapping(target = "sender", source = "sender")
     })
-    PeerToPeerTransaction toEntity(PeerToPeerTransactionRequest request);
+    PeerToPeerTransaction toEntity(User sender,
+                                   User receiver,
+                                   BigDecimal amount);
 }
