@@ -29,7 +29,8 @@ public class ATMController  {
 
     @PostMapping("/deposit")
     public DepositTransactionDTO deposit(@PathVariable("currentUserId") int currentUserId,
-                                         @RequestParam("amount") BigDecimal amount) {
+                                         @RequestParam("amount") BigDecimal amount,
+                                         @RequestParam(defaultValue = "false", name = "includeRelatedLinks") boolean includeRelatedLinks) {
 
         User currentUser = userService.getById(currentUserId);
         DepositTransaction depositTransaction = atmService.deposit(currentUser, amount);
@@ -39,7 +40,8 @@ public class ATMController  {
 
     @PostMapping("/withdraw")
     public WithdrawTransactionDTO withdraw(@PathVariable("currentUserId") int currentUserId,
-                                           @RequestParam("amount") BigDecimal amount) {
+                                           @RequestParam("amount") BigDecimal amount,
+                                           @RequestParam(defaultValue = "false", name = "includeRelatedLinks") boolean includeRelatedLinks) {
 
         User currentUser = userService.getById(currentUserId);
         WithdrawTransaction withdrawTransaction = atmService.withdraw(currentUser, amount);
@@ -50,7 +52,8 @@ public class ATMController  {
     @PostMapping("/peer-to-peer/{receiverId}")
     public PeerToPeerTransactionDTO peerToPeer(@PathVariable("currentUserId") int senderId,
                                                @RequestParam("amount") BigDecimal sentAmount,
-                                               @PathVariable("receiverId") int receiverId) {
+                                               @PathVariable("receiverId") int receiverId,
+                                               @RequestParam(defaultValue = "false", name = "includeRelatedLinks") boolean includeRelatedLinks) {
 
         User sender = userService.getById(senderId);
         User receiver = userService.getById(receiverId);

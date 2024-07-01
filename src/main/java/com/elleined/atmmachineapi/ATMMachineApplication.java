@@ -1,7 +1,9 @@
 package com.elleined.atmmachineapi;
 
+import net.datafaker.Faker;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
 import org.springframework.data.web.config.EnableSpringDataWebSupport;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
@@ -17,6 +19,10 @@ public class ATMMachineApplication {
 	}
 
 
+	@Bean
+	public Faker faker() {
+		return new Faker();
+	}
 	/* Uncomment these block of code if you want to use commandline instead of web service
 	@Autowired
 	private CommandLineATMService commandLineATMService;
