@@ -2,6 +2,7 @@ package com.elleined.atmmachineapi.dto;
 
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.math.BigDecimal;
@@ -20,4 +21,6 @@ public class UserDTO extends DTO {
         this.uuid = uuid;
         this.balance = balance;
     }
+
+
 }
