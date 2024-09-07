@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import java.math.BigDecimal;
 
 @RestController
-@RequestMapping("/users/{currentUserId}")
+@RequestMapping("/users")
 @RequiredArgsConstructor
 public class ATMController  {
     private final ATMService atmService;
@@ -31,40 +31,36 @@ public class ATMController  {
     private final PeerToPeerTransactionMapper peerToPeerTransactionMapper;
 
     @PostMapping("/deposit")
-    public DepositTransactionDTO deposit(@PathVariable("currentUserId") int currentUserId,
-                                         @RequestParam("amount") BigDecimal amount,
-                                         @RequestParam(defaultValue = "false", name = "includeRelatedLinks") boolean includeRelatedLinks) {
+    public DepositTransactionDTO deposit(@RequestHeader("Authorization") String jwt,
+                                         @RequestParam("amount") BigDecimal amount) {
 
-        User currentUser = userService.getById(currentUserId);
+        User currentUser = userService.getByJWT(jwt);
         DepositTransaction depositTransaction = atmService.deposit(currentUser, amount);
 
-        return depositTransactionMapper.toDTO(depositTransaction)
-                .addLinks(currentUser, includeRelatedLinks);
+        return depositTransactionMapper.toDTO(depositTransaction);
     }
 
 
     @PostMapping("/withdraw")
-    public WithdrawTransactionDTO withdraw(@PathVariable("currentUserId") int currentUserId,
-                                           @RequestParam("amount") BigDecimal amount,
-                                           @RequestParam(defaultValue = "false", name = "includeRelatedLinks") boolean includeRelatedLinks) {
+    public WithdrawTransactionDTO withdraw(@RequestHeader("Authorization") String jwt,
+                                           @RequestParam("amount") BigDecimal amount) {
 
-        User currentUser = userService.getById(currentUserId);
+        User currentUser = userService.getByJWT(jwt);
         WithdrawTransaction withdrawTransaction = atmService.withdraw(currentUser, amount);
 
-        return withdrawTransactionMapper.toDTO(withdrawTransaction).addLinks(currentUser, includeRelatedLinks);
+        return withdrawTransactionMapper.toDTO(withdrawTransaction);
     }
 
 
     @PostMapping("/peer-to-peer/{receiverId}")
-    public PeerToPeerTransactionDTO peerToPeer(@PathVariable("currentUserId") int senderId,
+    public PeerToPeerTransactionDTO peerToPeer(@RequestHeader("Authorization") String jwt,
                                                @RequestParam("amount") BigDecimal sentAmount,
-                                               @PathVariable("receiverId") int receiverId,
-                                               @RequestParam(defaultValue = "false", name = "includeRelatedLinks") boolean includeRelatedLinks) {
+                                               @PathVariable("receiverId") int receiverId) {
 
-        User sender = userService.getById(senderId);
+        User sender = userService.getByJWT(jwt);
         User receiver = userService.getById(receiverId);
         PeerToPeerTransaction peerToPeerTransaction = atmService.peerToPeer(sender, receiver, sentAmount);
 
-        return peerToPeerTransactionMapper.toDTO(peerToPeerTransaction).addLinks(sender, includeRelatedLinks);
+        return peerToPeerTransactionMapper.toDTO(peerToPeerTransaction);
     }
 }

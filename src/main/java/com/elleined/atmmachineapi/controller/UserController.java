@@ -15,29 +15,18 @@ public class UserController {
     private final UserService userService;
     private final UserMapper userMapper;
 
-    @PostMapping
-    public UserDTO save(@RequestParam("name") String name,
-                        @RequestParam(defaultValue = "false", name = "includeRelatedLinks") boolean includeRelatedLinks) {
-
-        User savedUser = userService.save(name);
-
-        return userMapper.toDTO(savedUser).addLinks(savedUser, includeRelatedLinks);
-    }
-
     @GetMapping("/id/{userId}")
-    public UserDTO getById(@PathVariable("userId") int userId,
-                           @RequestParam(defaultValue = "false", name = "includeRelatedLinks") boolean includeRelatedLinks) {
+    public UserDTO getById(@PathVariable("userId") int userId) {
 
         User user = userService.getById(userId);
 
-        return userMapper.toDTO(user).addLinks(user, includeRelatedLinks);
+        return userMapper.toDTO(user);
     }
 
     @GetMapping("/uuid/{uuid}")
-    public UserDTO getByUUID(@PathVariable("uuid") String uuid,
-                             @RequestParam(defaultValue = "false", name = "includeRelatedLinks") boolean includeRelatedLinks) {
+    public UserDTO getByUUID(@PathVariable("uuid") String uuid) {
 
         User user = userService.getByUUID(uuid);
-        return userMapper.toDTO(user).addLinks(user, includeRelatedLinks);
+        return userMapper.toDTO(user);
     }
 }

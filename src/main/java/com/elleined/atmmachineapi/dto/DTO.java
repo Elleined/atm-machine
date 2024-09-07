@@ -1,13 +1,14 @@
 package com.elleined.atmmachineapi.dto;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 
 @Getter
 @Setter
-@AllArgsConstructor
-public abstract class DTO extends HateoasDTO {
+@SuperBuilder
+@NoArgsConstructor
+public abstract class DTO {
     private int id;
-
 }
