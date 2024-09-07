@@ -13,6 +13,7 @@ public interface UserMapper extends CustomMapper<User, UserDTO> {
     @Mappings({
             @Mapping(target = "id", source = "id"),
             @Mapping(target = "name", source = "name"),
+            @Mapping(target = "email", source = "email"),
             @Mapping(target = "uuid", source = "uuid"),
             @Mapping(target = "balance", source = "balance"),
     })
@@ -26,7 +27,11 @@ public interface UserMapper extends CustomMapper<User, UserDTO> {
             @Mapping(target = "sentMoneyTransactions", expression = "java(new java.util.ArrayList<>())"),
             @Mapping(target = "receiveMoneyTransactions", expression = "java(new java.util.ArrayList<>())"),
             @Mapping(target = "withdrawTransactions", expression = "java(new java.util.ArrayList<>())"),
-            @Mapping(target = "depositTransactions", expression = "java(new java.util.ArrayList<>())")
+            @Mapping(target = "depositTransactions", expression = "java(new java.util.ArrayList<>())"),
+            @Mapping(target = "email", source = "email"),
+            @Mapping(target = "password", source = "password")
     })
-    User toEntity(String name);
+    User toEntity(String name,
+                  String email,
+                  String password);
 }

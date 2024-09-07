@@ -19,7 +19,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/users/{currentUserId}")
+@RequestMapping("/users")
 @RequiredArgsConstructor
 public class TransactionController {
     private final UserService userService;
@@ -34,64 +34,56 @@ public class TransactionController {
     private final PeerToPeerTransactionMapper peerToPeerTransactionMapper;
 
     @GetMapping("/withdraw-transactions")
-    public Page<WithdrawTransactionDTO> getAllWithdrawalTransactions(@PathVariable("currentUserId") int currentUserId,
+    public Page<WithdrawTransactionDTO> getAllWithdrawalTransactions(@RequestHeader("Authorization") String jwt,
                                                                      @RequestParam(required = false, defaultValue = "1", value = "pageNumber") int pageNumber,
                                                                      @RequestParam(required = false, defaultValue = "5", value = "pageSize") int pageSize,
                                                                      @RequestParam(required = false, defaultValue = "ASC", value = "sortDirection") Sort.Direction direction,
-                                                                     @RequestParam(required = false, defaultValue = "id", value = "sortBy") String sortBy,
-                                                                     @RequestParam(defaultValue = "false", name = "includeRelatedLinks") boolean includeRelatedLinks) {
+                                                                     @RequestParam(required = false, defaultValue = "id", value = "sortBy") String sortBy) {
 
-        User currentUser = userService.getById(currentUserId);
+        User currentUser = userService.getByJWT(jwt);
         Pageable pageable = PageRequest.of(pageNumber - 1, pageSize, direction, sortBy);
 
         return withdrawTransactionService.getAll(currentUser, pageable)
-                .map(withdrawTransactionMapper::toDTO)
-                .map(dto -> dto.addLinks(currentUser, includeRelatedLinks));
+                .map(withdrawTransactionMapper::toDTO);
     }
 
     @GetMapping("/deposit-transactions")
-    public Page<DepositTransactionDTO> getAllDepositTransactions(@PathVariable("currentUserId") int currentUserId,
+    public Page<DepositTransactionDTO> getAllDepositTransactions(@RequestHeader("Authorization") String jwt,
                                                                  @RequestParam(required = false, defaultValue = "1", value = "pageNumber") int pageNumber,
                                                                  @RequestParam(required = false, defaultValue = "5", value = "pageSize") int pageSize,
                                                                  @RequestParam(required = false, defaultValue = "ASC", value = "sortDirection") Sort.Direction direction,
-                                                                 @RequestParam(required = false, defaultValue = "id", value = "sortBy") String sortBy,
-                                                                 @RequestParam(defaultValue = "false", name = "includeRelatedLinks") boolean includeRelatedLinks) {
-        User currentUser = userService.getById(currentUserId);
+                                                                 @RequestParam(required = false, defaultValue = "id", value = "sortBy") String sortBy) {
+        User currentUser = userService.getByJWT(jwt);
 
         Pageable pageable = PageRequest.of(pageNumber - 1, pageSize, direction, sortBy);
         return depositTransactionService.getAll(currentUser, pageable)
-                .map(depositTransactionMapper::toDTO)
-                .map(dto -> dto.addLinks(currentUser, includeRelatedLinks));
+                .map(depositTransactionMapper::toDTO);
     }
 
     @GetMapping("/receive-money-transactions")
-    public Page<PeerToPeerTransactionDTO> getAllReceiveMoneyTransactions(@PathVariable("currentUserId") int currentUserId,
+    public Page<PeerToPeerTransactionDTO> getAllReceiveMoneyTransactions(@RequestHeader("Authorization") String jwt,
                                                                          @RequestParam(required = false, defaultValue = "1", value = "pageNumber") int pageNumber,
                                                                          @RequestParam(required = false, defaultValue = "5", value = "pageSize") int pageSize,
                                                                          @RequestParam(required = false, defaultValue = "ASC", value = "sortDirection") Sort.Direction direction,
-                                                                         @RequestParam(required = false, defaultValue = "id", value = "sortBy") String sortBy,
-                                                                         @RequestParam(defaultValue = "false", name = "includeRelatedLinks") boolean includeRelatedLinks) {
-        User currentUser = userService.getById(currentUserId);
+                                                                         @RequestParam(required = false, defaultValue = "id", value = "sortBy") String sortBy) {
+        User currentUser = userService.getByJWT(jwt);
         Pageable pageable = PageRequest.of(pageNumber - 1, pageSize, direction, sortBy);
 
         return peerToPeerTransactionService.getAllReceiveMoneyTransactions(currentUser, pageable)
-                .map(peerToPeerTransactionMapper::toDTO)
-                .map(dto -> dto.addLinks(currentUser, includeRelatedLinks));
+                .map(peerToPeerTransactionMapper::toDTO);
     }
 
     @GetMapping("/sent-money-transactions")
-    public Page<PeerToPeerTransactionDTO> getAllSentMoneyTransactions(@PathVariable("currentUserId") int currentUserId,
+    public Page<PeerToPeerTransactionDTO> getAllSentMoneyTransactions(@RequestHeader("Authorization") String jwt,
                                                                       @RequestParam(required = false, defaultValue = "1", value = "pageNumber") int pageNumber,
                                                                       @RequestParam(required = false, defaultValue = "5", value = "pageSize") int pageSize,
                                                                       @RequestParam(required = false, defaultValue = "ASC", value = "sortDirection") Sort.Direction direction,
-                                                                      @RequestParam(required = false, defaultValue = "id", value = "sortBy") String sortBy,
-                                                                      @RequestParam(defaultValue = "false", name = "includeRelatedLinks") boolean includeRelatedLinks) {
+                                                                      @RequestParam(required = false, defaultValue = "id", value = "sortBy") String sortBy) {
 
-        User currentUser = userService.getById(currentUserId);
+        User currentUser = userService.getByJWT(jwt);
         Pageable pageable = PageRequest.of(pageNumber - 1, pageSize, direction, sortBy);
 
         return peerToPeerTransactionService.getAllReceiveMoneyTransactions(currentUser, pageable)
-                .map(peerToPeerTransactionMapper::toDTO)
-                .map(dto -> dto.addLinks(currentUser, includeRelatedLinks));
+                .map(peerToPeerTransactionMapper::toDTO);
     }
 }

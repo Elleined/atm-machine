@@ -18,11 +18,6 @@ public class ATMMachineApplication {
 		SpringApplication.run(ATMMachineApplication.class, args);
 	}
 
-
-	@Bean
-	public Faker faker() {
-		return new Faker();
-	}
 	/* Uncomment these block of code if you want to use commandline instead of web service
 	@Autowired
 	private CommandLineATMService commandLineATMService;
