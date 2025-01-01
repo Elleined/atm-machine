@@ -1,40 +1,35 @@
 version: "3.8"
 services:
-  ama_app:
-    build: .
-    image: elleined/ama
-    container_name: ama_app
-    restart: always
+  atm_machine_api_app:
+    image: elleined/atm-machine-api:latest
+    container_name: atm_machine_api_app
+    env_file:
+      - .env
     ports:
       - "8087:8087"
-    environment:
-      - MYSQL_HOST=mysql_server
-      - MYSQL_PORT=3306
-      - MYSQL_DATABASE=ama_db
-      - MYSQL_USER=root
-      - MYSQL_PASSWORD=root
-      - PORT=8087
     networks:
-      - ama_network
+      - atm_machine_api_network
     depends_on:
       mysql_server:
         condition: service_healthy
   mysql_server:
     image: mysql:8.0.32
     container_name: mysql_server
-    restart: always
-    environment:
-      - MYSQL_ROOT_PASSWORD=root
-      - MYSQL_DATABASE=ama_db
-    healthcheck:
-      test: mysqladmin ping -h localhost -u root --password=$$MYSQL_ROOT_PASSWORD
+    env_file:
+      - mysql.env
     ports:
       - "3307:3306"
+    healthcheck:
+      test: mysqladmin ping -h localhost -u root --password=$$MYSQL_ROOT_PASSWORD
+      interval: 30s
+      timeout: 20s
+      retries: 3
+      start_period: 300s
     networks:
-      - ama_network
+      - atm_machine_api_network
 networks:
-  ama_network:
-    name: ama_network
+  atm_machine_api_network:
+    name: atm_machine_api_network
     external: false
     ipam:
       driver: default
